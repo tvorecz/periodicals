@@ -10,7 +10,7 @@ public class User implements Serializable {
     private int id;
     private String login;
     private String realPassword;
-    private long codifiedPassword;
+    private String codifiedPassword;
     private String email;
     private UserRole role;
 
@@ -41,11 +41,11 @@ public class User implements Serializable {
         this.realPassword = realPassword;
     }
 
-    public long getCodifiedPassword() {
+    public String getCodifiedPassword() {
         return codifiedPassword;
     }
 
-    public void setCodifiedPassword(long codifiedPassword) {
+    public void setCodifiedPassword(String codifiedPassword) {
         this.codifiedPassword = codifiedPassword;
     }
 
@@ -79,10 +79,14 @@ public class User implements Serializable {
         if (id != user.id) {
             return false;
         }
-        if (codifiedPassword != user.codifiedPassword) {
+        if (login != null ? !login.equals(user.login) : user.login != null) {
             return false;
         }
-        if (login != null ? !login.equals(user.login) : user.login != null) {
+        if (realPassword != null ? !realPassword.equals(user.realPassword) : user.realPassword != null) {
+            return false;
+        }
+        if (codifiedPassword != null ? !codifiedPassword.equals(user.codifiedPassword) :
+                user.codifiedPassword != null) {
             return false;
         }
         if (email != null ? !email.equals(user.email) : user.email != null) {
@@ -96,7 +100,7 @@ public class User implements Serializable {
         int result = id;
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (realPassword != null ? realPassword.hashCode() : 0);
-        result = 31 * result + (int) (codifiedPassword ^ (codifiedPassword >>> 32));
+        result = 31 * result + (codifiedPassword != null ? codifiedPassword.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
@@ -107,7 +111,7 @@ public class User implements Serializable {
         return getClass().getName() + "{" +
                "id=" + id +
                ", login='" + login + '\'' +
-               ", codifiedPassword='" + codifiedPassword + '\'' +
+               ", email='" + email + '\'' +
                ", role=" + role +
                '}';
     }

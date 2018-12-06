@@ -1,0 +1,28 @@
+package by.training.zorich.controller.builder_layer.impl;
+
+import by.training.zorich.controller.builder_layer.CommandHandlerBuilder;
+import by.training.zorich.controller.command_handler.CommandRepository;
+import by.training.zorich.controller.command_handler.exception.CommandException;
+import by.training.zorich.controller.command_handler.impl.CommandRepositoryImpl;
+import by.training.zorich.service.builder_layer.ServiceLayerBuilder;
+import by.training.zorich.service.builder_layer.impl.ServiceLayerBuilderImpl;
+import by.training.zorich.service.exception.ServiceException;
+
+public class CommandHandlerBuilderImpl implements CommandHandlerBuilder {
+
+
+    @Override
+    public CommandRepository build() throws CommandException {
+        CommandRepository commandRepository = CommandRepositoryImpl.getInstance();
+
+        ServiceLayerBuilder serviceLayerBuilder = new ServiceLayerBuilderImpl();
+
+        try {
+            commandRepository.init(serviceLayerBuilder.build());
+        } catch (ServiceException e) {
+            throw new CommandException("Error during building command repository.", e);
+        }
+
+        return commandRepository;
+    }
+}

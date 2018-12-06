@@ -17,7 +17,7 @@ public class UserResultHandler implements ResultHandler<User> {
             foundUser.setId(resultSet.getInt(UserCharacteristic.ID.getName()));
             foundUser.setLogin(resultSet.getString(UserCharacteristic.LOGIN.getName()));
             foundUser.setEmail(resultSet.getString(UserCharacteristic.EMAIL.getName()));
-            foundUser.setCodifiedPassword(resultSet.getLong(UserCharacteristic.CODIFIED_PASSWORD.getName()));
+            foundUser.setCodifiedPassword(resultSet.getString(UserCharacteristic.CODIFIED_PASSWORD.getName()));
 
             String userRole = resultSet.getString(UserCharacteristic.NAME_ROLE.getName());
             foundUser.setRole(UserRole.getUserRoleByName(userRole));

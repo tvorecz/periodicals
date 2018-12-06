@@ -27,10 +27,9 @@ public class UserServiceImpl implements UserService {
         userDAO = daoFactory.getUserDAO();
     }
 
-
     @Override
     public void register(User user, ServiceResult serviceResult) throws ServiceException {
-        if(registratingUserValidator.validate(user)) {
+        if (registratingUserValidator.validate(user)) {
             user.setCodifiedPassword(passwordEncoder.encodePassword(user.getRealPassword()));
             try {
                 userDAO.register(user);
@@ -39,9 +38,6 @@ public class UserServiceImpl implements UserService {
                 serviceResult.setResultOperation(false);
                 throw new ServiceException("Registration is failed!", e);
             }
-
-
-
         } else {
             serviceResult.setResultOperation(false);
         }
@@ -49,17 +45,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void authenticate(User user, ServiceResult serviceResult) throws ServiceException {
-        if(userValidator.validate(user)) {
+        if (userValidator.validate(user)) {
             user.setCodifiedPassword(passwordEncoder.encodePassword(user.getRealPassword()));
             try {
                 User authenticateUser = userDAO.authenticate(user);
-                serviceResult.setResultOperation(true);
-                serviceResult.setResultObject(authenticateUser);
+                if (authenticateUser == null) {
+                    serviceResult.setResultOperation(false);
+                } else {
+                    serviceResult.setResultOperation(true);
+                    serviceResult.setResultObject(authenticateUser);
+                }
             } catch (DAOException e) {
                 serviceResult.setResultOperation(false);
                 throw new ServiceException("Authenticate is failed!", e);
             }
-
         } else {
             serviceResult.setResultOperation(false);
         }

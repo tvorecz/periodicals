@@ -12,7 +12,7 @@ import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 import by.training.zorich.dal.sql_executor.impl.SQLExecutor;
 import by.training.zorich.dal.sql_executor.impl.result_handler.ResultHandlerRepositoryImpl;
 
-public class DalSqlBuilder implements DalBuilder {
+public class DalSQLiteBuilder implements DalBuilder {
 
     @Override
     public DAOFactory build() throws DAOException {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <properties>
+        <property name="fileName">logs/logs.log</property>
+        <property name="basePattern">%d{HH:mm:ss, dd MMM yyyy} [%-5p] (%F:%L) — %m%n</property>
+    </properties>
+
+    <appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${basePattern}" />
+        </Console>
+
+        <File name="FILE" filename="${fileName}">
+            <PatternLayout pattern="${basePattern}" />
+        </File>
+    </appenders>
+
+    <loggers>
+        <logger name="by.training.zorich.controller.servlet" level="ERROR">
+            <appender-ref ref="FILE"/>
+
+        <root level = "ERROR">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </loggers>
+
+
+</configuration>
