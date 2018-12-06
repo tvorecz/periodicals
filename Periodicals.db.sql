@@ -1,0 +1,50 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS `Users` (
+	`idUser`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`login`	TEXT NOT NULL UNIQUE,
+	`codifiedPassword`	TEXT NOT NULL,
+	`idRole`	INTEGER
+);
+CREATE TABLE IF NOT EXISTS `UserSubscriptions` (
+	`idUserSubscription`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`idAddress`	INTEGER NOT NULL,
+	`idSubscriptionVariant`	INTEGER NOT NULL,
+	`dateBegin`	TEXT NOT NULL,
+	`dateEnd`	TEXT NOT NULL,
+	`idPayment`	INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS `UserRoles` (
+	`idRole`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`nameRole`	TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS `UserAddresses` (
+	`idAddress`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`address`	TEXT NOT NULL,
+	`idUser`	INTEGER,
+	FOREIGN KEY(`idUser`) REFERENCES `Users`(`idUser`)
+);
+CREATE TABLE IF NOT EXISTS `SubscriptionVariants` (
+	`idSubscriptionVariant`	INTEGER NOT NULL UNIQUE,
+	`index`	TEXT NOT NULL UNIQUE,
+	`idPeriodical`	INTEGER NOT NULL,
+	`idSubscriptionType`	INTEGER NOT NULL,
+	`cost`	REAL NOT NULL,
+	FOREIGN KEY(`idSubscriptionType`) REFERENCES `SubscriptionTypes`(`idSubscriptionType`),
+	FOREIGN KEY(`idPeriodical`) REFERENCES `Periodicals`(`idPeriodical`)
+);
+CREATE TABLE IF NOT EXISTS `SubscriptionTypes` (
+	`idSubscriptionType`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`nameSubscriptionType`	TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS `Periodicals` (
+	`idPeriodical`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`namePeriodical`	TEXT NOT NULL,
+	`periodicityInMonth`	INTEGER NOT NULL,
+	`annotation`	TEXT
+);
+CREATE TABLE IF NOT EXISTS `Payments` (
+	`idPayment`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`amount`	REAL NOT NULL,
+	`payStatus`	INTEGER NOT NULL DEFAULT 0
+);
+COMMIT;
