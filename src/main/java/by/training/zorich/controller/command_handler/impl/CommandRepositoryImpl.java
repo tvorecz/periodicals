@@ -11,6 +11,7 @@ public class CommandRepositoryImpl implements CommandRepository {
     private ConcurrentHashMap<ActionType, CommandHandler> actionRepository;
 
     private CommandRepositoryImpl() {
+        actionRepository = new ConcurrentHashMap<>();
     }
 
     private static class CommandRepositoryHelper{

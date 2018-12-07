@@ -38,8 +38,8 @@ public class MainController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //String commandName = req.getParameter(ActionType.COMMAND.getName());
-        String commandName = req.getContextPath();
+        String commandName = req.getParameter(ActionType.COMMAND.getName());
+        //String commandName = req.getPathInfo();
 
         CommandHandler handler = commandRepository.getCommandHandler(ActionType.valueOf(commandName));
 
