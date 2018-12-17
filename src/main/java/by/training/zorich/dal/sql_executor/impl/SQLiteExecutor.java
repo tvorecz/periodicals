@@ -1,7 +1,7 @@
 package by.training.zorich.dal.sql_executor.impl;
 
 import by.training.zorich.dal.exception.ExecutorException;
-import by.training.zorich.dal.sql_executor.Executor;
+import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandler;
 
 import java.sql.Connection;
@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLExecutor implements Executor {
-    public SQLExecutor() {
+public class SQLiteExecutor implements SQLExecutor {
+    public SQLiteExecutor() {
     }
 
     @Override

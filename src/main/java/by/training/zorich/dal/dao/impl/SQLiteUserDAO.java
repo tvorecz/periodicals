@@ -6,7 +6,7 @@ import by.training.zorich.dal.connector.DataSourceConnector;
 import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.exception.ExecutorException;
-import by.training.zorich.dal.sql_executor.Executor;
+import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.HandlerType;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
@@ -16,21 +16,21 @@ public class SQLiteUserDAO implements UserDAO {
 
     private final static String QUERY_SELECT_USER = "SELECT idUser, login, password, nameRole, email FROM Users, " +
                                                     "UserRoles WHERE Users.idRole = UserRoles.idRole AND Users.login " +
-                                                    "= %1 AND Users.password = %2";
+                                                    "= '%1$s' AND Users.password = '%2$s'";
     private final static String QUERY_VALIDATE_USER = "SELECT idUser, login, password, nameRole, email FROM Users " +
-                                                      "WHERE login = %1 OR email = %2";
-    private final static String QUERY_INSERT_USER = "INSERT INTO Users (login, password, idRole, email) values ('%1'," +
-                                                    " %2, %3, '%4')";
+                                                      "WHERE login = '%1$s' OR email = '%2$s'";
+    private final static String QUERY_INSERT_USER = "INSERT INTO Users (login, password, idRole, email) values ('%1$s'," +
+                                                    " '%2$s', %3$d, '%4$s')";
 
     private DataSourceConnector connector;
-    private Executor executor;
+    private SQLExecutor SQLExecutor;
     private ResultHandlerRepository resultHandlerRepository;
 
     public SQLiteUserDAO(DataSourceConnector connector,
-                         Executor executor,
+                         SQLExecutor SQLExecutor,
                          ResultHandlerRepository resultHandlerRepository) {
         this.connector = connector;
-        this.executor = executor;
+        this.SQLExecutor = SQLExecutor;
         this.resultHandlerRepository = resultHandlerRepository;
     }
 
@@ -45,7 +45,7 @@ public class SQLiteUserDAO implements UserDAO {
 
         try {
             connection = connector.getConnection();
-            executor.update(connection, query);
+            SQLExecutor.update(connection, query);
         } catch (DataSourceConnectorException e) {
             throw new DAOException("Getting of connection from the pool is failed!", e);
         } catch (ExecutorException e) {
@@ -68,8 +68,8 @@ public class SQLiteUserDAO implements UserDAO {
 
         try {
             connection = connector.getConnection();
-            return (User) executor.select(connection, query,
-                                          resultHandlerRepository.getResultHandler(
+            return (User) SQLExecutor.select(connection, query,
+                                             resultHandlerRepository.getResultHandler(
                                                   HandlerType.USER_HANDLER));
         } catch (DataSourceConnectorException e) {
             throw new DAOException("Getting of connection from the pool is failed!", e);
@@ -93,9 +93,9 @@ public class SQLiteUserDAO implements UserDAO {
 
         try {
             connection = connector.getConnection();
-            return (Boolean) executor.select(connection,
-                                             query,
-                                             resultHandlerRepository.getResultHandler(HandlerType.VALIDATE_USER_HANDLER));
+            return (Boolean) SQLExecutor.select(connection,
+                                                query,
+                                                resultHandlerRepository.getResultHandler(HandlerType.VALIDATE_USER_HANDLER));
         } catch (DataSourceConnectorException e) {
             throw new DAOException("Getting of connection from the pool is failed!", e);
         } catch (ExecutorException e) {

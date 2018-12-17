@@ -5,9 +5,8 @@ import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.dao.UserRoleDAO;
 import by.training.zorich.dal.dao.impl.SQLiteUserDAO;
 import by.training.zorich.dal.dao.impl.SQLiteUserRoleDAO;
-import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
-import by.training.zorich.dal.sql_executor.Executor;
+import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
 public class SQLiteDAOFactory implements DAOFactory {
@@ -27,10 +26,10 @@ public class SQLiteDAOFactory implements DAOFactory {
 
     @Override
     public void init(DataSourceConnector connector,
-                     Executor executor,
+                     SQLExecutor SQLExecutor,
                      ResultHandlerRepository resultHandlerRepository) {
-        userDAOImpl = new SQLiteUserDAO(connector, executor, resultHandlerRepository);
-        userRoleDAOImpl = new SQLiteUserRoleDAO(connector, executor, resultHandlerRepository);
+        userDAOImpl = new SQLiteUserDAO(connector, SQLExecutor, resultHandlerRepository);
+        userRoleDAOImpl = new SQLiteUserRoleDAO(connector, SQLExecutor, resultHandlerRepository);
     }
 
     @Override

@@ -6,7 +6,7 @@ import by.training.zorich.dal.connector.DataSourceConnector;
 import by.training.zorich.dal.dao.UserRoleDAO;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.exception.ExecutorException;
-import by.training.zorich.dal.sql_executor.Executor;
+import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.HandlerType;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
@@ -16,14 +16,14 @@ public class SQLiteUserRoleDAO implements UserRoleDAO {
     private final static String QUERY_USER_ROLE = "SELECT idRole FROM UserRoles WHERE nameRole = %1";
 
     private DataSourceConnector connector; //provide connection from pool
-    private Executor executor; //execute query to data source and
+    private SQLExecutor SQLExecutor; //execute query to data source and
     private ResultHandlerRepository resultHandlerRepository; //provide handler for handle resultset
 
     public SQLiteUserRoleDAO(DataSourceConnector connector,
-                             Executor executor,
+                             SQLExecutor SQLExecutor,
                              ResultHandlerRepository resultHandlerRepository) {
         this.connector = connector;
-        this.executor = executor;
+        this.SQLExecutor = SQLExecutor;
         this.resultHandlerRepository = resultHandlerRepository;
     }
 
@@ -34,7 +34,7 @@ public class SQLiteUserRoleDAO implements UserRoleDAO {
 
         try {
             connection = connector.getConnection();
-            return (Integer) executor.select(connection, query, resultHandlerRepository.getResultHandler(HandlerType.ID_USER_ROLE_HANDLER));
+            return (Integer) SQLExecutor.select(connection, query, resultHandlerRepository.getResultHandler(HandlerType.ID_USER_ROLE_HANDLER));
         } catch (DataSourceConnectorException e) {
             throw new DAOException("Getting of connection from the pool is failed!", e);
         } catch (ExecutorException e) {

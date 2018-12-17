@@ -26,7 +26,7 @@ public class MainController extends HttpServlet {
         try {
             commandRepository = new CommandHandlerBuilderImpl().build();
         } catch (CommandException e) {
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error(e);
             throw new ServletException("Error during init servlet.",e);
         }
     }
@@ -41,7 +41,7 @@ public class MainController extends HttpServlet {
         String commandName = req.getParameter(ActionType.COMMAND.getName());
         //String commandName = req.getPathInfo();
 
-        CommandHandler handler = commandRepository.getCommandHandler(ActionType.valueOf(commandName));
+        CommandHandler handler = commandRepository.getCommandHandler(ActionType.getActionParameterByName(commandName));
 
         handler.handle(req, resp);
     }

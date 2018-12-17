@@ -7,9 +7,9 @@ import by.training.zorich.dal.connector.impl.SQLiteDBConnector;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
-import by.training.zorich.dal.sql_executor.Executor;
+import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
-import by.training.zorich.dal.sql_executor.impl.SQLExecutor;
+import by.training.zorich.dal.sql_executor.impl.SQLiteExecutor;
 import by.training.zorich.dal.sql_executor.impl.result_handler.ResultHandlerRepositoryImpl;
 
 public class DalSQLiteBuilder implements DalBuilder {
@@ -23,11 +23,11 @@ public class DalSQLiteBuilder implements DalBuilder {
             throw new DAOException("Creating of connector is failed.", e);
         }
 
-        Executor executor = new SQLExecutor();
+        SQLExecutor SQLExecutor = new SQLiteExecutor();
         ResultHandlerRepository handlerRepository = ResultHandlerRepositoryImpl.getInstance();
 
         DAOFactory factory = SQLiteDAOFactory.getInstance();
-        factory.init(connector, executor, handlerRepository);
+        factory.init(connector, SQLExecutor, handlerRepository);
 
         return factory;
     }

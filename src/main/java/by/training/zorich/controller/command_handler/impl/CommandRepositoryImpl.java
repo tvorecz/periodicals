@@ -5,13 +5,15 @@ import by.training.zorich.controller.command_handler.CommandRepository;
 import by.training.zorich.controller.const_parameter.ActionType;
 import by.training.zorich.service.factory.ServiceFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandRepositoryImpl implements CommandRepository {
-    private ConcurrentHashMap<ActionType, CommandHandler> actionRepository;
+    private Map<ActionType, CommandHandler> actionRepository;
 
     private CommandRepositoryImpl() {
-        actionRepository = new ConcurrentHashMap<>();
+        actionRepository = new HashMap<>();
     }
 
     private static class CommandRepositoryHelper{
