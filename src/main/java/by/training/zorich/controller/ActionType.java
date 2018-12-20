@@ -1,7 +1,7 @@
-package by.training.zorich.controller.const_parameter;
+package by.training.zorich.controller;
 
 public enum ActionType {
-    COMMAND("command"), SIGN_IN("/SignIn"), SIGN_UP("/SignUp");
+    COMMAND("command"), SIGN_IN("/SignIn"), SIGN_UP("/SignUp"), ;
 
     final private String name;
 

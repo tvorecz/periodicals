@@ -5,22 +5,51 @@
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
 
-    <servlet>
-        <servlet-name>SignInServlet</servlet-name>
-        <servlet-class>by.training.zorich.controller.MainController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SignUpServlet</servlet-name>
-        <servlet-class>by.training.zorich.controller.MainController</servlet-class>
-    </servlet>
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>by.training.zorich.controller.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encodingType</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
 
+    <filter>
+        <filter-name>securityAdminFilter</filter-name>
+        <filter-class>by.training.zorich.controller.filter.AdminSecurityFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>securitySubsciberFilter</filter-name>
+        <filter-class>by.training.zorich.controller.filter.SubsciberSecurityFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>securityAdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>securitySubsciberFilter</filter-name>
+        <url-pattern>/subscriber/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>MainController</servlet-name>
+        <servlet-class>by.training.zorich.controller.MainController</servlet-class>
+    </servlet>
 
     <servlet-mapping>
-        <servlet-name>SignInServlet</servlet-name>
-        <url-pattern>/SignIn</url-pattern>
+        <servlet-name>MainController</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SignUpServlet</servlet-name>
-        <url-pattern>/SignUp</url-pattern>
+        <servlet-name>MainController</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -3,8 +3,8 @@ package by.training.zorich.controller.command_handler.impl;
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.User;
 import by.training.zorich.controller.command_handler.CommandHandler;
-import by.training.zorich.controller.const_parameter.JspPagePath;
-import by.training.zorich.controller.const_parameter.UserCharacteristic;
+import by.training.zorich.controller.JspPagePath;
+import by.training.zorich.bean.UserCharacteristic;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.factory.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +33,7 @@ public class SignInCommandHandler implements CommandHandler {
         try {
             serviceFactory.getUserService().authenticate(user, serviceResult);
         } catch (ServiceException e) {
-            LOGGER.error(e.getStackTrace());
+            LOGGER.error(e);
             request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
         }
 

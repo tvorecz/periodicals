@@ -1,6 +1,6 @@
 package by.training.zorich.dal.dao.impl;
 
-import by.training.zorich.controller.const_parameter.UserRole;
+import by.training.zorich.bean.UserRole;
 import by.training.zorich.dal.connector.DataSourceConnectorException;
 import by.training.zorich.dal.connector.DataSourceConnector;
 import by.training.zorich.dal.dao.UserRoleDAO;
@@ -13,7 +13,7 @@ import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 import java.sql.Connection;
 
 public class SQLiteUserRoleDAO implements UserRoleDAO {
-    private final static String QUERY_USER_ROLE = "SELECT idRole FROM UserRoles WHERE nameRole = %1";
+    private final static String QUERY_USER_ROLE = "SELECT idRole FROM user_roles WHERE nameRole = '%1$s'";
 
     private DataSourceConnector connector; //provide connection from pool
     private SQLExecutor SQLExecutor; //execute query to data source and

@@ -1,7 +1,5 @@
 package by.training.zorich.bean;
 
-import by.training.zorich.controller.const_parameter.UserRole;
-
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -13,6 +11,7 @@ public class User implements Serializable {
     private String codifiedPassword;
     private String email;
     private UserRole role;
+    private String currentLocale;
 
     public User() {
     }
@@ -63,6 +62,14 @@ public class User implements Serializable {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public String getCurrentLocale() {
+        return currentLocale;
+    }
+
+    public void setCurrentLocale(String currentLocale) {
+        this.currentLocale = currentLocale;
     }
 
     @Override

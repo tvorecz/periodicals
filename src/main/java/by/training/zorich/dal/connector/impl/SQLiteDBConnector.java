@@ -15,8 +15,10 @@ public class SQLiteDBConnector implements DataSourceConnector {
 
     private String driverName;
     private String uri;
+    private String file;
     private String user;
     private String password;
+    private String parameter;
     private int poolSize;
     private long timeout;
 
@@ -24,8 +26,11 @@ public class SQLiteDBConnector implements DataSourceConnector {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
         driverName = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_DRIVER.getName());
         uri = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_URL.getName());
+        //file = getClass().getResource(dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_FILE.getName())).getPath();
+        file = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_FILE.getName());
         user = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_USER.getName());
         password = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_PASSWORD.getName());
+        parameter = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_PARAMETER.getName());
 
         try {
             poolSize =
@@ -44,7 +49,7 @@ public class SQLiteDBConnector implements DataSourceConnector {
     @Override
     public void init() throws DataSourceConnectorException {
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName(driverName);
 
             freeConnections = new ConcurrentLinkedQueue<>();
             busyConnections = new ConcurrentLinkedQueue<>();
@@ -128,13 +133,15 @@ public class SQLiteDBConnector implements DataSourceConnector {
     private String createConnectionString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(uri);
-        buffer.append(user);
-        buffer.append(password);
+        buffer.append(file);
+        buffer.append(parameter);
+        //buffer.append(user);
+        //buffer.append(password);
         return buffer.toString();
     }
 
     private void addNewConnectionToThePool() throws SQLException {
-        Connection connection = DriverManager.getConnection(createConnectionString());
+        Connection connection = DriverManager.getConnection(createConnectionString(), user, password);
         PooledConnection pooledConnection = new PooledConnection(connection);
         freeConnections.add(pooledConnection);
     }

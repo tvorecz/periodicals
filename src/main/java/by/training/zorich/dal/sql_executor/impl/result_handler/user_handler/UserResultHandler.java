@@ -1,8 +1,8 @@
 package by.training.zorich.dal.sql_executor.impl.result_handler.user_handler;
 
 import by.training.zorich.bean.User;
-import by.training.zorich.controller.const_parameter.UserCharacteristic;
-import by.training.zorich.controller.const_parameter.UserRole;
+import by.training.zorich.bean.UserCharacteristic;
+import by.training.zorich.bean.UserRole;
 import by.training.zorich.dal.sql_executor.ResultHandler;
 
 import java.sql.ResultSet;
@@ -17,7 +17,6 @@ public class UserResultHandler implements ResultHandler<User> {
             foundUser.setId(resultSet.getInt(UserCharacteristic.ID.getName()));
             foundUser.setLogin(resultSet.getString(UserCharacteristic.LOGIN.getName()));
             foundUser.setEmail(resultSet.getString(UserCharacteristic.EMAIL.getName()));
-            foundUser.setCodifiedPassword(resultSet.getString(UserCharacteristic.CODIFIED_PASSWORD.getName()));
 
             String userRole = resultSet.getString(UserCharacteristic.NAME_ROLE.getName());
             foundUser.setRole(UserRole.getUserRoleByName(userRole));

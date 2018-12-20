@@ -2,10 +2,10 @@ package by.training.zorich.service.logic.impl;
 
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.User;
+import by.training.zorich.bean.UserRole;
 import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
-import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.logic.UserService;
 import by.training.zorich.service.password_encoder.PasswordEncoder;
@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
     public void register(User user, ServiceResult serviceResult) throws ServiceException {
         if (registratingUserValidator.validate(user)) {
             user.setCodifiedPassword(passwordEncoder.encodePassword(user.getRealPassword()));
+            user.setRole(UserRole.SUBSCRIBER);
             try {
                 userDAO.register(user);
                 serviceResult.setResultOperation(true);

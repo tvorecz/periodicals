@@ -1,4 +1,4 @@
-package by.training.zorich.controller.const_parameter;
+package by.training.zorich.bean;
 
 public enum UserCharacteristic {
     ID("idUser"),

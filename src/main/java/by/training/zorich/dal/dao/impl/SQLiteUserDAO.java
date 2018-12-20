@@ -14,12 +14,12 @@ import java.sql.Connection;
 
 public class SQLiteUserDAO implements UserDAO {
 
-    private final static String QUERY_SELECT_USER = "SELECT idUser, login, password, nameRole, email FROM Users, " +
-                                                    "UserRoles WHERE Users.idRole = UserRoles.idRole AND Users.login " +
-                                                    "= '%1$s' AND Users.password = '%2$s'";
-    private final static String QUERY_VALIDATE_USER = "SELECT idUser, login, password, nameRole, email FROM Users " +
+    private final static String QUERY_SELECT_USER = "SELECT idUser, login, user_roles.nameRole, email FROM users, " +
+                                                    "user_roles WHERE users.idRole = user_roles.idRole AND users.login " +
+                                                    "= '%1$s' AND users.password = '%2$s'";
+    private final static String QUERY_VALIDATE_USER = "SELECT idUser, login, password, idRole, email FROM users " +
                                                       "WHERE login = '%1$s' OR email = '%2$s'";
-    private final static String QUERY_INSERT_USER = "INSERT INTO Users (login, password, idRole, email) values ('%1$s'," +
+    private final static String QUERY_INSERT_USER = "INSERT INTO users (login, password, idRole, email) values ('%1$s'," +
                                                     " '%2$s', %3$d, '%4$s')";
 
     private DataSourceConnector connector;
@@ -39,7 +39,7 @@ public class SQLiteUserDAO implements UserDAO {
         String query = String.format(QUERY_INSERT_USER,
                                      user.getLogin(),
                                      user.getCodifiedPassword(),
-                                     user.getRole(),
+                                     user.getRole().getIdRole(),
                                      user.getEmail());
         Connection connection = null;
 

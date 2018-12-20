@@ -3,7 +3,7 @@ package by.training.zorich.dal.connector.impl;
 import java.util.ResourceBundle;
 
 public class DBResourceManager {
-    private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("by.training.zorich.dal.connector.impl.SQLiteDBResource");
+    private final static ResourceBundle resourceBundle = ResourceBundle.getBundle("/property/database");
 
     private DBResourceManager() {
     }

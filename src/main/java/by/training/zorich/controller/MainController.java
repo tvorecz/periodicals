@@ -4,7 +4,6 @@ import by.training.zorich.controller.builder_layer.impl.CommandHandlerBuilderImp
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.CommandRepository;
 import by.training.zorich.controller.command_handler.exception.CommandException;
-import by.training.zorich.controller.const_parameter.ActionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,17 +32,19 @@ public class MainController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String commandName = req.getParameter(ActionType.COMMAND.getName());
-        //String commandName = req.getPathInfo();
+        String commandName = req.getRequestURI();
 
         CommandHandler handler = commandRepository.getCommandHandler(ActionType.getActionParameterByName(commandName));
 
         handler.handle(req, resp);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String commandName = req.getParameter(ActionType.COMMAND.getName());
+
+        CommandHandler handler = commandRepository.getCommandHandler(ActionType.getActionParameterByName(commandName));
+
+        handler.handle(req, resp);
+    }
 }
