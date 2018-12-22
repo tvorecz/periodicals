@@ -240,10 +240,10 @@ DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user_roles` (
-  `idRole` int(11) NOT NULL AUTO_INCREMENT,
+  `idLocale` int(11) NOT NULL AUTO_INCREMENT,
   `nameRole` varchar(50) NOT NULL,
-  PRIMARY KEY (`idRole`),
-  UNIQUE KEY `idRole` (`idRole`)
+  PRIMARY KEY (`idLocale`),
+  UNIQUE KEY `idLocale` (`idLocale`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -302,16 +302,16 @@ CREATE TABLE `users` (
   `idUser` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `password` varchar(200) NOT NULL,
-  `idRole` int(11) NOT NULL,
+  `idLocale` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `idDefaultLocal` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `idUser` (`idUser`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`),
-  KEY `idRole` (`idRole`),
+  KEY `idLocale` (`idLocale`),
   KEY `idDefaultLocal` (`idDefaultLocal`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idRole`) REFERENCES `user_roles` (`idrole`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idLocale`) REFERENCES `user_roles` (`idrole`),
   CONSTRAINT `users_ibfk_2` FOREIGN KEY (`idDefaultLocal`) REFERENCES `internationalization` (`idlocal`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -5,11 +5,11 @@ USE periodicals;
 
 
 CREATE TABLE IF NOT EXISTS UserRoles (
-	idRole	INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+	idLocale	INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
 	nameRole	VARCHAR(50) NOT NULL
 );
 
-INSERT INTO UserRoles (idRole,nameRole) VALUES (1,'администратор'),
+INSERT INTO UserRoles (idLocale,nameRole) VALUES (1,'администратор'),
  (2,'подписчик');
  
  CREATE TABLE IF NOT EXISTS SubscriptionTypes (
@@ -52,10 +52,10 @@ INSERT INTO Internationalization (idLocal,nameLocal) VALUES (1,'RU'),
 	idUser	INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
 	login	VARCHAR(50) NOT NULL UNIQUE,
 	password	VARCHAR(50) NOT NULL,
-	idRole	INT NOT NULL,
+	idLocale	INT NOT NULL,
 	email	VARCHAR(50) NOT NULL UNIQUE,
 	idDefaultLocal	INT NOT NULL DEFAULT 1,
-	FOREIGN KEY(idRole) REFERENCES UserRoles(idRole),
+	FOREIGN KEY(idLocale) REFERENCES UserRoles(idLocale),
 	FOREIGN KEY(idDefaultLocal) REFERENCES Internationalization(idLocal)
 );
  

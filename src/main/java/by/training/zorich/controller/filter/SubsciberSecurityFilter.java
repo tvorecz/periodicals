@@ -1,7 +1,7 @@
 package by.training.zorich.controller.filter;
 
 import by.training.zorich.bean.UserRole;
-import by.training.zorich.controller.SessionAtrribute;
+import by.training.zorich.controller.SessionAttribute;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,14 +27,14 @@ public class SubsciberSecurityFilter implements Filter {
 
         HttpSession currentSession = httpServletRequest.getSession();
 
-        UserRole currentUserRole = (UserRole) currentSession.getAttribute(SessionAtrribute.CURRENT_USER_ROLE.getName());
+        UserRole currentUserRole = (UserRole) currentSession.getAttribute(SessionAttribute.CURRENT_USER_ROLE.getName());
 
         if(UserRole.ADMIN.equals(currentUserRole) || UserRole.SUBSCRIBER.equals(currentUserRole)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             if(currentUserRole == null) {
                 currentUserRole = UserRole.GUEST;
-                currentSession.setAttribute(SessionAtrribute.CURRENT_USER_ROLE.getName(), currentUserRole);
+                currentSession.setAttribute(SessionAttribute.CURRENT_USER_ROLE.getName(), currentUserRole);
             }
 
             RequestDispatcher requestDispatcher = servletRequest.getRequestDispatcher(ROOT);

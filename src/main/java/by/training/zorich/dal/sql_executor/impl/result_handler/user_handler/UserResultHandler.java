@@ -2,6 +2,7 @@ package by.training.zorich.dal.sql_executor.impl.result_handler.user_handler;
 
 import by.training.zorich.bean.User;
 import by.training.zorich.bean.UserCharacteristic;
+import by.training.zorich.bean.UserLocale;
 import by.training.zorich.bean.UserRole;
 import by.training.zorich.dal.sql_executor.ResultHandler;
 
@@ -20,6 +21,9 @@ public class UserResultHandler implements ResultHandler<User> {
 
             String userRole = resultSet.getString(UserCharacteristic.NAME_ROLE.getName());
             foundUser.setRole(UserRole.getUserRoleByName(userRole));
+
+            String userLocale = resultSet.getString(UserCharacteristic.LOCALE.getName());
+            foundUser.setCurrentLocale(UserLocale.getUserLocaleByName(userLocale));
 
             return foundUser;
         }

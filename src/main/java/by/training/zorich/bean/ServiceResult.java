@@ -7,6 +7,7 @@ public class ServiceResult implements Serializable {
 
     private Boolean resultOperation;
     private Object resultObject;
+    private String resultMessage;
 
     public ServiceResult() {
     }
@@ -27,6 +28,14 @@ public class ServiceResult implements Serializable {
         this.resultObject = resultObject;
     }
 
+    public String getResultMessage() {
+        return resultMessage;
+    }
+
+    public void setResultMessage(String resultMessage) {
+        this.resultMessage = resultMessage;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -41,13 +50,17 @@ public class ServiceResult implements Serializable {
         if (resultOperation != null ? !resultOperation.equals(that.resultOperation) : that.resultOperation != null) {
             return false;
         }
-        return resultObject != null ? resultObject.equals(that.resultObject) : that.resultObject == null;
+        if (resultObject != null ? !resultObject.equals(that.resultObject) : that.resultObject != null) {
+            return false;
+        }
+        return resultMessage != null ? resultMessage.equals(that.resultMessage) : that.resultMessage == null;
     }
 
     @Override
     public int hashCode() {
         int result = resultOperation != null ? resultOperation.hashCode() : 0;
         result = 31 * result + (resultObject != null ? resultObject.hashCode() : 0);
+        result = 31 * result + (resultMessage != null ? resultMessage.hashCode() : 0);
         return result;
     }
 
@@ -56,6 +69,7 @@ public class ServiceResult implements Serializable {
         return getClass().getName() + "{" +
                "resultOperation=" + resultOperation +
                ", resultObject=" + resultObject +
+               ", resultMessage='" + resultMessage + '\'' +
                '}';
     }
 }

@@ -1,11 +1,13 @@
 package by.training.zorich.controller;
 
-public enum ActionType {
-    COMMAND("command"), SIGN_IN("/SignIn"), SIGN_UP("/SignUp"), ;
+public enum GetRequestParameterType {
+    RETURN("return"),
+    LOCALE("locale"),
+    ;
 
     final private String name;
 
-    ActionType(String name) {
+    GetRequestParameterType(String name) {
         this.name = name;
     }
 
@@ -13,8 +15,8 @@ public enum ActionType {
         return name;
     }
 
-    static public ActionType getActionParameterByName(String name) {
-        for (ActionType item : ActionType.values()) {
+    static public CommandType getGetRequestParameterTypeByName(String name) {
+        for (CommandType item : CommandType.values()) {
             if (item.getName().equals(name)) {
                 return item;
             }

@@ -2,14 +2,14 @@ package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.CommandRepository;
-import by.training.zorich.controller.ActionType;
+import by.training.zorich.controller.CommandType;
 import by.training.zorich.service.factory.ServiceFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandRepositoryImpl implements CommandRepository {
-    private Map<ActionType, CommandHandler> actionRepository;
+    private Map<CommandType, CommandHandler> actionRepository;
 
     private CommandRepositoryImpl() {
         actionRepository = new HashMap<>();
@@ -24,12 +24,13 @@ public class CommandRepositoryImpl implements CommandRepository {
     }
 
     public void init(ServiceFactory serviceFactory) {
-        actionRepository.put(ActionType.SIGN_IN, new SignInCommandHandler(serviceFactory));
-        actionRepository.put(ActionType.SIGN_UP, new SignUpCommandHandler(serviceFactory));
+        actionRepository.put(CommandType.LOGIN, new SignInCommandHandler(serviceFactory));
+        actionRepository.put(CommandType.REGISTER, new SignUpCommandHandler(serviceFactory));
+        actionRepository.put(CommandType.LOCALE, new ChangeLocaleHandler(serviceFactory, JspRepositoryImpl.getInstance()));
     }
 
     @Override
-    public CommandHandler getCommandHandler(ActionType actionType) {
-        return actionRepository.get(actionType);
+    public CommandHandler getCommandHandler(CommandType commandType) {
+        return actionRepository.get(commandType);
     }
 }

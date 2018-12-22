@@ -12,16 +12,16 @@ import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
 import java.sql.Connection;
 
-public class SQLiteUserRoleDAO implements UserRoleDAO {
+public class MySqlUserRoleDAO implements UserRoleDAO {
     private final static String QUERY_USER_ROLE = "SELECT idRole FROM user_roles WHERE nameRole = '%1$s'";
 
     private DataSourceConnector connector; //provide connection from pool
     private SQLExecutor SQLExecutor; //execute query to data source and
     private ResultHandlerRepository resultHandlerRepository; //provide handler for handle resultset
 
-    public SQLiteUserRoleDAO(DataSourceConnector connector,
-                             SQLExecutor SQLExecutor,
-                             ResultHandlerRepository resultHandlerRepository) {
+    public MySqlUserRoleDAO(DataSourceConnector connector,
+                            SQLExecutor SQLExecutor,
+                            ResultHandlerRepository resultHandlerRepository) {
         this.connector = connector;
         this.SQLExecutor = SQLExecutor;
         this.resultHandlerRepository = resultHandlerRepository;

@@ -2,6 +2,7 @@ package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.User;
+import by.training.zorich.controller.SessionAttribute;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.JspPagePath;
 import by.training.zorich.bean.UserCharacteristic;
@@ -38,8 +39,8 @@ public class SignInCommandHandler implements CommandHandler {
         }
 
         if(serviceResult.isDone()) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("user", serviceResult.getResultObject());
+            setSessionParameters(request, serviceResult);
+
             request.getRequestDispatcher(JspPagePath.SIGNIN_OK).forward(request, response);
         } else {
             request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
@@ -53,5 +54,16 @@ public class SignInCommandHandler implements CommandHandler {
         user.setRealPassword(request.getParameter(UserCharacteristic.REAL_PASSWORD.getName()));
 
         return user;
+    }
+
+    private void setSessionParameters(HttpServletRequest request, ServiceResult serviceResult) {
+        HttpSession session = request.getSession();
+
+        User loginatedUser = (User) serviceResult.getResultObject();
+
+        session.setAttribute(SessionAttribute.CURRENT_USER_ID.getName(), loginatedUser.getId());
+        session.setAttribute(SessionAttribute.CURRENT_USER_NAME.getName(), loginatedUser.getLogin());
+        session.setAttribute(SessionAttribute.CURRENT_USER_ROLE.getName(), loginatedUser.getRole());
+        session.setAttribute(SessionAttribute.CURRENT_LOCALE.getName(), loginatedUser.getCurrentLocale());
     }
 }

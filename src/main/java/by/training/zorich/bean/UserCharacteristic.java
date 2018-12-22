@@ -7,7 +7,8 @@ public enum UserCharacteristic {
     REAL_PASSWORD("password"),
     EMAIL("email"),
     ID_ROLE("idRole"),
-    NAME_ROLE("nameRole");
+    NAME_ROLE("nameRole"),
+    LOCALE("nameLocal");
 
     final private String name;
 

@@ -5,20 +5,23 @@
   Time: 0:53
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <header>
+    <fmt:bundle basename="property.header">
     <div class="header-top-w3layouts">
         <div class="container">
             <div class="col-md-6 logo-w3">
-                <a href="/index.jsp"><img src="/images/period_logo.png" alt=" " />
+                <a href="/index"><img src="/images/period_logo.png" alt=" " />
                     <h1>PERIODICALS</h1></a>
             </div>
             <div class="col-md-6 phone-w3l">
                 <ul>
                     <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span></li>
-                    <li><a href="login.html">&&Login</a></li>
-                    <li><a href="register.html">&&&Register</a></li>
+                    <li><a href="/login"><fmt:message key="user.login" /></a></li>
+                    <li><a href="/register"><fmt:message key="user.reg" /></a></li>
                 </ul>
             </div>
             <div class="clearfix"></div>
@@ -39,32 +42,43 @@
                     </div>
                     <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
                         <ul class="nav navbar-nav ">
-                            <li class=" active"><a href="index.html" class="hyper "><span>&&&Home</span></a></li>
+                            <li class=" active"><a href="index" class="hyper "><span><fmt:message key="menu.home" /></span></a></li>
                             <li class="dropdown ">
-                                <a href="#" class="dropdown-toggle  hyper" data-toggle="dropdown"><span> &&&Periodicals <b
+                                <a href="#" class="dropdown-toggle  hyper" data-toggle="dropdown"><span> <fmt:message key="menu.periodicals" /> <b
                                         class="caret"></b></span></a>
                                 <ul class="dropdown-menu multi">
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
 
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Month</a>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.woman" /></a>
                                                 </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Quarter</a>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.man" /></a>
                                                 </li>
-                                                <li><a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i>&&&Half
-                                                    a year</a></li>
+                                                <li><a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.children" /></a></li>
 
                                             </ul>
 
                                         </div>
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Full</a>
+
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.month" /></a>
                                                 </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Favorable</a>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.quarter" /></a>
                                                 </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Departmental</a>
+                                                <li><a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.half_year" /></a></li>
+
+                                            </ul>
+
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <ul class="multi-column-dropdown">
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.full" /></a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.favorable" /></a>
+                                                </li>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.departmental" /></a>
                                                 </li>
 
                                             </ul>
@@ -73,19 +87,17 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle hyper" data-toggle="dropdown"><span> &&&Personal <b
+                                <a href="#" class="dropdown-toggle hyper" data-toggle="dropdown"><span> <fmt:message key="menu.account" /> <b
                                         class="caret"></b></span></a>
                                 <ul class="dropdown-menu multi multi1">
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Login
-                                                </a></li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Register</a>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.login" /></a></li>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.reg" /></a>
                                                 </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&My
-                                                    Subscriptions</a></li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Cart</a>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.subcribe" /></a></li>
+                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.cart" /></a>
                                                 </li>
 
                                             </ul>
@@ -97,15 +109,23 @@
                             </li>
 
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle hyper" data-toggle="dropdown"><span> &&&Language <b
+                                <a href="#" class="dropdown-toggle hyper" data-toggle="dropdown"><span> <fmt:message key="menu.language" /> <b
                                         class="caret"></b></span></a>
                                 <ul class="dropdown-menu multi multi1">
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&Russian
-                                                </a></li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>&&&English</a>
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.currentLocale.name eq 'ru_RU'}">
+                                                        <c:set var="disabledRu" value="pointer-events: none" scope="page"/>
+                                                    </c:when>
+                                                    <c:when test="${sessionScope.currentLocale.name eq 'en_EN'}">
+                                                        <c:set var="disabledEn" value="pointer-events: none" scope="page"/>
+                                                    </c:when>
+                                                </c:choose>
+
+                                                <li><a style="${pageScope.disabledRu}" href="..${requestScope.get('path')}?command=changeLocale&locale=ru_RU"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="language.ru" /></a></li>
+                                                <li><a style="${pageScope.disabledEn}" href="..${requestScope.get('path')}?command=changeLocale&locale=en_EN"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="language.en" /></a>
                                                 </li>
 
                                             </ul>
@@ -137,7 +157,7 @@
             </script>
             <div class="col-md-4 search-agileinfo">
                 <form action="#" method="post">
-                    <input type="search" name="Search" placeholder="$$$Search for a Product..." required="">
+                    <input type="search" name="Search" placeholder="<fmt:message key="into.search" />" required="">
                     <button type="submit" class="btn btn-default search" aria-label="Left Align">
                         <i class="fa fa-search" aria-hidden="true"> </i>
                     </button>
@@ -156,5 +176,5 @@
             <div class="clearfix"></div>
         </div>
     </div>
-
+    </fmt:bundle>
 </header>

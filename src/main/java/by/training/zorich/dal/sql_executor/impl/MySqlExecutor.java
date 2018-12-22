@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLiteExecutor implements SQLExecutor {
-    public SQLiteExecutor() {
+public class MySqlExecutor implements SQLExecutor {
+    public MySqlExecutor() {
     }
 
     @Override

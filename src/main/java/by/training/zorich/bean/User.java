@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String codifiedPassword;
     private String email;
     private UserRole role;
-    private String currentLocale;
+    private UserLocale currentLocale;
 
     public User() {
     }
@@ -64,11 +64,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public String getCurrentLocale() {
+    public UserLocale getCurrentLocale() {
         return currentLocale;
     }
 
-    public void setCurrentLocale(String currentLocale) {
+    public void setCurrentLocale(UserLocale currentLocale) {
         this.currentLocale = currentLocale;
     }
 

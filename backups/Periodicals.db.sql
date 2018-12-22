@@ -3,10 +3,10 @@ CREATE TABLE IF NOT EXISTS `Users` (
 	`idUser`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`login`	TEXT NOT NULL UNIQUE,
 	`password`	TEXT NOT NULL,
-	`idRole`	INTEGER NOT NULL,
+	`idLocale`	INTEGER NOT NULL,
 	`email`	TEXT NOT NULL UNIQUE,
 	`idDefaultLocal`	INTEGER NOT NULL DEFAULT 1,
-	FOREIGN KEY(`idRole`) REFERENCES `UserRoles`(`idRole`),
+	FOREIGN KEY(`idLocale`) REFERENCES `UserRoles`(`idLocale`),
 	FOREIGN KEY(`idDefaultLocal`) REFERENCES `Internationalization`(`idLocal`)
 );
 CREATE TABLE IF NOT EXISTS `UserSubscriptions` (
@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS `UserSubscriptions` (
 	FOREIGN KEY(`idSubscriptionVariant`) REFERENCES `SubscriptionVariants`(`idSubscriptionVariant`)
 );
 CREATE TABLE IF NOT EXISTS `UserRoles` (
-	`idRole`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`idLocale`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`nameRole`	TEXT NOT NULL
 );
-INSERT INTO `UserRoles` (idRole,nameRole) VALUES (1,'администратор'),
+INSERT INTO `UserRoles` (idLocale,nameRole) VALUES (1,'администратор'),
  (2,'подписчик');
 CREATE TABLE IF NOT EXISTS `UserAddresses` (
 	`idAddress`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,

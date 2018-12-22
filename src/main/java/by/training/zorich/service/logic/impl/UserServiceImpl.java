@@ -2,6 +2,7 @@ package by.training.zorich.service.logic.impl;
 
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.User;
+import by.training.zorich.bean.UserLocale;
 import by.training.zorich.bean.UserRole;
 import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.exception.DAOException;
@@ -15,6 +16,8 @@ import by.training.zorich.service.validator.impl.user_validator.RegistratingUser
 import by.training.zorich.service.validator.impl.user_validator.UserValidator;
 
 public class UserServiceImpl implements UserService {
+    private final static String VALIDATE_FAILED = "User data is not valid!";
+
     private Validator<User> userValidator;
     private Validator<User> registratingUserValidator;
     private PasswordEncoder passwordEncoder;
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             serviceResult.setResultOperation(false);
+            serviceResult.setResultMessage(VALIDATE_FAILED);
         }
     }
 
@@ -62,6 +66,36 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             serviceResult.setResultOperation(false);
+            serviceResult.setResultMessage(VALIDATE_FAILED);
+        }
+    }
+
+    @Override
+    public void userInformation(int userId, ServiceResult serviceResult) throws ServiceException {
+        try {
+            User userData = userDAO.getUserInfo(userId);
+
+            if(userData == null) {
+                serviceResult.setResultOperation(false);
+            } else {
+                serviceResult.setResultOperation(true);
+                serviceResult.setResultObject(userData);
+            }
+        } catch (DAOException e) {
+            serviceResult.setResultOperation(false);
+            throw new ServiceException("Getting user information is failed!", e);
+        }
+    }
+
+    @Override
+    public void changeLocale(int userId, UserLocale newUserLocale, ServiceResult serviceResult) throws
+                                                                                                ServiceException {
+        try {
+            userDAO.changeLocale(userId, newUserLocale);
+            serviceResult.setResultOperation(true);
+        } catch (DAOException e) {
+            serviceResult.setResultOperation(false);
+            throw new ServiceException("Updating locale is failed!", e);
         }
     }
 }
