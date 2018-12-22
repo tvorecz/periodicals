@@ -14,14 +14,24 @@
     <div class="header-top-w3layouts">
         <div class="container">
             <div class="col-md-6 logo-w3">
-                <a href="/index"><img src="/images/period_logo.png" alt=" " />
+                <a href="/"><img src="/images/period_logo.png" alt=" " />
                     <h1>PERIODICALS</h1></a>
             </div>
             <div class="col-md-6 phone-w3l">
                 <ul>
                     <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span></li>
-                    <li><a href="/login"><fmt:message key="user.login" /></a></li>
-                    <li><a href="/register"><fmt:message key="user.reg" /></a></li>
+
+                    <c:choose>
+                        <c:when test="${empty sessionScope.currentUserId}">
+                            <li><a href="/login?target=${requestScope.get('path')}"><fmt:message key="user.login" /></a></li>
+                            <li><a href="/register"><fmt:message key="user.reg" /></a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/profile"><fmt:message key="user.profile" /> ${sessionScope.userLogin}</a></li>
+                        </c:otherwise>
+                    </c:choose>
+
+
                 </ul>
             </div>
             <div class="clearfix"></div>
@@ -42,7 +52,7 @@
                     </div>
                     <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
                         <ul class="nav navbar-nav ">
-                            <li class=" active"><a href="index" class="hyper "><span><fmt:message key="menu.home" /></span></a></li>
+                            <li class=" active"><a href="/" class="hyper "><span><fmt:message key="menu.home" /></span></a></li>
                             <li class="dropdown ">
                                 <a href="#" class="dropdown-toggle  hyper" data-toggle="dropdown"><span> <fmt:message key="menu.periodicals" /> <b
                                         class="caret"></b></span></a>
@@ -93,11 +103,18 @@
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.login" /></a></li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.reg" /></a>
-                                                </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.subcribe" /></a></li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.cart" /></a>
+                                                <c:choose>
+                                                    <c:when test="${empty sessionScope.currentUserId}">
+                                                        <li><a href="/login?target=${requestScope.get('path')}"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.login" /></a></li>
+                                                        <li><a href="/register"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.reg" /></a></li>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <li><a href="/profile"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.profile" /></a></li>
+                                                        <li><a href="/profile/subscriptions"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.subcribe" /></a></li>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                                <li><a href="/cart"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.cart" /></a>
                                                 </li>
 
                                             </ul>

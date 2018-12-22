@@ -20,6 +20,7 @@ import java.io.IOException;
 
 public class SignUpCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SignUpCommandHandler.class);
+    private final static String LOGIN_PAGE = "/login?message=success";
     private ServiceFactory serviceFactory;
 
     public SignUpCommandHandler(ServiceFactory serviceFactory) {
@@ -34,7 +35,8 @@ public class SignUpCommandHandler implements CommandHandler {
 
         try {
             serviceFactory.getUserService().register(user, serviceResult);
-            request.getRequestDispatcher(JspPagePath.REG_OK).forward(request, response);
+            response.sendRedirect(LOGIN_PAGE);
+//            request.getRequestDispatcher(JspPagePath.REG_OK).forward(request, response);
         } catch (ServiceException e) {
             LOGGER.error(e);
             request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);

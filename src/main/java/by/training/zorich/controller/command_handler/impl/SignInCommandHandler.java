@@ -2,6 +2,7 @@ package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.User;
+import by.training.zorich.controller.CommandType;
 import by.training.zorich.controller.SessionAttribute;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.JspPagePath;
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 public class SignInCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SignInCommandHandler.class);
+    private final static String MAIN_PAGE = "/";
     private ServiceFactory serviceFactory;
 
     public SignInCommandHandler(ServiceFactory serviceFactory) {
@@ -41,10 +43,20 @@ public class SignInCommandHandler implements CommandHandler {
         if(serviceResult.isDone()) {
             setSessionParameters(request, serviceResult);
 
-            request.getRequestDispatcher(JspPagePath.SIGNIN_OK).forward(request, response);
+            String returnPath = request.getParameter(CommandType.RETURN_PAGE.getName());
+            if(returnPath == null) {
+//                request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
+                response.sendRedirect(MAIN_PAGE);
+            } else {
+//                request.getRequestDispatcher(returnPath).forward(request, response);
+                response.sendRedirect(returnPath);
+            }
         } else {
-            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+//            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+            response.sendRedirect(JspPagePath.ERROR);
         }
+
+        return;
     }
 
     private User handleRequest(HttpServletRequest request) {

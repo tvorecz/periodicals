@@ -44,8 +44,12 @@ public class MainController extends HttpServlet {
 
         if(parameterNames.hasMoreElements()) {
             String commandName = req.getParameter(CommandType.COMMAND.getName());
-            handler = commandRepository.getCommandHandler(CommandType.getActionParameterByName(commandName));
-            handler.handle(req, resp);
+            if(commandName != null) {
+                handler = commandRepository.getCommandHandler(CommandType.getActionParameterByName(commandName));
+                handler.handle(req, resp);
+            } else {
+                jspRepository.readdressToJsp(req, resp);
+            }
         } else {
             jspRepository.readdressToJsp(req, resp);
         }

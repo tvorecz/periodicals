@@ -5,6 +5,7 @@ public enum CommandType {
     LOGIN("login"),
     REGISTER("register"),
     LOCALE("changeLocale"),
+    RETURN_PAGE("target"),
     ;
 
     final private String name;

@@ -32,6 +32,9 @@ public class JspRepositoryImpl implements JspRepository {
 
         jspMap.put("/login","/WEB-INF/jsp/logination/login.jsp");
         jspMap.put("/register","/WEB-INF/jsp/logination/register.jsp");
+        jspMap.put("/main","/WEB-INF/jsp/index/index.jsp");
+        jspMap.put("/index","/WEB-INF/jsp/index/index.jsp");
+        jspMap.put("/","/WEB-INF/jsp/index/index.jsp");
 
     }
 

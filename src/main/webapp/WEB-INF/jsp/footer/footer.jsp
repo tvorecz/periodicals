@@ -20,7 +20,7 @@
                     <li><fmt:message key="address.city" /></li>
                     <li><fmt:message key="address.street" /></li>
                     <li><a href="mailto:tvorecz@gmail.com">tvorecz@gmail.com</a></li>
-                    <a href="https://t.me/tvorecz"><i class="fa fa fa-paper-plane" aria-hidden="true"></i></a>
+                    <a href="https://t.me/tvorecz"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
                     <a href="https://www.facebook.com/tvorecz"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                     <a href="https://www.linkedin.com/in/tvorecz/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
                     <a href="https://twitter.com/tvorecz"><i class="fa fa-twitter" aria-hidden="true"></i></a>
@@ -46,11 +46,18 @@
             <div class="col-md-3 footer-grids fgd4">
                 <h4><fmt:message key="account.my" /></h4>
                 <ul>
+                    <c:choose>
+                        <c:when test="${empty sessionScope.currentUserId}">
+                            <li><a href="/login?target=${requestScope.get('path')}"><fmt:message key="account.login" /></a></li>
+                            <li><a href="/register"><fmt:message key="account.register" /></a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/profile"><fmt:message key="account.profile" /></a></li>
+                            <li><a href="/profile/subscriptions"><fmt:message key="account.subscription" /></a></li>
+                        </c:otherwise>
+                    </c:choose>
 
-                    <li><a href="#"><fmt:message key="account.login" /></a></li>
-                    <li><a href="#"><fmt:message key="account.register" /></a></li>
-                    <li><a href="#"><fmt:message key="account.subscription" /></a></li>
-                    <li><a href="#"><fmt:message key="account.cart" /></a></li>
+                    <li><a href="/cart"><fmt:message key="account.cart" /></a></li>
                 </ul>
             </div>
             <div class="clearfix"></div>
