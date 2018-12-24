@@ -13,7 +13,7 @@ import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
 import java.sql.Connection;
 
-public class MySqlUserDAO implements UserDAO {
+public class MySqlUserDAO extends CommonDAO<Object> implements UserDAO {
     private final static String QUERY_INSERT_USER = "INSERT INTO users (login, password, idRole, email, " +
                                                     "idDefaultLocal) values ('%1$s'," +
                                                     " '%2$s', %3$d, '%4$s', %5$d)";
@@ -38,16 +38,10 @@ public class MySqlUserDAO implements UserDAO {
     private final static String QUERY_CHANGE_LOCALE = "UPDATE users SET idDefaultLocal = %1$d WHERE idUser = %2$d";
 
 
-    private DataSourceConnector connector;
-    private SQLExecutor sqlExecutor;
-    private ResultHandlerRepository resultHandlerRepository;
-
     public MySqlUserDAO(DataSourceConnector connector,
                         SQLExecutor sqlExecutor,
                         ResultHandlerRepository resultHandlerRepository) {
-        this.connector = connector;
-        this.sqlExecutor = sqlExecutor;
-        this.resultHandlerRepository = resultHandlerRepository;
+        super(connector, sqlExecutor, resultHandlerRepository);
     }
 
     @Override
@@ -59,96 +53,34 @@ public class MySqlUserDAO implements UserDAO {
                                      user.getEmail(),
                                      user.getCurrentLocale().getIdLocale());
 
-        updateUser(query);
+        super.executeSimpleUpdate(query);
     }
 
     @Override
     public User authenticate(User user) throws DAOException {
         String query = String.format(QUERY_LOGINATION_USER, user.getLogin(), user.getCodifiedPassword());
 
-        return selectUserFromDB(query);
+        return (User) super.executeSimpleSelect(query, HandlerType.USER_HANDLER);
     }
 
     @Override
     public User getUserInfo(int userId) throws DAOException {
         String query = String.format(QUERY_SELECT_USER_BY_ID, userId);
 
-        return selectUserFromDB(query);
+        return (User) super.executeSimpleSelect(query, HandlerType.USER_HANDLER);
     }
 
     @Override
     public void changeLocale(int idUser, UserLocale newUserLocale) throws DAOException {
         String query = String.format(QUERY_CHANGE_LOCALE, newUserLocale.getIdLocale(), idUser);
 
-        updateUser(query);
+        super.executeSimpleUpdate(query);
     }
 
     @Override
     public boolean validate(User user) throws DAOException {
         String query = String.format(QUERY_VALIDATE_USER, user.getLogin(), user.getEmail());
-        Connection connection = null;
 
-        try {
-            connection = connector.getConnection();
-            return (Boolean) sqlExecutor.select(connection,
-                                                query,
-                                                resultHandlerRepository.getResultHandler(HandlerType.VALIDATE_USER_HANDLER));
-        } catch (DataSourceConnectorException e) {
-            throw new DAOException("Getting of connection from the pool is failed!", e);
-        } catch (ExecutorException e) {
-            throw new DAOException("Getting of id role id failed!", e);
-        } finally {
-            if (connection != null) {
-                try {
-                    connector.giveBackConnection(connection);
-                } catch (DataSourceConnectorException e) {
-                    throw new DAOException("Giving back connection to the pool is failed!", e);
-                }
-            }
-        }
-    }
-
-    private User selectUserFromDB(String query) throws DAOException{
-        Connection connection = null;
-
-        try {
-            connection = connector.getConnection();
-            return (User) sqlExecutor.select(connection, query,
-                                             resultHandlerRepository.getResultHandler(
-                                                     HandlerType.USER_HANDLER));
-        } catch (DataSourceConnectorException e) {
-            throw new DAOException("Getting of connection from the pool is failed!", e);
-        } catch (ExecutorException e) {
-            throw new DAOException("Getting of id role id failed!", e);
-        } finally {
-            if (connection != null) {
-                try {
-                    connector.giveBackConnection(connection);
-                } catch (DataSourceConnectorException e) {
-                    throw new DAOException("Giving back connection to the pool is failed!", e);
-                }
-            }
-        }
-    }
-
-    private void updateUser(String query) throws DAOException {
-        Connection connection = null;
-
-        try {
-            connection = connector.getConnection();
-            sqlExecutor.update(connection, query);
-        } catch (DataSourceConnectorException e) {
-            throw new DAOException("Getting of connection from the pool is failed!", e);
-        } catch (ExecutorException e) {
-            throw new DAOException("Registration is failed!", e);
-        } finally {
-            if (connection != null) {
-                try {
-                    connector.giveBackConnection(connection);
-                } catch (DataSourceConnectorException e) {
-                    throw new DAOException("Giving back connection to the pool is failed!", e);
-                }
-            }
-        }
+        return (Boolean) super.executeSimpleSelect(query, HandlerType.VALIDATE_USER_HANDLER);
     }
 }

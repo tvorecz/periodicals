@@ -3,9 +3,6 @@ package by.training.zorich.dal.sql_executor.impl.result_handler;
 import by.training.zorich.dal.sql_executor.HandlerType;
 import by.training.zorich.dal.sql_executor.ResultHandler;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
-import by.training.zorich.dal.sql_executor.impl.result_handler.user_handler.UserResultHandler;
-import by.training.zorich.dal.sql_executor.impl.result_handler.user_handler.UserValidateResultHandler;
-import by.training.zorich.dal.sql_executor.impl.result_handler.user_roles_handler.IdUserRoleResultHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +14,7 @@ public class ResultHandlerRepositoryImpl implements ResultHandlerRepository {
         repository.put(HandlerType.ID_USER_ROLE_HANDLER, new IdUserRoleResultHandler());
         repository.put(HandlerType.USER_HANDLER, new UserResultHandler());
         repository.put(HandlerType.VALIDATE_USER_HANDLER, new UserValidateResultHandler());
+        repository.put(HandlerType.USER_ADDRESS_HANDLER, new UserAddressResultHandler());
     }
 
     private static class ResultHandlerRepositoryHelper {

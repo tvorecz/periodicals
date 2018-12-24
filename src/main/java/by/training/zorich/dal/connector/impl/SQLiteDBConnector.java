@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 
 public class SQLiteDBConnector implements DataSourceConnector {
+    private static final ThreadLocal<Connection> CONNECTION_THREAD_LOCAL = new ThreadLocal<>();
+
     private ConcurrentLinkedQueue<Connection> freeConnections;
     private ConcurrentLinkedQueue<Connection> busyConnections;
 
@@ -118,6 +120,38 @@ public class SQLiteDBConnector implements DataSourceConnector {
                 throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.");
             }
         }
+    }
+
+    @Override
+    public Connection getConnectionForTransaction() throws DataSourceConnectorException {
+        Connection connection = null;
+
+        if(CONNECTION_THREAD_LOCAL.get() == null){
+            connection = getConnection();
+            CONNECTION_THREAD_LOCAL.set(connection);
+        } else {
+            connection = CONNECTION_THREAD_LOCAL.get();
+        }
+
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new DataSourceConnectorException("Turning on of transaction is failed!", e);
+        }
+
+        return connection;
+    }
+
+    @Override
+    public void giveBackTransactionConnection(Connection connection) throws DataSourceConnectorException {
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            throw new DataSourceConnectorException("Turning off of transaction is failed!", e);
+        }
+
+        CONNECTION_THREAD_LOCAL.remove();
+        giveBackConnection(connection);
     }
 
     @Override

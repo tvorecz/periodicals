@@ -1,4 +1,4 @@
-package by.training.zorich.dal.sql_executor.impl.result_handler.user_roles_handler;
+package by.training.zorich.dal.sql_executor.impl.result_handler;
 
 import by.training.zorich.dal.sql_executor.ResultHandler;
 
