@@ -2,6 +2,7 @@ package by.training.zorich.dal.dao.impl;
 
 import by.training.zorich.bean.UserAddress;
 import by.training.zorich.dal.connector.DataSourceConnector;
+import by.training.zorich.dal.dao.TransactionStatus;
 import by.training.zorich.dal.dao.UserAddressDAO;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.sql_executor.HandlerType;
@@ -28,27 +29,27 @@ public class MySqlUserAddressDAO extends CommonDAO<List<UserAddress>> implements
     public void add(UserAddress address) throws DAOException {
         String query = String.format(QUERY_ADD_ADDRESS, address.getAddress(), address.getIdUser());
 
-        super.executeSimpleUpdate(query);
+        super.executeSimpleUpdate(query, TransactionStatus.OFF);
     }
 
     @Override
     public void edit(UserAddress address) throws DAOException {
         String query = String.format(QUERY_EDIT_ADDRESS, address.getAddress(), address.getIdUser());
 
-        super.executeSimpleUpdate(query);
+        super.executeSimpleUpdate(query, TransactionStatus.OFF);
     }
 
     @Override
     public void delete(int idAddress) throws DAOException {
         String query = String.format(QUERY_DELETE_ADDRESS, idAddress);
 
-        super.executeSimpleUpdate(query);
+        super.executeSimpleUpdate(query, TransactionStatus.OFF);
     }
 
     @Override
     public List<UserAddress> getAllUserAddresses(int idUser) throws DAOException {
         String query = String.format(QUERY_GET_ADDRESS, idUser);
 
-        return super.executeSimpleSelect(query, HandlerType.USER_ADDRESS_HANDLER);
+        return super.executeSimpleSelect(query, HandlerType.USER_ADDRESS_HANDLER, TransactionStatus.OFF);
     }
 }

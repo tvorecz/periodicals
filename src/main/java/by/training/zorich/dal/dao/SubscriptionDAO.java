@@ -1,13 +1,21 @@
 package by.training.zorich.dal.dao;
 
-import by.training.zorich.bean.Payment;
 import by.training.zorich.bean.SubsciptionVariant;
 import by.training.zorich.bean.UserAddress;
+import by.training.zorich.bean.UserSubscription;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface SubscriptionDAO {
-    Payment subscribeTransactionaly(SubsciptionVariant subscriptionVariant, UserAddress address);
+    void subscribeTransactionaly(int idPayment, SubsciptionVariant subscriptionVariant,
+                                 UserAddress address,
+                                 LocalDate begin,
+                                 LocalDate end);
 
-    Payment subscribeTransactionaly(List<SubsciptionVariant> subscriptionVariants, UserAddress address);
+    void subscribeTransactionaly(int idPayment, List<SubsciptionVariant> subscriptionVariants,
+                                 UserAddress address,
+                                 List<LocalDate> begins, List<LocalDate> ends);
+
+    List<UserSubscription> getAllSubscriptions(int idUser);
 }
