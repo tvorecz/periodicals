@@ -63,4 +63,57 @@ public class UserSubscription implements Serializable {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        UserSubscription that = (UserSubscription) o;
+
+        if (id != that.id) {
+            return false;
+        }
+        if (userAddress != null ? !userAddress.equals(that.userAddress) : that.userAddress != null) {
+            return false;
+        }
+        if (subsciptionVariant != null ? !subsciptionVariant.equals(that.subsciptionVariant) :
+                that.subsciptionVariant != null) {
+            return false;
+        }
+        if (dateBegin != null ? !dateBegin.equals(that.dateBegin) : that.dateBegin != null) {
+            return false;
+        }
+        if (dateEnd != null ? !dateEnd.equals(that.dateEnd) : that.dateEnd != null) {
+            return false;
+        }
+        return payment != null ? payment.equals(that.payment) : that.payment == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (userAddress != null ? userAddress.hashCode() : 0);
+        result = 31 * result + (subsciptionVariant != null ? subsciptionVariant.hashCode() : 0);
+        result = 31 * result + (dateBegin != null ? dateBegin.hashCode() : 0);
+        result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
+        result = 31 * result + (payment != null ? payment.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+               "id=" + id +
+               ", userAddress=" + userAddress +
+               ", subsciptionVariant=" + subsciptionVariant +
+               ", dateBegin=" + dateBegin +
+               ", dateEnd=" + dateEnd +
+               ", payment=" + payment +
+               '}';
+    }
 }

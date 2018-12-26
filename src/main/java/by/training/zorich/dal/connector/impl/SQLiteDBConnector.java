@@ -115,7 +115,6 @@ public class SQLiteDBConnector implements DataSourceConnector {
         } finally {
             try {
                 addNewConnectionToThePool();
-                connection.close();
             } catch (SQLException e) {
                 throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.");
             }
@@ -145,6 +144,20 @@ public class SQLiteDBConnector implements DataSourceConnector {
     @Override
     public void giveBackTransactionConnection(Connection connection) throws DataSourceConnectorException {
         try {
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            throw new DataSourceConnectorException("Turning off of transaction is failed!", e);
+        }
+
+        CONNECTION_THREAD_LOCAL.remove();
+        giveBackConnection(connection);
+    }
+
+    @Override
+    public void giveBackEmergenclyTransactionConnection(Connection connection) throws DataSourceConnectorException {
+        try {
+            connection.rollback();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             throw new DataSourceConnectorException("Turning off of transaction is failed!", e);

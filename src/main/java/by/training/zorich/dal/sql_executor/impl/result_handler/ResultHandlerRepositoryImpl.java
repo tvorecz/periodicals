@@ -15,6 +15,7 @@ public class ResultHandlerRepositoryImpl implements ResultHandlerRepository {
         repository.put(HandlerType.USER_HANDLER, new UserResultHandler());
         repository.put(HandlerType.VALIDATE_USER_HANDLER, new UserValidateResultHandler());
         repository.put(HandlerType.USER_ADDRESS_HANDLER, new UserAddressResultHandler());
+        repository.put(HandlerType.USER_SUBSCRIPTION_HANDLER, new UserSubscriptionHandler());
     }
 
     private static class ResultHandlerRepositoryHelper {

@@ -8,5 +8,6 @@ public interface DataSourceConnector {
     Connection getConnectionForTransaction() throws DataSourceConnectorException;
     void giveBackConnection(Connection connection) throws DataSourceConnectorException;
     void giveBackTransactionConnection(Connection connection) throws DataSourceConnectorException;
+    void giveBackEmergenclyTransactionConnection(Connection connection) throws DataSourceConnectorException;
     void dispose() throws DataSourceConnectorException;
 }

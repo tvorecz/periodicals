@@ -35,4 +35,44 @@ public class Payment implements Serializable {
     public void setPayStatus(boolean payStatus) {
         this.payStatus = payStatus;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Payment payment = (Payment) o;
+
+        if (id != payment.id) {
+            return false;
+        }
+        if (Double.compare(payment.amount, amount) != 0) {
+            return false;
+        }
+        return payStatus == payment.payStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        temp = Double.doubleToLongBits(amount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (payStatus ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+               "id=" + id +
+               ", amount=" + amount +
+               ", payStatus=" + payStatus +
+               '}';
+    }
 }

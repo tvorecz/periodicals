@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `periodicals` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
-USE `periodicals`;
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: periodicals
@@ -52,7 +50,7 @@ DROP TABLE IF EXISTS `payments`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `payments` (
   `idPayment` int(11) NOT NULL AUTO_INCREMENT,
-  `amount` double NOT NULL,
+  `amount` double NOT NULL DEFAULT '0',
   `payStatus` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idPayment`),
   UNIQUE KEY `idPayment` (`idPayment`)
@@ -69,6 +67,55 @@ LOCK TABLES `payments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `periodical_theme`
+--
+
+DROP TABLE IF EXISTS `periodical_theme`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `periodical_theme` (
+  `idTheme` int(11) NOT NULL AUTO_INCREMENT,
+  `nameTheme` varchar(100) NOT NULL,
+  PRIMARY KEY (`idTheme`),
+  UNIQUE KEY `idTheme_UNIQUE` (`idTheme`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `periodical_theme`
+--
+
+LOCK TABLES `periodical_theme` WRITE;
+/*!40000 ALTER TABLE `periodical_theme` DISABLE KEYS */;
+INSERT INTO `periodical_theme` VALUES (1,'Государство и право'),(2,'Бизнес. Предпринимательство. Рынок'),(3,'Экономика и финансы'),(4,'Общественно-политические издания'),(5,'Литературно-художественные издания'),(6,'Образование и педагогика'),(7,'Здравоохранение и медицина'),(8,'Детские и молодежные издания'),(9,'Научные и научно-популярные издания'),(10,'Издания универсального содержания'),(11,'Фантастика. Детектив'),(12,'Рекламные издания'),(13,'Издания для женщин'),(14,'Издания для мужчин'),(15,'Приусадебное и сельское хозяйство'),(16,'Лесное хозяйство и экология'),(17,'Компьютерные издания. Телевидение. Радио. Связь'),(18,'Техника, промышленность, строительство'),(19,'Автомобили, транспорт'),(20,'Культура, искусство'),(21,'Спорт, путешествия, туризм'),(22,'Досуг и телепрограммы'),(23,'Вооруженные силы и правоохранительные органы'),(24,'Социальная защита населения. Издания для инвалидов. Охрана труда. Кадровая служба'),(25,'Религиозные издания');
+/*!40000 ALTER TABLE `periodical_theme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `periodical_type`
+--
+
+DROP TABLE IF EXISTS `periodical_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `periodical_type` (
+  `idType` int(11) NOT NULL AUTO_INCREMENT,
+  `typeName` varchar(50) NOT NULL,
+  PRIMARY KEY (`idType`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `periodical_type`
+--
+
+LOCK TABLES `periodical_type` WRITE;
+/*!40000 ALTER TABLE `periodical_type` DISABLE KEYS */;
+INSERT INTO `periodical_type` VALUES (1,'газета'),(2,'журнал');
+/*!40000 ALTER TABLE `periodical_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `periodicals`
 --
 
@@ -77,11 +124,18 @@ DROP TABLE IF EXISTS `periodicals`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `periodicals` (
   `idPeriodical` int(11) NOT NULL AUTO_INCREMENT,
+  `idType` int(11) NOT NULL,
+  `idTheme` int(11) NOT NULL,
   `namePeriodical` varchar(50) NOT NULL,
   `periodicityInMonth` int(11) NOT NULL,
-  `annotation` varchar(100) DEFAULT NULL,
+  `annotation` varchar(200) DEFAULT NULL,
+  `imagePath` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idPeriodical`),
-  UNIQUE KEY `idPeriodical` (`idPeriodical`)
+  UNIQUE KEY `idPeriodical` (`idPeriodical`),
+  KEY `id_btfk_1_idx` (`idType`),
+  KEY `id_btfk_2_idx` (`idTheme`),
+  CONSTRAINT `id_btfk_1` FOREIGN KEY (`idType`) REFERENCES `periodical_type` (`idtype`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `id_btfk_2` FOREIGN KEY (`idTheme`) REFERENCES `periodical_theme` (`idtheme`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,6 +158,7 @@ DROP TABLE IF EXISTS `subscription_types`;
 CREATE TABLE `subscription_types` (
   `idSubscriptionType` int(11) NOT NULL AUTO_INCREMENT,
   `nameSubscriptionType` varchar(50) NOT NULL,
+  `monthAmount` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idSubscriptionType`),
   UNIQUE KEY `idSubscriptionType` (`idSubscriptionType`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -115,7 +170,7 @@ CREATE TABLE `subscription_types` (
 
 LOCK TABLES `subscription_types` WRITE;
 /*!40000 ALTER TABLE `subscription_types` DISABLE KEYS */;
-INSERT INTO `subscription_types` VALUES (1,'месячная'),(2,'полугодовая'),(3,'квартальная'),(4,'ведомственная месячная'),(5,'ведомственная полугодовая'),(6,'ведомственная квартальная'),(7,'льготная месячная'),(8,'льготная полугодовая'),(9,'льготная квартальная');
+INSERT INTO `subscription_types` VALUES (1,'месячная',1),(2,'полугодовая',6),(3,'квартальная',3),(4,'ведомственная месячная',1),(5,'ведомственная полугодовая',6),(6,'ведомственная квартальная',3),(7,'льготная месячная',1),(8,'льготная полугодовая',6),(9,'льготная квартальная',3);
 /*!40000 ALTER TABLE `subscription_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,6 +187,7 @@ CREATE TABLE `subscription_variants` (
   `idPeriodical` int(11) NOT NULL,
   `idSubscriptionType` int(11) NOT NULL,
   `cost` double NOT NULL,
+  PRIMARY KEY (`idSubscriptionVariant`,`idPeriodical`,`idSubscriptionType`),
   UNIQUE KEY `idSubscriptionVariant` (`idSubscriptionVariant`),
   UNIQUE KEY `indexSubscription` (`indexSubscription`),
   KEY `idSubscriptionType` (`idSubscriptionType`),
@@ -185,10 +241,10 @@ DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user_roles` (
-  `idLocale` int(11) NOT NULL AUTO_INCREMENT,
+  `idRole` int(11) NOT NULL AUTO_INCREMENT,
   `nameRole` varchar(50) NOT NULL,
-  PRIMARY KEY (`idLocale`),
-  UNIQUE KEY `idLocale` (`idLocale`)
+  PRIMARY KEY (`idRole`),
+  UNIQUE KEY `idRole` (`idRole`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,8 +269,8 @@ CREATE TABLE `user_subscriptions` (
   `idUserSubscription` int(11) NOT NULL AUTO_INCREMENT,
   `idAddress` int(11) NOT NULL,
   `idSubscriptionVariant` int(11) NOT NULL,
-  `dateBegin` datetime NOT NULL,
-  `dateEnd` datetime NOT NULL,
+  `dateBegin` date NOT NULL,
+  `dateEnd` date NOT NULL,
   `idPayment` int(11) NOT NULL,
   PRIMARY KEY (`idUserSubscription`),
   UNIQUE KEY `idUserSubscription` (`idUserSubscription`),
@@ -247,18 +303,18 @@ CREATE TABLE `users` (
   `idUser` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `password` varchar(200) NOT NULL,
-  `idLocale` int(11) NOT NULL,
+  `idRole` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `idDefaultLocal` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `idUser` (`idUser`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`),
-  KEY `idLocale` (`idLocale`),
+  KEY `idRole` (`idRole`),
   KEY `idDefaultLocal` (`idDefaultLocal`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idLocale`) REFERENCES `user_roles` (`idrole`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`idRole`) REFERENCES `user_roles` (`idrole`),
   CONSTRAINT `users_ibfk_2` FOREIGN KEY (`idDefaultLocal`) REFERENCES `internationalization` (`idlocal`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +323,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'tvorecz','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'tvorecz@yandex.ru',1),(2,'dm.zrch','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'tvorecz@gmail.com',1);
+INSERT INTO `users` VALUES (1,'tvorecz','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'tvorecz@yandex.ru',2),(2,'dm.zrch','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'tvorecz@gmail.com',1),(3,'avril','$2a$10$llw0G6IyibUob8h5XRt9xurib1dJVaS3zuUieP9wiPXRmMEwWYnGu',2,'avril@yahoo.com',2),(4,'tata.ta','$2a$10$llw0G6IyibUob8h5XRt9xumehBPNWzGcZH.svv/0Y90EdA2tGTXuC',2,'tata.ta@mail.ru',1),(5,'tamata','$2a$10$llw0G6IyibUob8h5XRt9xumehBPNWzGcZH.svv/0Y90EdA2tGTXuC',2,'gra@tut.by',1),(6,'igor1234','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'igor@ya.ru',1),(7,'tanya','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'tanya@ya.by',2),(8,'maria','$2a$10$llw0G6IyibUob8h5XRt9xumllN4V5noGJIF35abIvWwBmfS0taSga',2,'maria@tut.by',2),(9,'yyr','$2a$10$llw0G6IyibUob8h5XRt9xuwW2mkUoMymkeI4f5/eLA4bGiXkTfAJu',2,'yyr@ya.ru',1),(10,'logger','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'logger@ya.ru',1),(11,'mama','$2a$10$llw0G6IyibUob8h5XRt9xugk8RFbeWj//0RL5vjeipwHgsVBdsSUS',2,'mama@tut.by',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -280,4 +336,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-19 23:57:19
+-- Dump completed on 2018-12-27  1:57:55

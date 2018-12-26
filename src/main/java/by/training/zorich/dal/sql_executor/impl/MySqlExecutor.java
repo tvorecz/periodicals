@@ -1,7 +1,6 @@
 package by.training.zorich.dal.sql_executor.impl;
 
 import by.training.zorich.dal.exception.ExecutorException;
-import by.training.zorich.dal.sql_executor.PreparedStatementFiller;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandler;
 
@@ -66,9 +65,8 @@ public class MySqlExecutor implements SQLExecutor {
     }
 
     @Override
-    public void update(PreparedStatement preparedStatement, PreparedStatementFiller filler) throws ExecutorException {
+    public void update(PreparedStatement preparedStatement) throws ExecutorException {
         try {
-            filler.fill(preparedStatement);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new ExecutorException("Error with query-executing.", e);
@@ -77,14 +75,11 @@ public class MySqlExecutor implements SQLExecutor {
 
     @Override
     public <T> T select(PreparedStatement preparedStatement,
-                        PreparedStatementFiller filler,
                         ResultHandler<T> resultHandler) throws ExecutorException {
         ResultSet resultSet = null;
         T result = null;
 
         try {
-            filler.fill(preparedStatement);
-
             resultSet = preparedStatement.executeQuery();
 
             result = resultHandler.handle(resultSet);

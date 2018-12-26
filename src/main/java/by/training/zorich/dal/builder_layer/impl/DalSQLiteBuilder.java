@@ -7,13 +7,10 @@ import by.training.zorich.dal.connector.impl.SQLiteDBConnector;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
-import by.training.zorich.dal.sql_executor.PreparedStatementFiller;
-import by.training.zorich.dal.sql_executor.PreparedStatementFillerRepository;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 import by.training.zorich.dal.sql_executor.impl.MySqlExecutor;
 import by.training.zorich.dal.sql_executor.impl.result_handler.ResultHandlerRepositoryImpl;
-import by.training.zorich.dal.sql_executor.impl.statement_filler.PreparedStatementFillerRepositoryImpl;
 
 public class DalSQLiteBuilder implements DalBuilder {
 
@@ -28,11 +25,9 @@ public class DalSQLiteBuilder implements DalBuilder {
 
         SQLExecutor SQLExecutor = new MySqlExecutor();
         ResultHandlerRepository handlerRepository = ResultHandlerRepositoryImpl.getInstance();
-        PreparedStatementFillerRepository preparedStatementFillerRepository = PreparedStatementFillerRepositoryImpl.getInstance();
-
 
         DAOFactory factory = SQLiteDAOFactory.getInstance();
-        factory.init(connector, SQLExecutor, handlerRepository, preparedStatementFillerRepository);
+        factory.init(connector, SQLExecutor, handlerRepository);
 
         return factory;
     }
