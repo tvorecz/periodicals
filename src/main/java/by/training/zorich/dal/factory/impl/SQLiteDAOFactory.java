@@ -1,6 +1,7 @@
 package by.training.zorich.dal.factory.impl;
 
 import by.training.zorich.dal.connector.DataSourceConnector;
+import by.training.zorich.dal.connector.TransactionManager;
 import by.training.zorich.dal.dao.SubscriptionDAO;
 import by.training.zorich.dal.dao.UserAddressDAO;
 import by.training.zorich.dal.dao.UserDAO;
@@ -32,12 +33,13 @@ public class SQLiteDAOFactory implements DAOFactory {
 
     @Override
     public void init(DataSourceConnector connector,
+                     TransactionManager transactionManager,
                      SQLExecutor sqlExecutor,
                      ResultHandlerRepository resultHandlerRepository) {
-        userDAOImpl = new MySqlUserDAO(connector, sqlExecutor, resultHandlerRepository);
-        userRoleDAOImpl = new MySqlUserRoleDAO(connector, sqlExecutor, resultHandlerRepository);
-        userAddressDAOImpl = new MySqlUserAddressDAO(connector,sqlExecutor, resultHandlerRepository);
-        subscriptionDAOImpl = new MySqlSubscriptionDAO(connector, sqlExecutor, resultHandlerRepository);
+        userDAOImpl = new MySqlUserDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        userRoleDAOImpl = new MySqlUserRoleDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        userAddressDAOImpl = new MySqlUserAddressDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        subscriptionDAOImpl = new MySqlSubscriptionDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
     }
 
     @Override

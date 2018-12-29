@@ -7,7 +7,15 @@ import by.training.zorich.dal.sql_executor.ResultHandler;
 import java.sql.*;
 
 public class MySqlExecutor implements SQLExecutor {
-    public MySqlExecutor() {
+    private MySqlExecutor() {
+    }
+
+    private static class MySqlExecutorHelper {
+        private static final MySqlExecutor MY_SQL_EXECUTOR = new MySqlExecutor();
+    }
+
+    public static MySqlExecutor getInstance() {
+        return MySqlExecutorHelper.MY_SQL_EXECUTOR;
     }
 
     @Override

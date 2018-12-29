@@ -3,6 +3,7 @@ package by.training.zorich.dal.dao.impl;
 import by.training.zorich.bean.User;
 import by.training.zorich.bean.UserLocale;
 import by.training.zorich.dal.connector.DataSourceConnector;
+import by.training.zorich.dal.connector.TransactionManager;
 import by.training.zorich.dal.dao.TransactionStatus;
 import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.exception.DAOException;
@@ -36,9 +37,10 @@ public class MySqlUserDAO extends CommonDAO<Object> implements UserDAO {
 
 
     public MySqlUserDAO(DataSourceConnector connector,
+                        TransactionManager transactionManager,
                         SQLExecutor sqlExecutor,
                         ResultHandlerRepository resultHandlerRepository) {
-        super(connector, sqlExecutor, resultHandlerRepository);
+        super(connector, transactionManager, sqlExecutor, resultHandlerRepository);
     }
 
     @Override
@@ -50,34 +52,34 @@ public class MySqlUserDAO extends CommonDAO<Object> implements UserDAO {
                                      user.getEmail(),
                                      user.getCurrentLocale().getIdLocale());
 
-        super.executeUpdate(query, TransactionStatus.OFF);
+        super.executeUpdateDataSource(query, TransactionStatus.OFF);
     }
 
     @Override
     public User authenticate(User user) throws DAOException {
         String query = String.format(QUERY_LOGINATION_USER, user.getLogin(), user.getCodifiedPassword());
 
-        return (User) super.executeSelect(query, HandlerType.USER_HANDLER, TransactionStatus.OFF);
+        return (User) super.executeSelectFromDataSource(query, HandlerType.USER_HANDLER, TransactionStatus.OFF);
     }
 
     @Override
     public User getUserInfo(int userId) throws DAOException {
         String query = String.format(QUERY_SELECT_USER_BY_ID, userId);
 
-        return (User) super.executeSelect(query, HandlerType.USER_HANDLER, TransactionStatus.OFF);
+        return (User) super.executeSelectFromDataSource(query, HandlerType.USER_HANDLER, TransactionStatus.OFF);
     }
 
     @Override
     public void changeLocale(int idUser, UserLocale newUserLocale) throws DAOException {
         String query = String.format(QUERY_CHANGE_LOCALE, newUserLocale.getIdLocale(), idUser);
 
-        super.executeUpdate(query, TransactionStatus.OFF);
+        super.executeUpdateDataSource(query, TransactionStatus.OFF);
     }
 
     @Override
     public boolean validate(User user) throws DAOException {
         String query = String.format(QUERY_VALIDATE_USER, user.getLogin(), user.getEmail());
 
-        return (Boolean) super.executeSelect(query, HandlerType.VALIDATE_USER_HANDLER, TransactionStatus.OFF);
+        return (Boolean) super.executeSelectFromDataSource(query, HandlerType.VALIDATE_USER_HANDLER, TransactionStatus.OFF);
     }
 }

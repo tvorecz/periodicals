@@ -4,6 +4,7 @@ import by.training.zorich.bean.SubsciptionVariant;
 import by.training.zorich.bean.UserAddress;
 import by.training.zorich.bean.UserSubscription;
 import by.training.zorich.dal.connector.DataSourceConnector;
+import by.training.zorich.dal.connector.TransactionManager;
 import by.training.zorich.dal.dao.SubscriptionDAO;
 import by.training.zorich.dal.dao.TransactionStatus;
 import by.training.zorich.dal.exception.DAOException;
@@ -14,6 +15,7 @@ import by.training.zorich.dal.sql_executor.SQLExecutor;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -67,9 +69,10 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
 
 
     public MySqlSubscriptionDAO(DataSourceConnector connector,
+                                TransactionManager transactionManager,
                                 SQLExecutor sqlExecutor,
                                 ResultHandlerRepository resultHandlerRepository) {
-        super(connector, sqlExecutor, resultHandlerRepository);
+        super(connector, transactionManager, sqlExecutor, resultHandlerRepository);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
                                         UserAddress address,
                                         LocalDate begin, LocalDate end) throws DAOException {
         String query = String.format(QUERY_INSERT_SUBSCRIPTION, address.getIdAdress(), subscriptionVariant.getId(), Date.valueOf(begin), Date.valueOf(end), idPayment);
-        super.executeUpdate(query, TransactionStatus.ON);
+        super.executeUpdateDataSource(query, TransactionStatus.ON);
     }
 
     @Override
@@ -89,38 +92,30 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
         Iterator<LocalDate> beginDateIterator = begins.iterator();
         Iterator<LocalDate> endDateIterator = ends.iterator();
 
-        PreparedStatement preparedStatement = super.createPreparedStatement(QUERY_PATTERN_INSERT_SUBSCRIPTION, TransactionStatus.ON);
+        PreparedStatement preparedStatement = super.getPreparedStatement(QUERY_PATTERN_INSERT_SUBSCRIPTION, TransactionStatus.ON);
 
         while (subsciptionVariantIterator.hasNext() && beginDateIterator.hasNext() && endDateIterator.hasNext()) {
-            List<Object> valuesForFillingStatement =  new ArrayList<>();
-            List<PreparedStatementFillerType > valuesTypes = new ArrayList<>();
+            try {
+                preparedStatement.setInt(1, address.getIdAdress());
+                preparedStatement.setInt(2, subsciptionVariantIterator.next().getId());
+                preparedStatement.setDate(3, Date.valueOf(beginDateIterator.next()));
+                preparedStatement.setDate(4, Date.valueOf(endDateIterator.next()));
+                preparedStatement.setInt(5, idPayment);
+            } catch (SQLException e) {
+                throw new DAOException("Setting prepared statement parameters is failed!", e);
+            }
 
-            valuesForFillingStatement.add(address.getIdAdress());
-            valuesTypes.add(PreparedStatementFillerType.INTEGER);
-
-            valuesForFillingStatement.add(subsciptionVariantIterator.next().getId());
-            valuesTypes.add(PreparedStatementFillerType.INTEGER);
-
-            valuesForFillingStatement.add(Date.valueOf(beginDateIterator.next()));
-            valuesTypes.add(PreparedStatementFillerType.DATE);
-
-            valuesForFillingStatement.add(Date.valueOf(endDateIterator.next()));
-            valuesTypes.add(PreparedStatementFillerType.DATE);
-
-            valuesForFillingStatement.add(idPayment);
-            valuesTypes.add(PreparedStatementFillerType.INTEGER);
-
-            super.fillPreparedStatement(preparedStatement, valuesForFillingStatement, valuesTypes, TransactionStatus.ON);
-
-            super.executeUpdate(preparedStatement, TransactionStatus.ON);
+            super.executeUpdateDataSource(preparedStatement, TransactionStatus.ON);
         }
+
+        super.finalizeExecution(preparedStatement, TransactionStatus.END);
     }
 
     @Override
     public List<UserSubscription> getAllSubscriptions(int idUser) throws DAOException {
         String query = String.format(QUERY_SELECT_SUBSCRIPTION, idUser);
 
-        super.executeSelect(query, HandlerType.USER_SUBSCRIPTION_HANDLER, TransactionStatus.OFF);
+        super.executeSelectFromDataSource(query, HandlerType.USER_SUBSCRIPTION_HANDLER, TransactionStatus.OFF);
 
         return null;
     }

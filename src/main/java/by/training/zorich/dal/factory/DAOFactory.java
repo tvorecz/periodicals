@@ -1,6 +1,7 @@
 package by.training.zorich.dal.factory;
 
 import by.training.zorich.dal.connector.DataSourceConnector;
+import by.training.zorich.dal.connector.TransactionManager;
 import by.training.zorich.dal.dao.SubscriptionDAO;
 import by.training.zorich.dal.dao.UserAddressDAO;
 import by.training.zorich.dal.dao.UserDAO;
@@ -10,6 +11,7 @@ import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
 public interface DAOFactory {
     void init(DataSourceConnector connector,
+              TransactionManager transactionManager,
               SQLExecutor sqlExecutor,
               ResultHandlerRepository resultHandlerRepository);
 

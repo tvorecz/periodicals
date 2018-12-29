@@ -9,9 +9,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
 
-public class SQLiteDBConnector implements DataSourceConnector {
-    private static final ThreadLocal<Connection> CONNECTION_THREAD_LOCAL = new ThreadLocal<>();
-
+public class MySqlDBConnector implements DataSourceConnector {
     private ConcurrentLinkedQueue<Connection> freeConnections;
     private ConcurrentLinkedQueue<Connection> busyConnections;
 
@@ -24,28 +22,36 @@ public class SQLiteDBConnector implements DataSourceConnector {
     private int poolSize;
     private long timeout;
 
-    public SQLiteDBConnector() {
+    private MySqlDBConnector() {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
-        driverName = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_DRIVER.getName());
-        uri = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_URL.getName());
-        //file = getClass().getResource(dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_FILE.getName())).getPath();
-        file = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_FILE.getName());
-        user = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_USER.getName());
-        password = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_PASSWORD.getName());
-        parameter = dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_PARAMETER.getName());
+        driverName = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_DRIVER.getName());
+        uri = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_URL.getName());
+        //file = getClass().getResource(dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_FILE.getName())).getPath();
+        file = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_FILE.getName());
+        user = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_USER.getName());
+        password = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_PASSWORD.getName());
+        parameter = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_PARAMETER.getName());
 
         try {
             poolSize =
-                    Integer.parseInt(dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_POOL_SIZE.getName()));
+                    Integer.parseInt(dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_POOL_SIZE.getName()));
         } catch (NumberFormatException e) {
             poolSize = 5;
         }
         try {
             timeout =
-                    Integer.parseInt(dbResourceManager.getResourceValue(SQLiteDBNameParameter.DB_GETTING_TIMEOUT.getName()));
+                    Integer.parseInt(dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_GETTING_TIMEOUT.getName()));
         } catch (NumberFormatException e) {
             timeout = 3000;
         }
+    }
+
+    private static class MySqlDBConnectorHelper {
+        private static final MySqlDBConnector MY_SQL_DB_CONNECTOR = new MySqlDBConnector();
+    }
+
+    public static MySqlDBConnector getInstance() {
+        return MySqlDBConnectorHelper.MY_SQL_DB_CONNECTOR;
     }
 
     @Override
@@ -119,52 +125,6 @@ public class SQLiteDBConnector implements DataSourceConnector {
                 throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.");
             }
         }
-    }
-
-    @Override
-    public Connection getConnectionForTransaction() throws DataSourceConnectorException {
-        Connection connection = null;
-
-        if(CONNECTION_THREAD_LOCAL.get() == null){
-            connection = getConnection();
-            CONNECTION_THREAD_LOCAL.set(connection);
-        } else {
-            connection = CONNECTION_THREAD_LOCAL.get();
-        }
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw new DataSourceConnectorException("Turning on of transaction is failed!", e);
-        }
-
-        return connection;
-    }
-
-    @Override
-    public void giveBackTransactionConnection(Connection connection) throws DataSourceConnectorException {
-        try {
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            throw new DataSourceConnectorException("Turning off of transaction is failed!", e);
-        }
-
-        CONNECTION_THREAD_LOCAL.remove();
-        giveBackConnection(connection);
-    }
-
-    @Override
-    public void giveBackEmergenclyTransactionConnection(Connection connection) throws DataSourceConnectorException {
-        try {
-            connection.rollback();
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            throw new DataSourceConnectorException("Turning off of transaction is failed!", e);
-        }
-
-        CONNECTION_THREAD_LOCAL.remove();
-        giveBackConnection(connection);
     }
 
     @Override

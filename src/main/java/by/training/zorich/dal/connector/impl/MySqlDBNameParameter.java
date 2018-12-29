@@ -1,6 +1,6 @@
 package by.training.zorich.dal.connector.impl;
 
-public enum SQLiteDBNameParameter {
+public enum MySqlDBNameParameter {
     DB_DRIVER("db.driver"),
     DB_URL("db.url"),
     DB_FILE("db.file"),
@@ -12,7 +12,7 @@ public enum SQLiteDBNameParameter {
 
     final private String name;
 
-    SQLiteDBNameParameter(String name) {
+    MySqlDBNameParameter(String name) {
         this.name = name;
     }
 
@@ -20,8 +20,8 @@ public enum SQLiteDBNameParameter {
         return name;
     }
 
-    static public SQLiteDBNameParameter getSQLiteDBNameParameterByName(String name) {
-        for (SQLiteDBNameParameter item : SQLiteDBNameParameter.values()) {
+    static public MySqlDBNameParameter getSQLiteDBNameParameterByName(String name) {
+        for (MySqlDBNameParameter item : MySqlDBNameParameter.values()) {
             if (item.getName().equals(name)) {
                 return item;
             }

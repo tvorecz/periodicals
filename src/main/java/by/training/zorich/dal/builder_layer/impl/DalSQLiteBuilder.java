@@ -3,7 +3,9 @@ package by.training.zorich.dal.builder_layer.impl;
 import by.training.zorich.dal.builder_layer.DalBuilder;
 import by.training.zorich.dal.connector.DataSourceConnectorException;
 import by.training.zorich.dal.connector.DataSourceConnector;
-import by.training.zorich.dal.connector.impl.SQLiteDBConnector;
+import by.training.zorich.dal.connector.TransactionManager;
+import by.training.zorich.dal.connector.impl.MySqlDBConnector;
+import by.training.zorich.dal.connector.impl.TransactionManagerImpl;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
@@ -16,18 +18,20 @@ public class DalSQLiteBuilder implements DalBuilder {
 
     @Override
     public DAOFactory build() throws DAOException {
-        DataSourceConnector connector = new SQLiteDBConnector();
+        DataSourceConnector connector = MySqlDBConnector.getInstance();
         try {
             connector.init();
         } catch (DataSourceConnectorException e) {
             throw new DAOException("Creating of connector is failed.", e);
         }
 
-        SQLExecutor SQLExecutor = new MySqlExecutor();
+        SQLExecutor SQLExecutor = MySqlExecutor.getInstance();
         ResultHandlerRepository handlerRepository = ResultHandlerRepositoryImpl.getInstance();
+        TransactionManager transactionManager = TransactionManagerImpl.getInstance();
+        transactionManager.init(connector);
 
         DAOFactory factory = SQLiteDAOFactory.getInstance();
-        factory.init(connector, SQLExecutor, handlerRepository);
+        factory.init(connector, transactionManager, SQLExecutor, handlerRepository);
 
         return factory;
     }
