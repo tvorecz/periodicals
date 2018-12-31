@@ -29,11 +29,11 @@ public class UserSubscriptionHandler implements ResultHandler<List<UserSubscript
             userSubscription.setPayment(payment);
 
 
-            SubsciptionVariant subsciptionVariant = new SubsciptionVariant();
-            subsciptionVariant.setId(resultSet.getInt(SubscriptionVariantCharacteristic.ID.getName()));
-            subsciptionVariant.setIndex(resultSet.getString(SubscriptionVariantCharacteristic.INDEX.getName()));
-            subsciptionVariant.setCost(resultSet.getDouble(SubscriptionVariantCharacteristic.COST.getName()));
-            subsciptionVariant.setTypeSubscription(resultSet.getString(SubscriptionVariantCharacteristic.TYPE.getName()));
+            SubscriptionVariant subscriptionVariant = new SubscriptionVariant();
+            subscriptionVariant.setId(resultSet.getInt(SubscriptionVariantCharacteristic.ID.getName()));
+            subscriptionVariant.setIndex(resultSet.getString(SubscriptionVariantCharacteristic.INDEX.getName()));
+            subscriptionVariant.setCost(resultSet.getDouble(SubscriptionVariantCharacteristic.COST.getName()));
+            subscriptionVariant.setTypeSubscription(resultSet.getString(SubscriptionVariantCharacteristic.TYPE.getName()));
 
             Periodical periodical = new Periodical();
             periodical.setId(resultSet.getInt(PeriodicalCharacteristic.ID.getName()));
@@ -43,9 +43,9 @@ public class UserSubscriptionHandler implements ResultHandler<List<UserSubscript
             periodical.setTheme(resultSet.getString(PeriodicalCharacteristic.THEME.getName()));
             periodical.setType(resultSet.getString(PeriodicalCharacteristic.TYPE.getName()));
             periodical.setPeriodicityInMonth(resultSet.getInt(PeriodicalCharacteristic.PERIODICITY.getName()));
-            subsciptionVariant.setPeriodical(periodical);
+            subscriptionVariant.setPeriodical(periodical);
 
-            userSubscription.setSubsciptionVariant(subsciptionVariant);
+            userSubscription.setSubscriptionVariant(subscriptionVariant);
 
 
             UserAddress userAddress = new UserAddress();

@@ -1,6 +1,6 @@
 package by.training.zorich.dal.dao.impl;
 
-import by.training.zorich.bean.SubsciptionVariant;
+import by.training.zorich.bean.SubscriptionVariant;
 import by.training.zorich.bean.UserAddress;
 import by.training.zorich.bean.UserSubscription;
 import by.training.zorich.dal.connector.DataSourceConnector;
@@ -9,7 +9,6 @@ import by.training.zorich.dal.dao.SubscriptionDAO;
 import by.training.zorich.dal.dao.TransactionStatus;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.sql_executor.HandlerType;
-import by.training.zorich.dal.sql_executor.PreparedStatementFillerType;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 
@@ -17,7 +16,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -76,7 +74,7 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
     }
 
     @Override
-    public void subscribeTransactionaly(int idPayment, SubsciptionVariant subscriptionVariant,
+    public void subscribeTransactionaly(int idPayment, SubscriptionVariant subscriptionVariant,
                                         UserAddress address,
                                         LocalDate begin, LocalDate end) throws DAOException {
         String query = String.format(QUERY_INSERT_SUBSCRIPTION, address.getIdAdress(), subscriptionVariant.getId(), Date.valueOf(begin), Date.valueOf(end), idPayment);
@@ -84,11 +82,11 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
     }
 
     @Override
-    public void subscribeTransactionaly(int idPayment, List<SubsciptionVariant> subscriptionVariants,
+    public void subscribeTransactionaly(int idPayment, List<SubscriptionVariant> subscriptionVariants,
                                         UserAddress address,
                                         List<LocalDate> begins, List<LocalDate> ends) throws DAOException {
 
-        Iterator<SubsciptionVariant> subsciptionVariantIterator = subscriptionVariants.iterator();
+        Iterator<SubscriptionVariant> subsciptionVariantIterator = subscriptionVariants.iterator();
         Iterator<LocalDate> beginDateIterator = begins.iterator();
         Iterator<LocalDate> endDateIterator = ends.iterator();
 
@@ -115,8 +113,8 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
     public List<UserSubscription> getAllSubscriptions(int idUser) throws DAOException {
         String query = String.format(QUERY_SELECT_SUBSCRIPTION, idUser);
 
-        super.executeSelectFromDataSource(query, HandlerType.USER_SUBSCRIPTION_HANDLER, TransactionStatus.OFF);
 
-        return null;
+
+        return (List<UserSubscription>) super.executeSelectFromDataSource(query, HandlerType.USER_SUBSCRIPTION_HANDLER, TransactionStatus.OFF);
     }
 }

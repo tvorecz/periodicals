@@ -2,7 +2,7 @@ package by.training.zorich.bean;
 
 import java.io.Serializable;
 
-public class SubsciptionVariant implements Serializable {
+public class SubscriptionVariant implements Serializable {
     private static final long serialVersionUID = 6468690392646791170L;
 
     private int id;
@@ -12,7 +12,7 @@ public class SubsciptionVariant implements Serializable {
     private double cost;
     private int monthAmount;
 
-    public SubsciptionVariant() {
+    public SubscriptionVariant() {
     }
 
     public int getId() {
@@ -72,7 +72,7 @@ public class SubsciptionVariant implements Serializable {
             return false;
         }
 
-        SubsciptionVariant that = (SubsciptionVariant) o;
+        SubscriptionVariant that = (SubscriptionVariant) o;
 
         if (id != that.id) {
             return false;

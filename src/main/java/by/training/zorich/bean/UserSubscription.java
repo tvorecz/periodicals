@@ -8,7 +8,7 @@ public class UserSubscription implements Serializable {
 
     private int id;
     private UserAddress userAddress;
-    private SubsciptionVariant subsciptionVariant;
+    private SubscriptionVariant subscriptionVariant;
     private LocalDate dateBegin;
     private LocalDate dateEnd;
     private Payment payment;
@@ -32,12 +32,12 @@ public class UserSubscription implements Serializable {
         this.userAddress = userAddress;
     }
 
-    public SubsciptionVariant getSubsciptionVariant() {
-        return subsciptionVariant;
+    public SubscriptionVariant getSubscriptionVariant() {
+        return subscriptionVariant;
     }
 
-    public void setSubsciptionVariant(SubsciptionVariant subsciptionVariant) {
-        this.subsciptionVariant = subsciptionVariant;
+    public void setSubscriptionVariant(SubscriptionVariant subscriptionVariant) {
+        this.subscriptionVariant = subscriptionVariant;
     }
 
     public LocalDate getDateBegin() {
@@ -81,8 +81,8 @@ public class UserSubscription implements Serializable {
         if (userAddress != null ? !userAddress.equals(that.userAddress) : that.userAddress != null) {
             return false;
         }
-        if (subsciptionVariant != null ? !subsciptionVariant.equals(that.subsciptionVariant) :
-                that.subsciptionVariant != null) {
+        if (subscriptionVariant != null ? !subscriptionVariant.equals(that.subscriptionVariant) :
+                that.subscriptionVariant != null) {
             return false;
         }
         if (dateBegin != null ? !dateBegin.equals(that.dateBegin) : that.dateBegin != null) {
@@ -98,7 +98,7 @@ public class UserSubscription implements Serializable {
     public int hashCode() {
         int result = id;
         result = 31 * result + (userAddress != null ? userAddress.hashCode() : 0);
-        result = 31 * result + (subsciptionVariant != null ? subsciptionVariant.hashCode() : 0);
+        result = 31 * result + (subscriptionVariant != null ? subscriptionVariant.hashCode() : 0);
         result = 31 * result + (dateBegin != null ? dateBegin.hashCode() : 0);
         result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
         result = 31 * result + (payment != null ? payment.hashCode() : 0);
@@ -110,7 +110,7 @@ public class UserSubscription implements Serializable {
         return getClass().getName() + "{" +
                "id=" + id +
                ", userAddress=" + userAddress +
-               ", subsciptionVariant=" + subsciptionVariant +
+               ", subscriptionVariant=" + subscriptionVariant +
                ", dateBegin=" + dateBegin +
                ", dateEnd=" + dateEnd +
                ", payment=" + payment +
