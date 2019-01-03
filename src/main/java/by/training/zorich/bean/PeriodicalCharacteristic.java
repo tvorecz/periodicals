@@ -7,7 +7,8 @@ public enum PeriodicalCharacteristic {
     NAME("namePeriodical"),
     PERIODICITY("periodicityInMonth"),
     ANNOTATION("annotation"),
-    IMAGE("imagePath");
+    IMAGE("imagePath"),
+    COST("costForIssue");
 
     final private String name;
 

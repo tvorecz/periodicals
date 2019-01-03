@@ -63,7 +63,8 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
                                                             "\t\t\tJOIN periodical_type ON periodicals.idPeriodical =" +
                                                             " periodical_type.idType\n" +
                                                             "\t\t\tJOIN periodical_theme ON periodicals.idTheme = " +
-                                                            "periodical_theme.idTheme";
+                                                            "periodical_theme.idTheme" +
+                                                            " LIMIT %2$d, %3$d";
 
 
     public MySqlSubscriptionDAO(DataSourceConnector connector,
@@ -110,10 +111,8 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
     }
 
     @Override
-    public List<UserSubscription> getAllSubscriptions(int idUser) throws DAOException {
-        String query = String.format(QUERY_SELECT_SUBSCRIPTION, idUser);
-
-
+    public List<UserSubscription> getAllSubscriptions(int idUser, int beginOfRange, int countOfRecords) throws DAOException {
+        String query = String.format(QUERY_SELECT_SUBSCRIPTION, idUser, beginOfRange, countOfRecords);
 
         return (List<UserSubscription>) super.executeSelectFromDataSource(query, HandlerType.USER_SUBSCRIPTION_HANDLER, TransactionStatus.OFF);
     }

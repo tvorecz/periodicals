@@ -8,8 +8,8 @@ public class SubscriptionVariant implements Serializable {
     private int id;
     private String index;
     private Periodical periodical;
+    private int idSubscriptionType;
     private String typeSubscription;
-    private double cost;
     private int monthAmount;
 
     public SubscriptionVariant() {
@@ -47,20 +47,20 @@ public class SubscriptionVariant implements Serializable {
         this.typeSubscription = typeSubscription;
     }
 
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
     public int getMonthAmount() {
         return monthAmount;
     }
 
     public void setMonthAmount(int monthAmount) {
         this.monthAmount = monthAmount;
+    }
+
+    public int getIdSubscriptionType() {
+        return idSubscriptionType;
+    }
+
+    public void setIdSubscriptionType(int idSubscriptionType) {
+        this.idSubscriptionType = idSubscriptionType;
     }
 
     @Override
@@ -75,9 +75,6 @@ public class SubscriptionVariant implements Serializable {
         SubscriptionVariant that = (SubscriptionVariant) o;
 
         if (id != that.id) {
-            return false;
-        }
-        if (Double.compare(that.cost, cost) != 0) {
             return false;
         }
         if (monthAmount != that.monthAmount) {
@@ -96,13 +93,10 @@ public class SubscriptionVariant implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        long temp;
         result = id;
         result = 31 * result + (index != null ? index.hashCode() : 0);
         result = 31 * result + (periodical != null ? periodical.hashCode() : 0);
         result = 31 * result + (typeSubscription != null ? typeSubscription.hashCode() : 0);
-        temp = Double.doubleToLongBits(cost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + monthAmount;
         return result;
     }
@@ -114,7 +108,6 @@ public class SubscriptionVariant implements Serializable {
                ", index='" + index + '\'' +
                ", periodical=" + periodical +
                ", typeSubscription='" + typeSubscription + '\'' +
-               ", cost=" + cost +
                ", monthAmount=" + monthAmount +
                '}';
     }

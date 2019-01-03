@@ -18,7 +18,7 @@ public class SubscriptionVariantHandler implements ResultHandler<SubscriptionVar
         subscriptionVariant.setCost(resultSet.getDouble(SubscriptionVariantCharacteristic.COST.getName()));
         subscriptionVariant.setTypeSubscription(resultSet.getString(SubscriptionVariantCharacteristic.TYPE.getName()));
         subscriptionVariant.setMonthAmount(resultSet.getInt(SubscriptionVariantCharacteristic.MONTH_AMOUNT.getName()));
-
+        subscriptionVariant.setIdSubscriptionType(resultSet.getInt(SubscriptionVariantCharacteristic.ID_TYPE.getName()));
 
         Periodical periodical = new Periodical();
         periodical.setId(resultSet.getInt(PeriodicalCharacteristic.ID.getName()));

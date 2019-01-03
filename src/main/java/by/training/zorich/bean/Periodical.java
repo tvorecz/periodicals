@@ -12,6 +12,7 @@ public class Periodical implements Serializable {
     private int periodicityInMonth;
     private String annotation;
     private String imagePath;
+    private double costForIssue;
 
     public Periodical() {
     }
@@ -72,6 +73,14 @@ public class Periodical implements Serializable {
         this.imagePath = imagePath;
     }
 
+    public double getCostForIssue() {
+        return costForIssue;
+    }
+
+    public void setCostForIssue(double costForIssue) {
+        this.costForIssue = costForIssue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,6 +96,9 @@ public class Periodical implements Serializable {
             return false;
         }
         if (periodicityInMonth != that.periodicityInMonth) {
+            return false;
+        }
+        if (Double.compare(that.costForIssue, costForIssue) != 0) {
             return false;
         }
         if (type != null ? !type.equals(that.type) : that.type != null) {
@@ -106,13 +118,17 @@ public class Periodical implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result;
+        long temp;
+        result = id;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (theme != null ? theme.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + periodicityInMonth;
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
         result = 31 * result + (imagePath != null ? imagePath.hashCode() : 0);
+        temp = Double.doubleToLongBits(costForIssue);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -126,6 +142,7 @@ public class Periodical implements Serializable {
                ", periodicityInMonth=" + periodicityInMonth +
                ", annotation='" + annotation + '\'' +
                ", imagePath='" + imagePath + '\'' +
+               ", costForIssue=" + costForIssue +
                '}';
     }
 }

@@ -18,5 +18,5 @@ public interface SubscriptionDAO {
                                  UserAddress address,
                                  List<LocalDate> begins, List<LocalDate> ends) throws DAOException;
 
-    List<UserSubscription> getAllSubscriptions(int idUser) throws DAOException;
+    List<UserSubscription> getAllSubscriptions(int idUser, int beginOfRange, int countOfRecords) throws DAOException;
 }

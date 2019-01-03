@@ -12,5 +12,5 @@ public interface UserAddressDAO {
 
     void delete(int idAddress) throws DAOException;
 
-    List<UserAddress> getAllUserAddresses(int idUser) throws DAOException;
+    List<UserAddress> getAllUserAddresses(int idUser, int beginOfRange, int countOfRecords) throws DAOException;
 }

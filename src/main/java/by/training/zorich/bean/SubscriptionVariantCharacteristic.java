@@ -5,7 +5,8 @@ public enum SubscriptionVariantCharacteristic {
     INDEX("indexSubscription"),
     MONTH_AMOUNT("monthAmount"),
     COST("cost"),
-    TYPE("nameSubscriptionType");
+    TYPE("nameSubscriptionType"),
+    ID_TYPE("iSubscriptionType");
 
     final private String name;
 

@@ -22,6 +22,8 @@ public class MySqlSubscriptionVariantDAO extends CommonDAO<SubscriptionVariant> 
                                                                           "\t\tperiodicals.periodicityInMonth,\n" +
                                                                           "\t\tperiodicals.annotation,\n" +
                                                                           "\t\tperiodicals.imagePath,\n" +
+                                                                          "\t\tsubscription_types.iSubscriptionType," +
+                                                                          "\n" +
                                                                           "\t\tsubscription_types" +
                                                                           ".nameSubscriptionType,\n" +
                                                                           "\t\tsubscription_types.monthAmount,\n" +
@@ -35,11 +37,16 @@ public class MySqlSubscriptionVariantDAO extends CommonDAO<SubscriptionVariant> 
                                                                           "subscription_variants.idPeriodical = " +
                                                                           "periodicals.idPeriodical\n" +
                                                                           "\t\t\tJOIN periodical_type ON periodicals" +
-                                                                          ".idPeriodical = periodical_type.idType\n" +
+                                                                          ".idType = periodical_type.idType\n" +
                                                                           "\t\t\tJOIN periodical_theme ON periodicals" +
                                                                           ".idTheme = periodical_theme.idTheme\n" +
                                                                           "\t\t\tWHERE subscription_variants" +
                                                                           ".idSubscriptionVariant = %1$d";
+
+    private final static String QUERY_INSERT_SUBSCRIPTION_VARIANT = "";
+    private final static String QUERY_DELETE_SUBSCRIPTION_VARIANT = "";
+
+
 
     public MySqlSubscriptionVariantDAO(DataSourceConnector connector,
                                        TransactionManager transactionManager,
@@ -53,5 +60,15 @@ public class MySqlSubscriptionVariantDAO extends CommonDAO<SubscriptionVariant> 
         String query = String.format(QUERY_SELECT_SUBSCRIPTION_VARIANT_BY_ID, idSubscriptionVariant);
 
         return super.executeSelectFromDataSource(query, HandlerType.SUBSCRIPTION_VARIANT_BY_ID, TransactionStatus.OFF);
+    }
+
+    @Override
+    public void addSubscriptionVariant(SubscriptionVariant subscriptionVariant) throws DAOException {
+
+    }
+
+    @Override
+    public void deleteSubscriptionVariant(SubscriptionVariant subscriptionVariant) throws DAOException {
+
     }
 }
