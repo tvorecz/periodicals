@@ -2,17 +2,21 @@ package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.User;
-import by.training.zorich.controller.CommandType;
+import by.training.zorich.bean.UserLocale;
+import by.training.zorich.controller.CookieName;
+import by.training.zorich.controller.HandlerType;
 import by.training.zorich.controller.SessionAttribute;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.JspPagePath;
 import by.training.zorich.bean.UserCharacteristic;
+import by.training.zorich.controller.command_handler.exception.CommandException;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.factory.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,7 +32,10 @@ public class SignInCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void handle(HttpServletRequest request, HttpServletResponse response) throws
+                                                                                 ServletException,
+                                                                                 IOException,
+                                                                                 CommandException {
         User user = handleRequest(request);
 
         ServiceResult serviceResult = new ServiceResult();
@@ -43,7 +50,9 @@ public class SignInCommandHandler implements CommandHandler {
         if(serviceResult.isDone()) {
             setSessionParameters(request, serviceResult);
 
-            String returnPath = request.getParameter(CommandType.RETURN_PAGE.getName());
+            setCookie(response, serviceResult);
+
+            String returnPath = request.getParameter(HandlerType.RETURN_PAGE.getName());
             if(returnPath == null) {
 //                request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
                 response.sendRedirect(MAIN_PAGE);
@@ -77,5 +86,13 @@ public class SignInCommandHandler implements CommandHandler {
         session.setAttribute(SessionAttribute.CURRENT_USER_NAME.getName(), loginatedUser.getLogin());
         session.setAttribute(SessionAttribute.CURRENT_USER_ROLE.getName(), loginatedUser.getRole());
         session.setAttribute(SessionAttribute.CURRENT_LOCALE.getName(), loginatedUser.getCurrentLocale());
+    }
+
+    private void setCookie(HttpServletResponse response, ServiceResult serviceResult) {
+        UserLocale userLocale = ((User) serviceResult.getResultObject()).getCurrentLocale();
+
+        Cookie cookie = new Cookie(CookieName.CURRENT_LOCALE.getName(), userLocale.getName());
+
+        response.addCookie(cookie);
     }
 }

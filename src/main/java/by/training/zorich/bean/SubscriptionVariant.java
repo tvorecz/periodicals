@@ -8,9 +8,9 @@ public class SubscriptionVariant implements Serializable {
     private int id;
     private String index;
     private Periodical periodical;
-    private int idSubscriptionType;
-    private String typeSubscription;
-    private int monthAmount;
+    private SubscriptionType subscriptionType;
+    private double costForIssue;
+    private Double actualCost;
 
     public SubscriptionVariant() {
     }
@@ -39,28 +39,28 @@ public class SubscriptionVariant implements Serializable {
         this.periodical = periodical;
     }
 
-    public String getTypeSubscription() {
-        return typeSubscription;
+    public SubscriptionType getSubscriptionType() {
+        return subscriptionType;
     }
 
-    public void setTypeSubscription(String typeSubscription) {
-        this.typeSubscription = typeSubscription;
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionType = subscriptionType;
     }
 
-    public int getMonthAmount() {
-        return monthAmount;
+    public double getCostForIssue() {
+        return costForIssue;
     }
 
-    public void setMonthAmount(int monthAmount) {
-        this.monthAmount = monthAmount;
+    public void setCostForIssue(double costForIssue) {
+        this.costForIssue = costForIssue;
     }
 
-    public int getIdSubscriptionType() {
-        return idSubscriptionType;
-    }
+    public double getActualCost() {
+        if(actualCost == null) {
+            actualCost = periodical.getPeriodicityInMonth() * subscriptionType.getMonthAmount() * costForIssue;
+        }
 
-    public void setIdSubscriptionType(int idSubscriptionType) {
-        this.idSubscriptionType = idSubscriptionType;
+        return actualCost;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SubscriptionVariant implements Serializable {
         if (id != that.id) {
             return false;
         }
-        if (monthAmount != that.monthAmount) {
+        if (Double.compare(that.costForIssue, costForIssue) != 0) {
             return false;
         }
         if (index != null ? !index.equals(that.index) : that.index != null) {
@@ -86,18 +86,20 @@ public class SubscriptionVariant implements Serializable {
         if (periodical != null ? !periodical.equals(that.periodical) : that.periodical != null) {
             return false;
         }
-        return typeSubscription != null ? typeSubscription.equals(that.typeSubscription) :
-                that.typeSubscription == null;
+        return subscriptionType != null ? subscriptionType.equals(that.subscriptionType) :
+                that.subscriptionType == null;
     }
 
     @Override
     public int hashCode() {
         int result;
+        long temp;
         result = id;
         result = 31 * result + (index != null ? index.hashCode() : 0);
         result = 31 * result + (periodical != null ? periodical.hashCode() : 0);
-        result = 31 * result + (typeSubscription != null ? typeSubscription.hashCode() : 0);
-        result = 31 * result + monthAmount;
+        result = 31 * result + (subscriptionType != null ? subscriptionType.hashCode() : 0);
+        temp = Double.doubleToLongBits(costForIssue);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -107,8 +109,8 @@ public class SubscriptionVariant implements Serializable {
                "id=" + id +
                ", index='" + index + '\'' +
                ", periodical=" + periodical +
-               ", typeSubscription='" + typeSubscription + '\'' +
-               ", monthAmount=" + monthAmount +
+               ", subscriptionType=" + subscriptionType +
+               ", costForIssue=" + costForIssue +
                '}';
     }
 }

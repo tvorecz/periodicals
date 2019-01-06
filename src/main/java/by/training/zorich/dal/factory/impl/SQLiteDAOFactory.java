@@ -2,14 +2,8 @@ package by.training.zorich.dal.factory.impl;
 
 import by.training.zorich.dal.connector.DataSourceConnector;
 import by.training.zorich.dal.connector.TransactionManager;
-import by.training.zorich.dal.dao.SubscriptionDAO;
-import by.training.zorich.dal.dao.UserAddressDAO;
-import by.training.zorich.dal.dao.UserDAO;
-import by.training.zorich.dal.dao.UserRoleDAO;
-import by.training.zorich.dal.dao.impl.MySqlSubscriptionDAO;
-import by.training.zorich.dal.dao.impl.MySqlUserAddressDAO;
-import by.training.zorich.dal.dao.impl.MySqlUserDAO;
-import by.training.zorich.dal.dao.impl.MySqlUserRoleDAO;
+import by.training.zorich.dal.dao.*;
+import by.training.zorich.dal.dao.impl.*;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
@@ -19,6 +13,9 @@ public class SQLiteDAOFactory implements DAOFactory {
     private static UserRoleDAO userRoleDAOImpl;
     private static UserAddressDAO userAddressDAOImpl;
     private static SubscriptionDAO subscriptionDAOImpl;
+    private static PeriodicalThemeDAO periodicalThemeDAOImpl;
+    private static PeriodicalTypeDAO periodicalTypeDAOImpl;
+    private static SubscriptionTypeDAO subscriptionTypeDAOImpl;
 
     private SQLiteDAOFactory() {
     }
@@ -40,6 +37,11 @@ public class SQLiteDAOFactory implements DAOFactory {
         userRoleDAOImpl = new MySqlUserRoleDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
         userAddressDAOImpl = new MySqlUserAddressDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
         subscriptionDAOImpl = new MySqlSubscriptionDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        periodicalThemeDAOImpl = new MySqlPeriodicalThemeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        periodicalTypeDAOImpl = new MySqlPeriodicalTypeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        subscriptionTypeDAOImpl = new MySqlSubscriptionTypeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+
+
     }
 
     @Override
@@ -60,5 +62,20 @@ public class SQLiteDAOFactory implements DAOFactory {
     @Override
     public SubscriptionDAO getSubscriptionDAO() {
         return subscriptionDAOImpl;
+    }
+
+    @Override
+    public PeriodicalTypeDAO getPeriodicalTypeDAO() {
+        return periodicalTypeDAOImpl;
+    }
+
+    @Override
+    public PeriodicalThemeDAO getPeriodicalThemeDAO() {
+        return periodicalThemeDAOImpl;
+    }
+
+    @Override
+    public SubscriptionTypeDAO getSubscriptionTypeDAO() {
+        return subscriptionTypeDAOImpl;
     }
 }

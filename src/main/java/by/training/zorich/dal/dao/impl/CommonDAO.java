@@ -19,7 +19,7 @@ import java.sql.SQLException;
 public class CommonDAO<T> {
     private DataSourceConnector connector; //provide connection from pool
     private TransactionManager transactionManager; //provide working with connection pool and transations
-    private by.training.zorich.dal.sql_executor.SQLExecutor sqlExecutor; //execute query to data source and
+    private SQLExecutor sqlExecutor; //execute query to data source and
     private ResultHandlerRepository resultHandlerRepository; //provide handler for handle resultset
 
     public CommonDAO(DataSourceConnector connector,

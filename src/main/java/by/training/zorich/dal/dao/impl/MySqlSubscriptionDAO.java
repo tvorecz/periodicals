@@ -22,25 +22,27 @@ import java.util.List;
 public class MySqlSubscriptionDAO extends CommonDAO<Object> implements SubscriptionDAO {
     private final static String QUERY_INSERT_SUBSCRIPTION = "INSERT INTO user_subscriptions (idAddress, idSubscriptionVariant, dateBegin, dateEnd, idPayment) values(%1$d, %2$d, '%3$s', '%4$s', %5$d)";
     private final static String QUERY_PATTERN_INSERT_SUBSCRIPTION = "INSERT INTO user_subscriptions (idAddress, idSubscriptionVariant, dateBegin, dateEnd, idPayment) values(?, ?, ?, ?, ?)";
-    private final static String QUERY_SELECT_SUBSCRIPTION = "SELECT \tuser_subscriptions.idUserSubscription, \n" +
+    private final static String QUERY_SELECT_SUBSCRIPTION = "SELECT \tuser_subscriptions.idUserSubscription,\n" +
+                                                            "\t\tuser_subscriptions.dateBegin,\n" +
+                                                            "\t\tuser_subscriptions.dateEnd,\n" +
                                                             "\t\tuser_addresses.idAddress,\n" +
                                                             "\t\tuser_addresses.address,\n" +
                                                             "\t\tuser_addresses.idUser,\n" +
                                                             "\t\tsubscription_variants.idSubscriptionVariant,\n" +
                                                             "\t\tsubscription_variants.indexSubscription,\n" +
+                                                            "\t\tsubscription_variants.costForIssue,\n" +
                                                             "\t\tperiodicals.idPeriodical,\n" +
-                                                            "\t\tperiodical_type.typeName,\n" +
-                                                            "\t\tperiodical_theme.nameTheme,\n" +
                                                             "\t\tperiodicals.namePeriodical,\n" +
                                                             "\t\tperiodicals.periodicityInMonth,\n" +
                                                             "\t\tperiodicals.annotation,\n" +
                                                             "\t\tperiodicals.imagePath,\n" +
+                                                            "\t\tperiodical_type.idType,\n" +
+                                                            "\t\tperiodical_type.typeName,\n" +
+                                                            "\t\tperiodical_theme.idTheme,\n" +
+                                                            "\t\tperiodical_theme.nameTheme,\t\t\n" +
                                                             "\t\tsubscription_types.idSubscriptionType,\n" +
                                                             "\t\tsubscription_types.nameSubscriptionType,\n" +
-                                                            "\t\tsubscription_types.monthAmount,\n" +
-                                                            "\t\tsubscription_variants.cost,\n" +
-                                                            "\t\tuser_subscriptions.dateBegin,\n" +
-                                                            "\t\tuser_subscriptions.dateEnd,\n" +
+                                                            "\t\tsubscription_types.monthAmount,\t\t\n" +
                                                             "\t\tpayments.idPayment,\n" +
                                                             "\t\tpayments.amount,\n" +
                                                             "\t\tpayments.payStatus\n" +
@@ -60,11 +62,11 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
                                                             ".idSubscriptionType\n" +
                                                             "\t\t\tJOIN periodicals ON subscription_variants" +
                                                             ".idPeriodical = periodicals.idPeriodical\n" +
-                                                            "\t\t\tJOIN periodical_type ON periodicals.idPeriodical =" +
-                                                            " periodical_type.idType\n" +
+                                                            "\t\t\tJOIN periodical_type ON periodicals.idType = " +
+                                                            "periodical_type.idType\n" +
                                                             "\t\t\tJOIN periodical_theme ON periodicals.idTheme = " +
-                                                            "periodical_theme.idTheme" +
-                                                            " LIMIT %2$d, %3$d";
+                                                            "periodical_theme.idTheme\n" +
+                                                            "\t\t\tLIMIT %2$d, %3$d";
 
 
     public MySqlSubscriptionDAO(DataSourceConnector connector,

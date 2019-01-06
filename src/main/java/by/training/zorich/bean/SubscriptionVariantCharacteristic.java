@@ -3,10 +3,7 @@ package by.training.zorich.bean;
 public enum SubscriptionVariantCharacteristic {
     ID("idSubscriptionVariant"),
     INDEX("indexSubscription"),
-    MONTH_AMOUNT("monthAmount"),
-    COST("cost"),
-    TYPE("nameSubscriptionType"),
-    ID_TYPE("iSubscriptionType");
+    COST("costForIssue");
 
     final private String name;
 

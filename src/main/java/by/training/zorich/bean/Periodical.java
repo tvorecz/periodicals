@@ -6,13 +6,12 @@ public class Periodical implements Serializable {
     private static final long serialVersionUID = -1236041454971946989L;
 
     private int id;
-    private String type;
-    private String theme;
+    private PeriodicalType type;
+    private PeriodicalTheme theme;
     private String name;
     private int periodicityInMonth;
     private String annotation;
     private String imagePath;
-    private double costForIssue;
 
     public Periodical() {
     }
@@ -25,19 +24,19 @@ public class Periodical implements Serializable {
         this.id = id;
     }
 
-    public String getType() {
+    public PeriodicalType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(PeriodicalType type) {
         this.type = type;
     }
 
-    public String getTheme() {
+    public PeriodicalTheme getTheme() {
         return theme;
     }
 
-    public void setTheme(String theme) {
+    public void setTheme(PeriodicalTheme theme) {
         this.theme = theme;
     }
 
@@ -73,14 +72,6 @@ public class Periodical implements Serializable {
         this.imagePath = imagePath;
     }
 
-    public double getCostForIssue() {
-        return costForIssue;
-    }
-
-    public void setCostForIssue(double costForIssue) {
-        this.costForIssue = costForIssue;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -96,9 +87,6 @@ public class Periodical implements Serializable {
             return false;
         }
         if (periodicityInMonth != that.periodicityInMonth) {
-            return false;
-        }
-        if (Double.compare(that.costForIssue, costForIssue) != 0) {
             return false;
         }
         if (type != null ? !type.equals(that.type) : that.type != null) {
@@ -118,17 +106,13 @@ public class Periodical implements Serializable {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
+        int result = id;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (theme != null ? theme.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + periodicityInMonth;
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
         result = 31 * result + (imagePath != null ? imagePath.hashCode() : 0);
-        temp = Double.doubleToLongBits(costForIssue);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -136,13 +120,12 @@ public class Periodical implements Serializable {
     public String toString() {
         return getClass().getName() + "{" +
                "id=" + id +
-               ", type='" + type + '\'' +
-               ", theme='" + theme + '\'' +
+               ", type=" + type +
+               ", theme=" + theme +
                ", name='" + name + '\'' +
                ", periodicityInMonth=" + periodicityInMonth +
                ", annotation='" + annotation + '\'' +
                ", imagePath='" + imagePath + '\'' +
-               ", costForIssue=" + costForIssue +
                '}';
     }
 }

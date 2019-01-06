@@ -7,6 +7,7 @@ import by.training.zorich.controller.SessionAttribute;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.JspPagePath;
 import by.training.zorich.bean.UserCharacteristic;
+import by.training.zorich.controller.command_handler.exception.CommandException;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.factory.ServiceFactory;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +29,10 @@ public class SignUpCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void handle(HttpServletRequest request, HttpServletResponse response) throws
+                                                                                 ServletException,
+                                                                                 IOException,
+                                                                                 CommandException {
         User user = handleRequest(request);
 
         ServiceResult serviceResult = new ServiceResult();

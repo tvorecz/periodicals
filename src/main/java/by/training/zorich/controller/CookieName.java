@@ -1,13 +1,11 @@
 package by.training.zorich.controller;
 
-public enum GetRequestParameterType {
-    RETURN("return"),
-    LOCALE("locale"),
-    ;
+public enum CookieName {
+    CURRENT_LOCALE("currentLocale"), CURRENT_USER_ROLE("userRole");
 
     final private String name;
 
-    GetRequestParameterType(String name) {
+    CookieName(String name) {
         this.name = name;
     }
 
@@ -15,8 +13,8 @@ public enum GetRequestParameterType {
         return name;
     }
 
-    static public HandlerType getGetRequestParameterTypeByName(String name) {
-        for (HandlerType item : HandlerType.values()) {
+    static public CookieName getCookieName(String name) {
+        for (CookieName item : CookieName.values()) {
             if (item.getName().equals(name)) {
                 return item;
             }

@@ -36,6 +36,12 @@ public class ServiceResult implements Serializable {
         this.resultMessage = resultMessage;
     }
 
+    public void clear() {
+        resultOperation = null;
+        resultObject = null;
+        resultMessage = null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

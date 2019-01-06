@@ -13,8 +13,8 @@ public enum SessionAttribute {
         return name;
     }
 
-    static public CommandType getSessionAttributeByName(String name) {
-        for (CommandType item : CommandType.values()) {
+    static public SessionAttribute getSessionAttributeByName(String name) {
+        for (SessionAttribute item : SessionAttribute.values()) {
             if (item.getName().equals(name)) {
                 return item;
             }

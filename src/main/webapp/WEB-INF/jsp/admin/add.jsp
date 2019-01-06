@@ -28,50 +28,40 @@
                 <div class="main-agileits">
                     <div class="form-w3agile">
                         <h3><fmt:message key="form" /></h3>
+                        <br />
 
-                        <form action="/admin/added" method="post">
-                            <input type="hidden" name="command" value="add" />
+                        <form action="/admin/added" method="post" enctype="multipart/form-data">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon"><fmt:message key="name" /></span>
-                                <input name="name" type="text" class="form-control" />
+                                <input name="namePeriodical" type="text" class="form-control" />
                             </div>
                             <br />
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon"><fmt:message key="description" /></span>
-                                <input name="description" type="text" class="form-control" />
+                                <input name="annotation" type="text" class="form-control" />
                             </div>
                             <br />
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon"><fmt:message key="periodicity" /></span>
-                                <input name="periodicity" type="text" class="form-control" />
+                                <input name="periodicityInMonth" type="text" class="form-control" />
                                 <span class="input-group-addon"><fmt:message key="month" /></span>
                             </div>
                             <br />
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon"><fmt:message key="type" /></span>
-                                <select name="type" class="form-control">
-                                    <option selected><fmt:message key="selected" /></option>
-                                    <c:forEach>
-
-
+                                <select name="idType" class="form-control">
+                                    <c:forEach var="item" items="${periodicalTypeList}" varStatus="status">
+                                        <option value="${item.id}">${item.name}</option>
                                     </c:forEach>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
                                 </select>
                             </div>
                             <br />
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon"><fmt:message key="theme" /></span>
-                                <select name="theme" class="form-control">
-                                    <option selected><fmt:message key="selected" /></option>
-                                    <c:forEach>
-
-
+                                <select name="idTheme" class="form-control">
+                                    <c:forEach var="item" items="${periodicalThemeList}" varStatus="status">
+                                        <option value="${item.id}">${item.name}</option>
                                     </c:forEach>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
                                 </select>
                             </div>
                             <br />
@@ -83,19 +73,21 @@
                             <br />
                             <h4><fmt:message key="subscriptions" /></h4>
                             <br />
-                            <c:forEach>
+                            <c:forEach var="item" items="${subscriptionTypeList}" varStatus="status">
                                 <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" />
+                                    <input name="idSubscriptionVariant" value="${item.id}" type="checkbox" />
                                 </span>
-                                    <span class="input-group-addon">Месячная</span>
-                                    <input name="subscription?????" type="text" class="form-control"
+                                    <span class="input-group-addon">${item.name}</span>
+                                    <input name="costForIssue${item.id}" type="text" class="form-control"
                                            placeholder="<fmt:message key="cost" />" />
+                                    <input name="indexSubscription${item.id}" type="text" class="form-control"
+                                           placeholder="<fmt:message key="index" />" />
                                     <span class="input-group-addon"><fmt:message key="currency" /></span>
                                 </div>
+                                <br />
                             </c:forEach>
-                            <br />
-                            <input type="submit" value="Добавить">
+                            <input type="submit" value="<fmt:message key="add" />">
                         </form>
                     </div>
                 </div>

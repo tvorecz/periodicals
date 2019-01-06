@@ -2,14 +2,14 @@ package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.CommandRepository;
-import by.training.zorich.controller.CommandType;
+import by.training.zorich.controller.HandlerType;
 import by.training.zorich.service.factory.ServiceFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandRepositoryImpl implements CommandRepository {
-    private Map<CommandType, CommandHandler> actionRepository;
+    private Map<HandlerType, CommandHandler> actionRepository;
 
     private CommandRepositoryImpl() {
         actionRepository = new HashMap<>();
@@ -24,13 +24,17 @@ public class CommandRepositoryImpl implements CommandRepository {
     }
 
     public void init(ServiceFactory serviceFactory) {
-        actionRepository.put(CommandType.LOGIN, new SignInCommandHandler(serviceFactory));
-        actionRepository.put(CommandType.REGISTER, new SignUpCommandHandler(serviceFactory));
-        actionRepository.put(CommandType.LOCALE, new ChangeLocaleHandler(serviceFactory, JspRepositoryImpl.getInstance()));
+        actionRepository.put(HandlerType.LOGIN, new SignInCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.REGISTER, new SignUpCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.LOCALE, new ChangeLocaleHandler(serviceFactory, JspRepositoryImpl.getInstance()));
+        actionRepository.put(HandlerType.PREPROCESS_ADD, new PeriodicalAdditionHandler(serviceFactory));
+        actionRepository.put(HandlerType.URI_ADD_PERIODICAL, new PeriodicalAdditionHandler(serviceFactory));
+
+
     }
 
     @Override
-    public CommandHandler getCommandHandler(CommandType commandType) {
-        return actionRepository.get(commandType);
+    public CommandHandler getCommandHandler(HandlerType handlerType) {
+        return actionRepository.get(handlerType);
     }
 }

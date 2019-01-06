@@ -19,6 +19,9 @@ public class ResultHandlerRepositoryImpl implements ResultHandlerRepository {
         repository.put(HandlerType.LAST_INSERTED_PAYMENT_ID, new LastIdResultHandler());
         repository.put(HandlerType.SELECT_PAYMENT_BY_ID, new PaymentResultHandler());
         repository.put(HandlerType.SUBSCRIPTION_VARIANT_BY_ID, new SubscriptionVariantHandler());
+        repository.put(HandlerType.ALL_PERIODICAL_TYPES, new PeriodicalTypeResultHandler());
+        repository.put(HandlerType.ALL_PERIODICAL_THEMES, new PeriodicalThemeResultHandler());
+        repository.put(HandlerType.ALL_SUBSCRIPTION_TYPES, new SubscriptionTypeResultHandler());
 
 
     }

@@ -6,6 +6,7 @@ import by.training.zorich.controller.command_handler.CommandRepository;
 import by.training.zorich.controller.command_handler.JspRepository;
 import by.training.zorich.controller.command_handler.exception.CommandException;
 import by.training.zorich.controller.command_handler.impl.JspRepositoryImpl;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +19,6 @@ import java.util.Enumeration;
 
 public class MainController extends HttpServlet {
     private final static Logger LOGGER = LogManager.getLogger(MainController.class);
-
     private static final long serialVersionUID = 4381375727757464524L;
 
     private CommandRepository commandRepository;
@@ -43,10 +43,14 @@ public class MainController extends HttpServlet {
         Enumeration<String> parameterNames = req.getParameterNames();
 
         if(parameterNames.hasMoreElements()) {
-            String commandName = req.getParameter(CommandType.COMMAND.getName());
+            String commandName = req.getParameter(HandlerType.COMMAND.getName());
             if(commandName != null) {
-                handler = commandRepository.getCommandHandler(CommandType.getActionParameterByName(commandName));
-                handler.handle(req, resp);
+                handler = commandRepository.getCommandHandler(HandlerType.getActionParameterByName(commandName));
+                try {
+                    handler.handle(req, resp);
+                } catch (CommandException e) {
+                    e.printStackTrace();
+                }
             } else {
                 jspRepository.readdressToJsp(req, resp);
             }
@@ -57,10 +61,20 @@ public class MainController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String commandName = req.getParameter(CommandType.COMMAND.getName());
+        String commandName = null;
 
-        CommandHandler handler = commandRepository.getCommandHandler(CommandType.getActionParameterByName(commandName));
+        if(ServletFileUpload.isMultipartContent(req)) {
+            commandName = req.getRequestURI();
+        } else {
+            commandName = req.getParameter(HandlerType.COMMAND.getName());
+        }
 
-        handler.handle(req, resp);
+        CommandHandler handler = commandRepository.getCommandHandler(HandlerType.getActionParameterByName(commandName));
+
+        try {
+            handler.handle(req, resp);
+        } catch (CommandException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -2,13 +2,12 @@ package by.training.zorich.bean;
 
 public enum PeriodicalCharacteristic {
     ID("idPeriodical"),
-    TYPE("typeName"),
-    THEME("nameTheme"),
+    TYPE("idType"),
+    THEME("idTheme"),
     NAME("namePeriodical"),
     PERIODICITY("periodicityInMonth"),
     ANNOTATION("annotation"),
-    IMAGE("imagePath"),
-    COST("costForIssue");
+    IMAGE("imagePath");
 
     final private String name;
 

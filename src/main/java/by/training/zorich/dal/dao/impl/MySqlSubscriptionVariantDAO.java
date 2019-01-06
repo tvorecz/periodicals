@@ -15,19 +15,21 @@ public class MySqlSubscriptionVariantDAO extends CommonDAO<SubscriptionVariant> 
                                                                           ".idSubscriptionVariant,\n" +
                                                                           "\t\tsubscription_variants" +
                                                                           ".indexSubscription,\n" +
+                                                                          "\t\tsubscription_variants.costForIssue,\n" +
                                                                           "\t\tperiodicals.idPeriodical,\n" +
-                                                                          "\t\tperiodical_type.typeName,\n" +
-                                                                          "\t\tperiodical_theme.nameTheme,\n" +
                                                                           "\t\tperiodicals.namePeriodical,\n" +
                                                                           "\t\tperiodicals.periodicityInMonth,\n" +
                                                                           "\t\tperiodicals.annotation,\n" +
                                                                           "\t\tperiodicals.imagePath,\n" +
-                                                                          "\t\tsubscription_types.iSubscriptionType," +
+                                                                          "\t\tperiodical_type.idType,\n" +
+                                                                          "\t\tperiodical_type.typeName,\n" +
+                                                                          "\t\tperiodical_theme.idTheme,\n" +
+                                                                          "\t\tperiodical_theme.nameTheme,\t\t\n" +
+                                                                          "\t\tsubscription_types.idSubscriptionType," +
                                                                           "\n" +
                                                                           "\t\tsubscription_types" +
                                                                           ".nameSubscriptionType,\n" +
-                                                                          "\t\tsubscription_types.monthAmount,\n" +
-                                                                          "\t\tsubscription_variants.cost\n" +
+                                                                          "\t\tsubscription_types.monthAmount\n" +
                                                                           "\t\t\n" +
                                                                           "\t\tFROM subscription_variants\n" +
                                                                           "\t\t\tJOIN subscription_types ON " +

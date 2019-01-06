@@ -1,5 +1,7 @@
 package by.training.zorich.controller.command_handler.impl;
 
+import by.training.zorich.controller.HandlerType;
+import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.CommandRepository;
 import by.training.zorich.controller.command_handler.JspRepository;
 
@@ -35,6 +37,7 @@ public class JspRepositoryImpl implements JspRepository {
         jspMap.put("/main","/WEB-INF/jsp/index/index.jsp");
         jspMap.put("/index","/WEB-INF/jsp/index/index.jsp");
         jspMap.put("/","/WEB-INF/jsp/index/index.jsp");
+        jspMap.put("/admin/add", "/WEB-INF/jsp/admin/add.jsp");
 
     }
 
@@ -42,10 +45,27 @@ public class JspRepositoryImpl implements JspRepository {
     public void readdressToJsp(HttpServletRequest request, HttpServletResponse response) throws
                                                                                          ServletException,
                                                                                          IOException {
-        String commandName = request.getRequestURI();
+        String requestURI = request.getRequestURI();
 
-        request.setAttribute("path", commandName);
+        request.setAttribute("path", requestURI);
 
-        request.getRequestDispatcher(jspMap.get(commandName)).forward(request, response);
+        prepareRequestForPage(request, response, requestURI);
+
+        request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);
+    }
+
+    private void prepareRequestForPage(HttpServletRequest request, HttpServletResponse response, String uri) throws
+                                                                                                          ServletException,
+                                                                                                          IOException {
+        HandlerType handlerType = HandlerType.getActionParameterByName(uri);
+
+        if(handlerType != null) {
+            CommandHandler handler = commandRepository.getCommandHandler(handlerType);
+            try {
+                handler.handle(request, response);
+            } catch (by.training.zorich.controller.command_handler.exception.CommandException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
