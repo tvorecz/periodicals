@@ -1,19 +1,19 @@
 package by.training.zorich.service.logic.impl;
 
-import by.training.zorich.bean.ServiceResult;
-import by.training.zorich.bean.User;
-import by.training.zorich.bean.UserLocale;
-import by.training.zorich.bean.UserRole;
+import by.training.zorich.bean.*;
+import by.training.zorich.dal.dao.UserAddressDAO;
 import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.logic.UserService;
-import by.training.zorich.service.password_encoder.PasswordEncoder;
-import by.training.zorich.service.password_encoder.impl.PasswordEncodeImpl;
+import by.training.zorich.service.util.PasswordEncoder;
+import by.training.zorich.service.util.impl.PasswordEncodeImpl;
 import by.training.zorich.service.validator.Validator;
 import by.training.zorich.service.validator.impl.user_validator.RegistratingUserValidator;
 import by.training.zorich.service.validator.impl.user_validator.UserValidator;
+
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private final static String VALIDATE_FAILED = "User data is not valid!";
@@ -22,12 +22,14 @@ public class UserServiceImpl implements UserService {
     private Validator<User> registratingUserValidator;
     private PasswordEncoder passwordEncoder;
     private UserDAO userDAO;
+    private UserAddressDAO userAddressDAO;
 
     public UserServiceImpl(DAOFactory daoFactory) {
         userValidator = new UserValidator();
         registratingUserValidator = new RegistratingUserValidator();
         passwordEncoder = new PasswordEncodeImpl();
         userDAO = daoFactory.getUserDAO();
+        userAddressDAO = daoFactory.getUserAddressDAO();
     }
 
     @Override
@@ -84,6 +86,26 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             serviceResult.setResultOperation(false);
             throw new ServiceException("Getting user information is failed!", e);
+        }
+    }
+
+    @Override
+    public void getAllUserAddresses(int userId, ServiceResult serviceResult) throws ServiceException {
+        List<UserAddress> userAddresses = null;
+
+        try {
+            userAddresses = userAddressDAO.getAllUserAddresses(userId);
+
+            if(userAddresses == null) {
+                serviceResult.setResultOperation(false);
+            } else {
+                serviceResult.setResultOperation(true);
+                serviceResult.setResultObject(userAddresses);
+            }
+
+        } catch (DAOException e) {
+            serviceResult.setResultOperation(false);
+            throw new ServiceException("Getting user addresses is failed!", e);
         }
     }
 

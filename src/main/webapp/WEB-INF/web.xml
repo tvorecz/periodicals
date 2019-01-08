@@ -5,6 +5,11 @@
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
 
+    <context-param>
+        <param-name>imagePath</param-name>
+        <param-value>/image</param-value>
+    </context-param>
+
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>by.training.zorich.controller.filter.EncodingFilter</filter-class>
@@ -63,6 +68,10 @@
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/admin/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainController</servlet-name>
+        <url-pattern>/periodical</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>

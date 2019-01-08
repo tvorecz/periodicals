@@ -14,7 +14,7 @@ public class UserSubscriptionHandler implements ResultHandler<List<UserSubscript
     @Override
     public List<UserSubscription> handle(ResultSet resultSet) throws SQLException {
         List<UserSubscription> result = new ArrayList<>();
-        resultSet.getRowId(0);
+
         while (resultSet.next()) {
             UserSubscription userSubscription =  new UserSubscription();
             userSubscription.setId(resultSet.getInt(UserSubscriptionCharacteristic.ID.getName()));

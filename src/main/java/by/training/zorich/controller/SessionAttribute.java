@@ -1,7 +1,12 @@
 package by.training.zorich.controller;
 
 public enum SessionAttribute {
-    CURRENT_LOCALE("currentLocale"), CURRENT_USER_ID("currentUserId"), CURRENT_USER_NAME("userLogin"), CURRENT_USER_ROLE("userRole");
+    CURRENT_LOCALE("currentLocale"),
+    CURRENT_USER_ID("currentUserId"),
+    CURRENT_USER_NAME("userLogin"),
+    CURRENT_USER_ROLE("userRole"),
+    CURRENT_CART_ITEM("cartItems"),
+    CURRENT_SIZE_CART_ITEM("sizeCart");
 
     final private String name;
 

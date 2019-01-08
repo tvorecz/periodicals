@@ -16,6 +16,9 @@ public class SQLiteDAOFactory implements DAOFactory {
     private static PeriodicalThemeDAO periodicalThemeDAOImpl;
     private static PeriodicalTypeDAO periodicalTypeDAOImpl;
     private static SubscriptionTypeDAO subscriptionTypeDAOImpl;
+    private static PeriodicalDAO periodicalDAOImpl;
+    private static SubscriptionVariantDAO subscriptionVariantDAOImpl;
+    private static PaymentDAO paymentDAOImpl;
 
     private SQLiteDAOFactory() {
     }
@@ -40,8 +43,9 @@ public class SQLiteDAOFactory implements DAOFactory {
         periodicalThemeDAOImpl = new MySqlPeriodicalThemeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
         periodicalTypeDAOImpl = new MySqlPeriodicalTypeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
         subscriptionTypeDAOImpl = new MySqlSubscriptionTypeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-
-
+        periodicalDAOImpl = new MySqlPeriodicalDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        subscriptionVariantDAOImpl = new MySqlSubscriptionVariantDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        paymentDAOImpl = new MySqlPaymentDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
     }
 
     @Override
@@ -77,5 +81,20 @@ public class SQLiteDAOFactory implements DAOFactory {
     @Override
     public SubscriptionTypeDAO getSubscriptionTypeDAO() {
         return subscriptionTypeDAOImpl;
+    }
+
+    @Override
+    public PeriodicalDAO getPeriodicalDAO() {
+        return periodicalDAOImpl;
+    }
+
+    @Override
+    public SubscriptionVariantDAO getSubscriptionVariantDAO() {
+        return subscriptionVariantDAOImpl;
+    }
+
+    @Override
+    public PaymentDAO getPaymentDAO() {
+        return paymentDAOImpl;
     }
 }

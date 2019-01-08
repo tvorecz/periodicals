@@ -30,7 +30,17 @@
                         <h3><fmt:message key="form" /></h3>
                         <br />
 
-                        <form action="/admin/added" method="post" enctype="multipart/form-data">
+                        <c:choose>
+                            <c:when test="${not empty param.message and param.message eq 'dbError'}">
+                                <div class="alert alert-success" role="alert">
+                                    <strong><fmt:message key="form.message.dbError" /></strong><br />
+                                    <fmt:message key="form.message.dbErrorCall" />
+                                </div>
+                                <br />
+                            </c:when>
+                        </c:choose>
+
+                        <form action="/admin/added" method="post" enctype="multipart/form-data" acceptcharset="UTF-8" >
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon"><fmt:message key="name" /></span>
                                 <input name="namePeriodical" type="text" class="form-control" />
@@ -76,7 +86,7 @@
                             <c:forEach var="item" items="${subscriptionTypeList}" varStatus="status">
                                 <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input name="idSubscriptionVariant" value="${item.id}" type="checkbox" />
+                                    <input name="idSubscriptionVariant${item.id}" value="${item.id}" type="checkbox" />
                                 </span>
                                     <span class="input-group-addon">${item.name}</span>
                                     <input name="costForIssue${item.id}" type="text" class="form-control"

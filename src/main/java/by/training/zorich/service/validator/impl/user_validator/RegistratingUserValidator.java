@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistratingUserValidator extends UserValidator {
-    private static final UserDAO userDAO = SQLiteDAOFactory.getInstance().getUserDAO();
+    private static final UserDAO USER_DAO = SQLiteDAOFactory.getInstance().getUserDAO();
 
     private static final String EMAIL_PATTERN = "(([a-z\\.\\-0-9]{2,})(@)([a-z]{2,})(.))([a-z]{2,})";
     private Pattern emailPattern;
@@ -46,6 +46,6 @@ public class RegistratingUserValidator extends UserValidator {
     }
 
     private boolean isDublicateInDataBase(User objectForValidation) throws DAOException {
-        return userDAO.validate(objectForValidation);
+        return USER_DAO.validate(objectForValidation);
     }
 }

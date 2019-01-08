@@ -158,20 +158,6 @@
                     </div>
                 </nav>
             </div>
-            <script>
-                $(document).ready(function () {
-                    $(".dropdown").hover(
-                        function () {
-                            $('.dropdown-menu', this).stop(true, true).slideDown("fast");
-                            $(this).toggleClass('open');
-                        },
-                        function () {
-                            $('.dropdown-menu', this).stop(true, true).slideUp("fast");
-                            $(this).toggleClass('open');
-                        }
-                    );
-                });
-            </script>
             <div class="col-md-4 search-agileinfo">
                 <form action="#" method="post">
                     <input type="search" name="Search" placeholder="<fmt:message key="into.search" />" required="">
@@ -181,14 +167,15 @@
                 </form>
             </div>
             <div class="col-md-1 cart-wthree">
-                <div class="cart">
-                    <form action="#" method="post" class="last">
-                        <input type="hidden" name="cmd" value="_cart" />
-                        <input type="hidden" name="display" value="1" />
-                        <button class="w3view-cart" type="submit" name="submit" value=""><i
-                                class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-                    </form>
-                </div>
+                <a class="btn btn-light" href="/subscriber/cart" role="button">
+                    <div class="fa fa-cart-arrow-down" aria-hidden="true">
+                        <c:choose>
+                            <c:when test="${sessionScope.cartItems ne null}">
+                                ${sessionScope.sizeCart}
+                            </c:when>
+                        </c:choose>
+                    </div>
+                </a>
             </div>
             <div class="clearfix"></div>
         </div>

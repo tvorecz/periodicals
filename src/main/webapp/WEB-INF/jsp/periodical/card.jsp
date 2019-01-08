@@ -28,7 +28,7 @@
                     <div class="single-page">
                         <div class="single-page-row" id="detail-21">
                             <div class="col-md-6 single-top-left">
-                                <img src="images/s3.jpg" data-imagezoom="true" class="img-responsive" alt="">
+                                <img src="${periodical.imagePath}" data-imagezoom="true" class="img-responsive" alt="">
                             </div>
                             <div class="col-md-6 single-top-right">
                                 <h3 class="item_name">${periodical.name}</h3>
@@ -42,6 +42,11 @@
                                     <c:when test="${not empty param.message and param.message eq 'cartSuccess'}">
                                         <div class="alert alert-success" role="alert">
                                             <strong><fmt:message key="form.message.addToCart" /></strong><br />
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${not empty param.message and param.message eq 'cartError'}">
+                                        <div class="alert alert-success" role="alert">
+                                            <strong><fmt:message key="form.message.cartError" /></strong><br />
                                         </div>
                                     </c:when>
                                 </c:choose>
@@ -61,14 +66,14 @@
                                     <p class="single-price-text">${periodical.annotation}</p>
                                 </div>
                                 <div>
-                                    <form action="#" method="post">
-                                        <input type="hidden" name="command" value="to_cart" />
+                                    <form action="/subscriber/cart/add" method="post">
+                                        <input type="hidden" name="command" value="addToCart" />
+                                        <input type="hidden" name="returnPath" value="/periodical/${periodical.id}?message=cartSuccess"/>
                                         <div class="input-group">
                                             <span class="input-group-addon"><fmt:message key="subscriptions" /></span>
                                             <select name="type" class="form-control">
-                                                <option>${item.name}</option>
                                                 <c:forEach var="item" items="${subscriptionVariants}" varStatus="status">
-                                                    <option value="${item.id}">${item.subscriptionType.name} — ${item.subscriptionType.getActualCost} <fmt:message key="currency" /></option>
+                                                    <option value="${item.id}">${item.subscriptionType.name} — ${item.actualCost} <fmt:message key="currency" /></option>
                                                 </c:forEach>
                                             </select>
                                             <c:choose>

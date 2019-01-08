@@ -25,4 +25,10 @@ public interface DAOFactory {
     PeriodicalThemeDAO getPeriodicalThemeDAO();
 
     SubscriptionTypeDAO getSubscriptionTypeDAO();
+
+    PeriodicalDAO getPeriodicalDAO();
+
+    SubscriptionVariantDAO getSubscriptionVariantDAO();
+
+    PaymentDAO getPaymentDAO();
 }

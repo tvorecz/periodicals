@@ -22,8 +22,9 @@
     <body>
         <c:import url="/WEB-INF/jsp/header/header.jsp" charEncoding="utf-8" />
 
-        <div class="login">
-            <fmt:bundle basename="property.page" prefix="logination.">
+        <fmt:bundle basename="property.page" prefix="logination.">
+            <div class="login">
+
                 <div class="main-agileits form-w3agile">
                     <div class="form-w3agile">
                         <h3><fmt:message key="form" /></h3>
@@ -62,10 +63,9 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </fmt:bundle>
 
-            </fmt:bundle>
-
-        </div>
 
         <c:import url="/WEB-INF/jsp/footer/footer.jsp" charEncoding="utf-8" />
     </body>

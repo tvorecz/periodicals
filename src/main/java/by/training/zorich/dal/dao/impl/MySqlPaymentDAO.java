@@ -30,7 +30,7 @@ public class MySqlPaymentDAO extends CommonDAO<Object> implements PaymentDAO {
 
     @Override
     public Integer getLastInsertedPaymentIdTransactionaly() throws DAOException {
-        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PAYMENT_ID, HandlerType.LAST_INSERTED_PAYMENT_ID, TransactionStatus.ON);
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PAYMENT_ID, HandlerType.LAST_INSERTED_ITEM_ID, TransactionStatus.ON);
     }
 
     @Override

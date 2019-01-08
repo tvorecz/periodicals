@@ -3,6 +3,7 @@ package by.training.zorich.controller;
 public enum GetRequestParameterType {
     RETURN("return"),
     LOCALE("locale"),
+    ITEM("item"),
     ;
 
     final private String name;

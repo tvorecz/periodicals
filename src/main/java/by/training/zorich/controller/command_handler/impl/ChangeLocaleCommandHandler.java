@@ -20,12 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class ChangeLocaleHandler implements CommandHandler {
-    private final static Logger LOGGER = LogManager.getLogger(ChangeLocaleHandler.class);
+public class ChangeLocaleCommandHandler implements CommandHandler {
+    private final static Logger LOGGER = LogManager.getLogger(ChangeLocaleCommandHandler.class);
     private ServiceFactory serviceFactory;
     private JspRepository jspRepository;
 
-    public ChangeLocaleHandler(ServiceFactory serviceFactory, JspRepository jspRepository) {
+    public ChangeLocaleCommandHandler(ServiceFactory serviceFactory, JspRepository jspRepository) {
         this.serviceFactory = serviceFactory;
         this.jspRepository = jspRepository;
     }

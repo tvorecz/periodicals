@@ -80,6 +80,6 @@ public class MySqlUserDAO extends CommonDAO<Object> implements UserDAO {
     public boolean validate(User user) throws DAOException {
         String query = String.format(QUERY_VALIDATE_USER, user.getLogin(), user.getEmail());
 
-        return (Boolean) super.executeSelectFromDataSource(query, HandlerType.VALIDATE_USER_HANDLER, TransactionStatus.OFF);
+        return (Boolean) super.executeSelectFromDataSource(query, HandlerType.VALIDATE_HANDLER, TransactionStatus.OFF);
     }
 }

@@ -1,6 +1,6 @@
-package by.training.zorich.service.password_encoder.impl;
+package by.training.zorich.service.util.impl;
 
-import by.training.zorich.service.password_encoder.PasswordEncoder;
+import by.training.zorich.service.util.PasswordEncoder;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class PasswordEncodeImpl implements PasswordEncoder {

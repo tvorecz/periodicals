@@ -9,7 +9,11 @@ public class LastIdResultHandler implements ResultHandler<Integer> {
 
     @Override
     public Integer handle(ResultSet resultSet) throws SQLException {
-        Integer result = resultSet.getInt(0);
+        Integer result = null;
+
+        if(resultSet.next()) {
+            result = resultSet.getInt(1);
+        }
 
         return result;
     }

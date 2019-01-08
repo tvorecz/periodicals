@@ -6,11 +6,14 @@ public enum HandlerType {
     REGISTER("register"),
     LOCALE("changeLocale"),
     RETURN_PAGE("target"),
+    ADD_TO_CART("addToCart"),
+    DELETE_FROM_CART("deleteCartItem"),
     URI_ADD_PERIODICAL("/admin/added"),
+    SUBSCRIBE("subscribe"),
     PREPROCESS_ADD("/admin/add"),
-    PREPROCESS_ADDED("/admin/added"),
     PREPROCESS_EDIT("/admin/edit"),
-    PREPROCESS_EDITED("admin/edited"),
+    PREPROCESS_CARD("/periodical/"),
+    PREPROCESS_CART("/subscriber/cart"),
 
     ;
 

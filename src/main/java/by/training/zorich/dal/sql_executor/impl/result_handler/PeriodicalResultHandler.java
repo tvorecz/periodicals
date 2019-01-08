@@ -6,24 +6,14 @@ import by.training.zorich.dal.sql_executor.ResultHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SubscriptionVariantHandler implements ResultHandler<SubscriptionVariant> {
+public class PeriodicalResultHandler implements ResultHandler<Periodical> {
+
     @Override
-    public SubscriptionVariant handle(ResultSet resultSet) throws SQLException {
-        SubscriptionVariant subscriptionVariant = null;
+    public Periodical handle(ResultSet resultSet) throws SQLException {
+        Periodical periodical = null;
 
         if(resultSet.next()) {
-            subscriptionVariant = new SubscriptionVariant();
-            subscriptionVariant.setId(resultSet.getInt(SubscriptionVariantCharacteristic.ID.getName()));
-            subscriptionVariant.setIndex(resultSet.getString(SubscriptionVariantCharacteristic.INDEX.getName()));
-            subscriptionVariant.setCostForIssue(resultSet.getDouble(SubscriptionVariantCharacteristic.COST.getName()));
-
-            SubscriptionType subscriptionType = new SubscriptionType();
-            subscriptionType.setId(resultSet.getInt(SubscriptionTypeCharacteristic.ID.getName()));
-            subscriptionType.setName(resultSet.getString(SubscriptionTypeCharacteristic.NAME.getName()));
-            subscriptionType.setMonthAmount(resultSet.getInt(SubscriptionTypeCharacteristic.MONTH_AMOUNT.getName()));
-            subscriptionVariant.setSubscriptionType(subscriptionType);
-
-            Periodical periodical = new Periodical();
+            periodical = new Periodical();
             periodical.setId(resultSet.getInt(PeriodicalCharacteristic.ID.getName()));
             periodical.setName(resultSet.getString(PeriodicalCharacteristic.NAME.getName()));
             periodical.setAnnotation(resultSet.getString(PeriodicalCharacteristic.ANNOTATION.getName()));
@@ -39,10 +29,8 @@ public class SubscriptionVariantHandler implements ResultHandler<SubscriptionVar
             periodicalTheme.setId(resultSet.getInt(PeriodicalThemeCharacteristic.ID.getName()));
             periodicalTheme.setName(resultSet.getString(PeriodicalThemeCharacteristic.NAME.getName()));
             periodical.setTheme(periodicalTheme);
-
-            subscriptionVariant.setPeriodical(periodical);
         }
 
-        return subscriptionVariant;
+        return periodical;
     }
 }

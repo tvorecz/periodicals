@@ -56,11 +56,16 @@ public class SubscriptionVariant implements Serializable {
     }
 
     public double getActualCost() {
-        if(actualCost == null) {
-            actualCost = periodical.getPeriodicityInMonth() * subscriptionType.getMonthAmount() * costForIssue;
-        }
-
         return actualCost;
+    }
+
+    public void setActualCost(Double actualCost) {
+        this.actualCost = actualCost;
+    }
+
+    public void calculateActualCost() {
+        actualCost = periodical.getPeriodicityInMonth() * subscriptionType.getMonthAmount() * costForIssue;
+        actualCost = Math.rint(actualCost * 100.0)/ 100.0;
     }
 
     @Override

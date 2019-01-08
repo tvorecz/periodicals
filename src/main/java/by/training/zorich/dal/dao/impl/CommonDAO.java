@@ -150,7 +150,7 @@ public class CommonDAO<T> {
             } else if(transactionStatus == TransactionStatus.END || transactionStatus == TransactionStatus.END_CACHED_STATEMENT){
                 preparedStatement.close();
 
-                transactionManager.giveBackEmergenclyTransactionConnection();
+                transactionManager.giveBackTransactionConnection();
             }
         } catch (TransactionManagerException e) {
             throw new DAOException("Giving back transaction connection to the pool is failed!", e);

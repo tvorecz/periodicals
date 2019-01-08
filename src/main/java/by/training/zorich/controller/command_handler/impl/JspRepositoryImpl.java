@@ -4,6 +4,7 @@ import by.training.zorich.controller.HandlerType;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.CommandRepository;
 import by.training.zorich.controller.command_handler.JspRepository;
+import by.training.zorich.controller.command_handler.exception.CommandException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JspRepositoryImpl implements JspRepository {
+    private final static String PERIODICAL = "/periodical/";
     private Map<String, String> jspMap;
     private CommandRepository commandRepository;
 
@@ -38,6 +40,8 @@ public class JspRepositoryImpl implements JspRepository {
         jspMap.put("/index","/WEB-INF/jsp/index/index.jsp");
         jspMap.put("/","/WEB-INF/jsp/index/index.jsp");
         jspMap.put("/admin/add", "/WEB-INF/jsp/admin/add.jsp");
+        jspMap.put("/periodical/", "/WEB-INF/jsp/periodical/card.jsp");
+        jspMap.put("/subscriber/cart", "/WEB-INF/jsp/subscriber/cart.jsp");
 
     }
 
@@ -51,19 +55,29 @@ public class JspRepositoryImpl implements JspRepository {
 
         prepareRequestForPage(request, response, requestURI);
 
+        if(requestURI.contains(PERIODICAL)) {
+            requestURI = PERIODICAL;
+        }
+
         request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);
     }
 
     private void prepareRequestForPage(HttpServletRequest request, HttpServletResponse response, String uri) throws
                                                                                                           ServletException,
                                                                                                           IOException {
-        HandlerType handlerType = HandlerType.getActionParameterByName(uri);
+        HandlerType handlerType = null;
+
+        if(uri.contains(PERIODICAL)) {
+            handlerType = HandlerType.getActionParameterByName(PERIODICAL);
+        } else {
+            handlerType = HandlerType.getActionParameterByName(uri);
+        }
 
         if(handlerType != null) {
             CommandHandler handler = commandRepository.getCommandHandler(handlerType);
             try {
                 handler.handle(request, response);
-            } catch (by.training.zorich.controller.command_handler.exception.CommandException e) {
+            } catch (CommandException e) {
                 e.printStackTrace();
             }
         }

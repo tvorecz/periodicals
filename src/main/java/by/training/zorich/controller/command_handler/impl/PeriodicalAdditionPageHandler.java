@@ -19,11 +19,11 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class PeriodicalAdditionHandler implements CommandHandler {
-    private final static Logger LOGGER = LogManager.getLogger(PeriodicalAdditionHandler.class);
+public class PeriodicalAdditionPageHandler implements CommandHandler {
+    private final static Logger LOGGER = LogManager.getLogger(PeriodicalAdditionPageHandler.class);
     private ServiceFactory serviceFactory;
 
-    public PeriodicalAdditionHandler(ServiceFactory serviceFactory) {
+    public PeriodicalAdditionPageHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
 

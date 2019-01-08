@@ -23,11 +23,13 @@ public class MainController extends HttpServlet {
 
     private CommandRepository commandRepository;
     private JspRepository jspRepository;
+    private String pathToImages;
 
     @Override
     public void init() throws ServletException {
         try {
             commandRepository = new CommandHandlerBuilderImpl().build();
+            pathToImages = getServletContext().getRealPath("/images");
         } catch (CommandException e) {
             LOGGER.error(e);
             throw new ServletException("Error during init servlet.",e);
@@ -41,6 +43,8 @@ public class MainController extends HttpServlet {
         CommandHandler handler;
 
         Enumeration<String> parameterNames = req.getParameterNames();
+
+        req.setAttribute("pathToImages", pathToImages);
 
         if(parameterNames.hasMoreElements()) {
             String commandName = req.getParameter(HandlerType.COMMAND.getName());
@@ -63,7 +67,10 @@ public class MainController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String commandName = null;
 
+        req.setAttribute("pathToImages", pathToImages);
+
         if(ServletFileUpload.isMultipartContent(req)) {
+//            req.setCharacterEncoding("UTF-8");
             commandName = req.getRequestURI();
         } else {
             commandName = req.getParameter(HandlerType.COMMAND.getName());

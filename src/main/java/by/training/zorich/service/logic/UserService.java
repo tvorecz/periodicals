@@ -12,5 +12,7 @@ public interface UserService {
 
     void userInformation(int userId, ServiceResult serviceResult) throws ServiceException;
 
+    void getAllUserAddresses(int userId, ServiceResult serviceResult) throws ServiceException;
+
     void changeLocale(int userId, UserLocale newUserLocale, ServiceResult serviceResult) throws ServiceException;
 }

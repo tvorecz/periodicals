@@ -17,7 +17,8 @@ public class MySqlUserAddressDAO extends CommonDAO<List<UserAddress>> implements
                                                     "%2$d)";
     private final static String QUERY_EDIT_ADDRESS = "UPDATE user_addresses SET address = '%1$s' WHERE idUser = %2$d";
     private final static String QUERY_DELETE_ADDRESS = "DELETE FROM user_addresses WHERE idAddress = %1$d";
-    private final static String QUERY_GET_ADDRESS = "SELECT * FROM user_addresses WHERE idUser = %1$d LIMIT %2$d, %3$d";
+    private final static String QUERY_GET_ADDRESS_LIMIT = "SELECT * FROM user_addresses WHERE idUser = %1$d LIMIT %2$d, %3$d";
+    private final static String QUERY_GET_ADDRESS = "SELECT * FROM user_addresses WHERE idUser = %1$d";
 
 
     public MySqlUserAddressDAO(DataSourceConnector connector,
@@ -50,7 +51,14 @@ public class MySqlUserAddressDAO extends CommonDAO<List<UserAddress>> implements
 
     @Override
     public List<UserAddress> getAllUserAddresses(int idUser, int beginOfRange, int countOfRecords) throws DAOException {
-        String query = String.format(QUERY_GET_ADDRESS, idUser, beginOfRange, countOfRecords);
+        String query = String.format(QUERY_GET_ADDRESS_LIMIT, idUser, beginOfRange, countOfRecords);
+
+        return super.executeSelectFromDataSource(query, HandlerType.USER_ADDRESS_HANDLER, TransactionStatus.OFF);
+    }
+
+    @Override
+    public List<UserAddress> getAllUserAddresses(int idUser) throws DAOException {
+        String query = String.format(QUERY_GET_ADDRESS, idUser);
 
         return super.executeSelectFromDataSource(query, HandlerType.USER_ADDRESS_HANDLER, TransactionStatus.OFF);
     }

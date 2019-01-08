@@ -26,10 +26,14 @@ public class CommandRepositoryImpl implements CommandRepository {
     public void init(ServiceFactory serviceFactory) {
         actionRepository.put(HandlerType.LOGIN, new SignInCommandHandler(serviceFactory));
         actionRepository.put(HandlerType.REGISTER, new SignUpCommandHandler(serviceFactory));
-        actionRepository.put(HandlerType.LOCALE, new ChangeLocaleHandler(serviceFactory, JspRepositoryImpl.getInstance()));
-        actionRepository.put(HandlerType.PREPROCESS_ADD, new PeriodicalAdditionHandler(serviceFactory));
-        actionRepository.put(HandlerType.URI_ADD_PERIODICAL, new PeriodicalAdditionHandler(serviceFactory));
-
+        actionRepository.put(HandlerType.LOCALE, new ChangeLocaleCommandHandler(serviceFactory, JspRepositoryImpl.getInstance()));
+        actionRepository.put(HandlerType.PREPROCESS_ADD, new PeriodicalAdditionPageHandler(serviceFactory));
+        actionRepository.put(HandlerType.URI_ADD_PERIODICAL, new AdditionPeriodicalCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.PREPROCESS_CARD, new PeriodicalCardPageHandler(serviceFactory));
+        actionRepository.put(HandlerType.ADD_TO_CART, new AddingItemToCartCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.PREPROCESS_CART, new SubscriberCartPageHandler(serviceFactory));
+        actionRepository.put(HandlerType.DELETE_FROM_CART, new DeleteCartItemCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.SUBSCRIBE, new SubscriptionCommandHandler(serviceFactory));
 
     }
 
