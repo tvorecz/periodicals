@@ -5,16 +5,16 @@ import java.io.Serializable;
 public class UserAddress implements Serializable {
     private static final long serialVersionUID = -5413763151048405410L;
 
-    private int idAdress;
+    private int idAddress;
     private int IdUser;
     private String address;
 
-    public int getIdAdress() {
-        return idAdress;
+    public int getIdAddress() {
+        return idAddress;
     }
 
-    public void setIdAdress(int idAdress) {
-        this.idAdress = idAdress;
+    public void setIdAddress(int idAddress) {
+        this.idAddress = idAddress;
     }
 
     public int getIdUser() {
@@ -44,7 +44,7 @@ public class UserAddress implements Serializable {
 
         UserAddress that = (UserAddress) o;
 
-        if (idAdress != that.idAdress) {
+        if (idAddress != that.idAddress) {
             return false;
         }
         if (IdUser != that.IdUser) {
@@ -55,7 +55,7 @@ public class UserAddress implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = idAdress;
+        int result = idAddress;
         result = 31 * result + IdUser;
         result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
@@ -64,7 +64,7 @@ public class UserAddress implements Serializable {
     @Override
     public String toString() {
         return getClass().getName() + "{" +
-               "idAdress=" + idAdress +
+               "idAddress=" + idAddress +
                ", IdUser=" + IdUser +
                ", address='" + address + '\'' +
                '}';

@@ -23,8 +23,8 @@ public class MySqlPaymentDAO extends CommonDAO<Object> implements PaymentDAO {
     }
 
     @Override
-    public void createPaymentTransactionaly(Payment payment) throws DAOException {
-        String query = String.format(QUERY_CREATE_PAYMENT, payment.getAmount(), 0);
+    public void createPaymentTransactionaly(double totalCost) throws DAOException {
+        String query = String.format(QUERY_CREATE_PAYMENT, totalCost, 0);
         super.executeUpdateDataSource(query, TransactionStatus.ON);
     }
 

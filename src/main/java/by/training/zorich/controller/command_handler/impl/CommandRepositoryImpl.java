@@ -34,6 +34,8 @@ public class CommandRepositoryImpl implements CommandRepository {
         actionRepository.put(HandlerType.PREPROCESS_CART, new SubscriberCartPageHandler(serviceFactory));
         actionRepository.put(HandlerType.DELETE_FROM_CART, new DeleteCartItemCommandHandler(serviceFactory));
         actionRepository.put(HandlerType.SUBSCRIBE, new SubscriptionCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.PREPROCESS_PAYMENT, new PaymentPageHandler(serviceFactory));
+        actionRepository.put(HandlerType.ADD_ADDRESS, new AdditionUserAddressCommandHandler(serviceFactory));
 
     }
 

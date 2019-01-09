@@ -8,5 +8,5 @@ public interface PaymentDAO {
 
     Payment getPaymentById(int idPayment) throws DAOException;
 
-    void createPaymentTransactionaly(Payment payment) throws DAOException;
+    void createPaymentTransactionaly(double totalCost) throws DAOException;
 }

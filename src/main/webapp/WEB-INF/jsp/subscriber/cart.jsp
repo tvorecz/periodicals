@@ -32,6 +32,23 @@
                             <span><i></i></span>
                             <b class="line"></b>
                         </div>
+                        <c:choose>
+                            <c:when test="${not empty param.message and param.message eq 'subscribeError'}">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong><fmt:message key="form.message.subscribeError" /></strong><br />
+                                </div>
+                            </c:when>
+                            <c:when test="${not empty param.message and param.message eq 'addAddressSuccess'}">
+                                <div class="alert alert-success" role="alert">
+                                    <strong><fmt:message key="form.message.addAddressSuccess" /></strong><br />
+                                </div>
+                            </c:when>
+                            <c:when test="${not empty param.message and param.message eq 'addAddressError'}">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong><fmt:message key="form.message.addAddressError" /></strong><br />
+                                </div>
+                            </c:when>
+                        </c:choose>
                     </div>
                     <table class="table ">
                         <tr>
@@ -68,12 +85,15 @@
                         </c:forEach>
                     </table>
                     <div class="input-group col-sm-3">
-                        <span class="input-group-addon bg-warning"><fmt:message key="total" />${totalCost}</span>
+                        <div class="alert alert-warning" role="alert">
+                            <span class="input-group-addon bg-warning"><fmt:message key="total" />${totalCost}</span>
+                        </div>
                     </div>
                     <br />
                     <div>
                         <form action="/subscriber/subscribe" method="post">
                             <input type="hidden" name="command" value="subscribe" />
+                            <input type="hidden" name="totalCost" value="${totalCost}" />
                             <c:forEach var="item" items="${subscriptionVariants}" varStatus="status">
                                 <input type="hidden" name="subscriptionVariants" value="${item.id}" />
                             </c:forEach>
@@ -81,7 +101,7 @@
                                 <span class="input-group-addon"><fmt:message key="addresses" /></span>
                                 <select name="idAddress" class="form-control">
                                     <c:forEach var="item" items="${userAddresses}" varStatus="status">
-                                        <option value="${item.id}">${item.address}</option>
+                                        <option value="${item.idAddress}">${item.address}</option>
                                     </c:forEach>
                                     <%--<option>${item.name}</option>--%>
                                 </select>
@@ -96,7 +116,7 @@
                             <input type="hidden" name="command" value="addAddress" />
                             <div class="input-group">
                                 <input name="newAddress" type="text" class="form-control"
-                                       placeholder="<fmt:message key="add.info" />">
+                                       placeholder="<fmt:message key="add.pattern" />">
                                 <span class="input-group-btn"><button type="submit" class="btn btn-success"><fmt:message
                                         key="add.address" /></button></span>
                             </div>

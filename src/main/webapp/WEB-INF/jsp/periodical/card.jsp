@@ -45,7 +45,7 @@
                                         </div>
                                     </c:when>
                                     <c:when test="${not empty param.message and param.message eq 'cartError'}">
-                                        <div class="alert alert-success" role="alert">
+                                        <div class="alert alert-danger" role="alert">
                                             <strong><fmt:message key="form.message.cartError" /></strong><br />
                                         </div>
                                     </c:when>

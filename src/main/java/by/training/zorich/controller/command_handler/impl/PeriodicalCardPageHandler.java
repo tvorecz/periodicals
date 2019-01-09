@@ -3,7 +3,6 @@ package by.training.zorich.controller.command_handler.impl;
 import by.training.zorich.bean.Periodical;
 import by.training.zorich.bean.ServiceResult;
 import by.training.zorich.bean.SubscriptionVariant;
-import by.training.zorich.controller.GetRequestParameterType;
 import by.training.zorich.controller.JspPagePath;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.exception.CommandException;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class PeriodicalCardPageHandler implements CommandHandler {
     private final static String PERIODICAL = "/periodical/";
-    private final static Logger LOGGER = LogManager.getLogger(PeriodicalAdditionPageHandler.class);
+    private final static Logger LOGGER = LogManager.getLogger(PeriodicalCardPageHandler.class);
     private ServiceFactory serviceFactory;
 
     public PeriodicalCardPageHandler(ServiceFactory serviceFactory) {

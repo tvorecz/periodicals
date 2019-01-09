@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class JspRepositoryImpl implements JspRepository {
     private final static String PERIODICAL = "/periodical/";
+    private final static String PAYMENT = "/subscriber/payment/";
     private Map<String, String> jspMap;
     private CommandRepository commandRepository;
 
@@ -42,6 +43,7 @@ public class JspRepositoryImpl implements JspRepository {
         jspMap.put("/admin/add", "/WEB-INF/jsp/admin/add.jsp");
         jspMap.put("/periodical/", "/WEB-INF/jsp/periodical/card.jsp");
         jspMap.put("/subscriber/cart", "/WEB-INF/jsp/subscriber/cart.jsp");
+        jspMap.put("/subscriber/payment/", "/WEB-INF/jsp/subscriber/payment.jsp");
 
     }
 
@@ -57,6 +59,8 @@ public class JspRepositoryImpl implements JspRepository {
 
         if(requestURI.contains(PERIODICAL)) {
             requestURI = PERIODICAL;
+        } else if(requestURI.contains(PAYMENT)) {
+            requestURI = PAYMENT;
         }
 
         request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);
@@ -69,6 +73,8 @@ public class JspRepositoryImpl implements JspRepository {
 
         if(uri.contains(PERIODICAL)) {
             handlerType = HandlerType.getActionParameterByName(PERIODICAL);
+        } else if (uri.contains(PAYMENT)){
+            handlerType = HandlerType.getActionParameterByName(PAYMENT);
         } else {
             handlerType = HandlerType.getActionParameterByName(uri);
         }

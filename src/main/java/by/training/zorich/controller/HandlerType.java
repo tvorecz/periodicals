@@ -7,6 +7,7 @@ public enum HandlerType {
     LOCALE("changeLocale"),
     RETURN_PAGE("target"),
     ADD_TO_CART("addToCart"),
+    ADD_ADDRESS("addAddress"),
     DELETE_FROM_CART("deleteCartItem"),
     URI_ADD_PERIODICAL("/admin/added"),
     SUBSCRIBE("subscribe"),
@@ -14,6 +15,7 @@ public enum HandlerType {
     PREPROCESS_EDIT("/admin/edit"),
     PREPROCESS_CARD("/periodical/"),
     PREPROCESS_CART("/subscriber/cart"),
+    PREPROCESS_PAYMENT("/subscriber/payment/"),
 
     ;
 

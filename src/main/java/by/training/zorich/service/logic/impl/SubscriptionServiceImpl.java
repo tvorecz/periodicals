@@ -9,7 +9,10 @@ import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.logic.SubscriptionService;
+import by.training.zorich.service.util.SubscriptionLocalDateCalculator;
+import by.training.zorich.service.util.impl.SubscriptionLocalDateCalculatorImpl;
 
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,12 +21,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private SubscriptionVariantDAO subscriptionVariantDAO;
     private SubscriptionDAO subscriptionDAO;
     private PaymentDAO paymentDAO;
+    private SubscriptionLocalDateCalculator subscriptionLocalDateCalculator;
 
     public SubscriptionServiceImpl(DAOFactory daoFactory) {
         subscriptionTypeDAO = daoFactory.getSubscriptionTypeDAO();
         subscriptionVariantDAO = daoFactory.getSubscriptionVariantDAO();
         subscriptionDAO = daoFactory.getSubscriptionDAO();
         paymentDAO = daoFactory.getPaymentDAO();
+        subscriptionLocalDateCalculator = new SubscriptionLocalDateCalculatorImpl();
     }
 
     @Override
@@ -40,12 +45,43 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public void subscribe(List<UserSubscription> userSubscriptions, ServiceResult serviceResult) throws
                                                                                                  ServiceException {
+        try {
+            Payment commonPayment = userSubscriptions.get(0).getPayment();
+            double totalCost = commonPayment.getAmount();
+            paymentDAO.createPaymentTransactionaly(totalCost);
+            Integer idNewPayment = paymentDAO.getLastInsertedPaymentIdTransactionaly();
 
+            commonPayment.setId(idNewPayment);
+            commonPayment.setPayStatus(false);
+
+            calculateActualDatesToUserSubscriptions(userSubscriptions);
+
+            if(userSubscriptions.size() == 1) {
+                subscriptionDAO.subscribeTransactionaly(userSubscriptions.get(0));
+            } else {
+                subscriptionDAO.subscribeTransactionaly(userSubscriptions);
+            }
+
+            serviceResult.setResultOperation(true);
+            serviceResult.setResultObject(idNewPayment);
+
+        } catch (DAOException e) {
+            serviceResult.setResultOperation(false);
+            throw new ServiceException("Subscribing is failed!", e);
+        }
     }
 
     @Override
     public void getAllSubscriptionsForPayment(int idPayment, ServiceResult serviceResult) throws ServiceException {
+        try {
+            List<UserSubscription> userSubscriptions = subscriptionDAO.getAllSubscriptions(idPayment);
 
+            serviceResult.setResultOperation(true);
+            serviceResult.setResultObject(userSubscriptions);
+        } catch (DAOException e) {
+            serviceResult.setResultOperation(false);
+            throw new ServiceException("Subscribing is failed!", e);
+        }
     }
 
     @Override
@@ -106,6 +142,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             SubscriptionVariant subscriptionVariant = subscriptionVariantIterator.next();
             subscriptionVariant.setPeriodical(periodical);
             subscriptionVariant.calculateActualCost();
+        }
+    }
+
+    private void calculateActualDatesToUserSubscriptions(List<UserSubscription> userSubscriptions) {
+        for (UserSubscription userSubscription : userSubscriptions) {
+            LocalDate dateBegin = subscriptionLocalDateCalculator.calculateStartSubscriptions(userSubscription.getSubscriptionVariant().getSubscriptionType());
+            LocalDate dateEnd = subscriptionLocalDateCalculator.calculateEndSunscription(dateBegin, userSubscription.getSubscriptionVariant().getSubscriptionType());
+            userSubscription.setDateBegin(dateBegin);
+            userSubscription.setDateEnd(dateEnd);
         }
     }
 }

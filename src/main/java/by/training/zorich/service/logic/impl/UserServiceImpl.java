@@ -11,6 +11,7 @@ import by.training.zorich.service.util.PasswordEncoder;
 import by.training.zorich.service.util.impl.PasswordEncodeImpl;
 import by.training.zorich.service.validator.Validator;
 import by.training.zorich.service.validator.impl.user_validator.RegistratingUserValidator;
+import by.training.zorich.service.validator.impl.user_validator.UserAddressValidator;
 import by.training.zorich.service.validator.impl.user_validator.UserValidator;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     private Validator<User> userValidator;
     private Validator<User> registratingUserValidator;
+    private Validator<UserAddress> userAddressValidator;
     private PasswordEncoder passwordEncoder;
     private UserDAO userDAO;
     private UserAddressDAO userAddressDAO;
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(DAOFactory daoFactory) {
         userValidator = new UserValidator();
         registratingUserValidator = new RegistratingUserValidator();
+        userAddressValidator = new UserAddressValidator();
+
         passwordEncoder = new PasswordEncodeImpl();
         userDAO = daoFactory.getUserDAO();
         userAddressDAO = daoFactory.getUserAddressDAO();
@@ -118,6 +122,21 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             serviceResult.setResultOperation(false);
             throw new ServiceException("Updating locale is failed!", e);
+        }
+    }
+
+    @Override
+    public void addAddress(UserAddress address, ServiceResult serviceResult) throws ServiceException {
+        try {
+            if(userAddressValidator.validate(address)) {
+                userAddressDAO.add(address);
+                serviceResult.setResultOperation(true);
+            } else {
+                serviceResult.setResultOperation(false);
+            }
+        } catch (DAOException e) {
+            serviceResult.setResultOperation(false);
+            throw new ServiceException("Adding address is failed!", e);
         }
     }
 }

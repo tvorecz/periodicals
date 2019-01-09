@@ -1,7 +1,6 @@
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.*;
-import by.training.zorich.controller.JspPagePath;
 import by.training.zorich.controller.SessionAttribute;
 import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.exception.CommandException;
@@ -15,10 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SubscriptionCommandHandler.class);
+    private final static String CART_ERROR = "/subscriber/cart?message=subscribeError";
+    private final static String PAYMENT_PAGE = "/subscriber/payment/%1$d?message=success";
     private ServiceFactory serviceFactory;
 
     public SubscriptionCommandHandler(ServiceFactory serviceFactory) {
@@ -38,18 +40,24 @@ public class SubscriptionCommandHandler implements CommandHandler {
 
             if(serviceResult.isDone()) {
                 Integer paymentId = (Integer) serviceResult.getResultObject();
+
+                HttpSession httpSession = request.getSession();
+                httpSession.removeAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
+                httpSession.removeAttribute(SessionAttribute.CURRENT_SIZE_CART_ITEM.getName());
+
+                response.sendRedirect(String.format(PAYMENT_PAGE, paymentId));
+            } else {
+                response.sendRedirect(CART_ERROR);
             }
 
         } catch (ServiceException e) {
             LOGGER.error(e);
-            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+            response.sendRedirect(CART_ERROR);
         }
-
-
     }
 
     private List<UserSubscription> handleRequest(HttpServletRequest request) {
-        List<UserSubscription> userSubscriptions = null;
+        List<UserSubscription> userSubscriptions = new ArrayList<>();
 
         HttpSession httpSession = request.getSession();
 
@@ -59,6 +67,9 @@ public class SubscriptionCommandHandler implements CommandHandler {
 
         int addressId = Integer.parseInt(request.getParameter(UserAddressCharacteristic.ID.getName()));
 
+        Payment payment = new Payment();
+        payment.setAmount(Double.parseDouble(request.getParameter("totalCost")));
+
         for (String subscriptionVariantId : subscriptionVariantsIds) {
             UserSubscription userSubscription = new UserSubscription();
 
@@ -66,15 +77,16 @@ public class SubscriptionCommandHandler implements CommandHandler {
 
             UserAddress userAddress = new UserAddress();
             userAddress.setIdUser(userId);
-            userAddress.setIdAdress(addressId);
+            userAddress.setIdAddress(addressId);
             userSubscription.setUserAddress(userAddress);
 
             SubscriptionVariant subscriptionVariant = new SubscriptionVariant();
             subscriptionVariant.setId(idSubscriptionVariant);
             userSubscription.setSubscriptionVariant(subscriptionVariant);
 
-            userSubscriptions.add(userSubscription);
+            userSubscription.setPayment(payment);
 
+            userSubscriptions.add(userSubscription);
         }
 
         return userSubscriptions;

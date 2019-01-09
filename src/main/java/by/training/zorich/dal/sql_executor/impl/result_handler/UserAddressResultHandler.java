@@ -18,7 +18,7 @@ public class UserAddressResultHandler implements ResultHandler<List<UserAddress>
         while (resultSet.next()) {
             UserAddress userAddress = new UserAddress();
 
-            userAddress.setIdAdress(resultSet.getInt(UserAddressCharacteristic.ID.getName()));
+            userAddress.setIdAddress(resultSet.getInt(UserAddressCharacteristic.ID.getName()));
             userAddress.setIdUser(resultSet.getInt(UserAddressCharacteristic.ID_USER.getName()));
             userAddress.setAddress(resultSet.getString(UserAddressCharacteristic.ADDRESS.getName()));
 
