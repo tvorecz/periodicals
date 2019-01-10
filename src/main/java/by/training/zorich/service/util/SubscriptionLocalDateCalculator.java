@@ -6,5 +6,5 @@ import java.time.LocalDate;
 
 public interface SubscriptionLocalDateCalculator {
     LocalDate calculateStartSubscriptions(SubscriptionType subscriptionType);
-    LocalDate calculateEndSunscription(LocalDate start, SubscriptionType subscriptionType);
+    LocalDate calculateEndSubscription(LocalDate start, SubscriptionType subscriptionType);
 }

@@ -64,24 +64,30 @@ public class SubscriptionCommandHandler implements CommandHandler {
         int userId = (int) httpSession.getAttribute(SessionAttribute.CURRENT_USER_ID.getName());
 
         String[] subscriptionVariantsIds =  request.getParameterValues("subscriptionVariants");
+        String[] subscriptionTypesIds =  request.getParameterValues("subscriptionTypes");
 
         int addressId = Integer.parseInt(request.getParameter(UserAddressCharacteristic.ID.getName()));
 
         Payment payment = new Payment();
         payment.setAmount(Double.parseDouble(request.getParameter("totalCost")));
 
-        for (String subscriptionVariantId : subscriptionVariantsIds) {
+        for (int i = 0; i < subscriptionVariantsIds.length; i++) {
             UserSubscription userSubscription = new UserSubscription();
 
-            int idSubscriptionVariant = Integer.parseInt(subscriptionVariantId);
+            int idSubscriptionVariant = Integer.parseInt(subscriptionVariantsIds[i]);
+            int idSubscriptionType = Integer.parseInt(subscriptionTypesIds[i]);
 
             UserAddress userAddress = new UserAddress();
             userAddress.setIdUser(userId);
             userAddress.setIdAddress(addressId);
             userSubscription.setUserAddress(userAddress);
 
+            SubscriptionType subscriptionType = new SubscriptionType();
+            subscriptionType.setId(idSubscriptionType);
+
             SubscriptionVariant subscriptionVariant = new SubscriptionVariant();
             subscriptionVariant.setId(idSubscriptionVariant);
+            subscriptionVariant.setSubscriptionType(subscriptionType);
             userSubscription.setSubscriptionVariant(subscriptionVariant);
 
             userSubscription.setPayment(payment);

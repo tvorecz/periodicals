@@ -29,9 +29,17 @@ public class SubscriptionLocalDateCalculatorImpl implements SubscriptionLocalDat
     }
 
     @Override
-    public LocalDate calculateEndSunscription(LocalDate start, SubscriptionType subscriptionType) {
+    public LocalDate calculateEndSubscription(LocalDate start, SubscriptionType subscriptionType) {
         SubscriptionCase subscriptionCase = determineSubscriptionCase(subscriptionType);
 
+        switch (subscriptionCase) {
+            case MONTH:
+                return start.plusMonths(1);
+            case QUARTER:
+                return start.plusMonths(3);
+            case HALF_YEAR:
+                return start.plusMonths(6);
+        }
 
         return null;
     }

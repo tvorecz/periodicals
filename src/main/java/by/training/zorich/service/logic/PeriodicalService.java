@@ -16,4 +16,14 @@ public interface PeriodicalService {
     void getAllPeriodicalTypes(ServiceResult serviceResult) throws ServiceException;
 
     void getAllPeriodicalThemes(ServiceResult serviceResult) throws ServiceException;
+
+    void search(String keySearch,
+                Integer periodicalTypeId,
+                Integer periodicalThemeId,
+                Integer subscriptionTypeId,
+                Integer amountOnPage,
+                Integer page,
+                ServiceResult serviceResult) throws ServiceException;
+
+    void getCountOfFoundPeriodicals(ServiceResult serviceResult) throws ServiceException;
 }

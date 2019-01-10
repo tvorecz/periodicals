@@ -61,7 +61,7 @@
 
                         <c:forEach var="item" items="${subscriptionVariants}" varStatus="status">
                             <tr class="cross">
-                                <td class="t-data">
+                                <td class="t-data col-md-2">
                                     <a href="/periodical/${item.periodical.id}">
                                         <img src="${item.periodical.imagePath}" data-imagezoom="true" class="img-thumbnail" alt="">
                                     </a>
@@ -69,7 +69,7 @@
                                     <div class="clearfix" />
                                 </td>
                                 <td class="t-data">${item.periodical.name}</td>
-                                <td class="t-data">${item.subscriptionType.name}</td>
+                                <td class="t-data">${item.subscriptionType.name} (<fmt:message key="begin" /> ${item.expectedBeginOfSubscription})</td>
                                 <td class="t-data">${item.actualCost}</td>
 
 
@@ -86,7 +86,7 @@
                     </table>
                     <div class="input-group col-sm-3">
                         <div class="alert alert-warning" role="alert">
-                            <span class="input-group-addon bg-warning"><fmt:message key="total" />${totalCost}</span>
+                            <span class="input-group-addon bg-warning"><strong><fmt:message key="total" /> ${totalCost}</strong></span>
                         </div>
                     </div>
                     <br />
@@ -96,6 +96,7 @@
                             <input type="hidden" name="totalCost" value="${totalCost}" />
                             <c:forEach var="item" items="${subscriptionVariants}" varStatus="status">
                                 <input type="hidden" name="subscriptionVariants" value="${item.id}" />
+                                <input type="hidden" name="subscriptionTypes" value="${item.subscriptionType.id}" />
                             </c:forEach>
                             <div class="input-group">
                                 <span class="input-group-addon"><fmt:message key="addresses" /></span>

@@ -159,7 +159,7 @@ public class MySqlSubscriptionVariantDAO extends CommonDAO<Object> implements Su
     }
 
     @Override
-    public List<SubscriptionVariant> getSubscriptionVariantsByIds(List<Integer> subscriptionVariantsIds) throws
+    public List<SubscriptionVariant> getSubscriptionVariantsByIdsTransactionaly(List<Integer> subscriptionVariantsIds) throws
                                                                                                          DAOException {
         List<SubscriptionVariant> subscriptionVariants = new ArrayList<>();
 

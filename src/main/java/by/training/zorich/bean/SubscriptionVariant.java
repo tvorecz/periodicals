@@ -1,6 +1,7 @@
 package by.training.zorich.bean;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class SubscriptionVariant implements Serializable {
     private static final long serialVersionUID = 6468690392646791170L;
@@ -11,6 +12,7 @@ public class SubscriptionVariant implements Serializable {
     private SubscriptionType subscriptionType;
     private double costForIssue;
     private Double actualCost;
+    private LocalDate expectedBeginOfSubscription;
 
     public SubscriptionVariant() {
     }
@@ -61,6 +63,14 @@ public class SubscriptionVariant implements Serializable {
 
     public void setActualCost(Double actualCost) {
         this.actualCost = actualCost;
+    }
+
+    public LocalDate getExpectedBeginOfSubscription() {
+        return expectedBeginOfSubscription;
+    }
+
+    public void setExpectedBeginOfSubscription(LocalDate expectedBeginOfSubscription) {
+        this.expectedBeginOfSubscription = expectedBeginOfSubscription;
     }
 
     public void calculateActualCost() {

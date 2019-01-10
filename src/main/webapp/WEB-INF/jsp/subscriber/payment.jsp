@@ -26,7 +26,7 @@
             <div class="check-out">
                 <div class="container">
                     <div class="spec ">
-                        <h3><fmt:message key="form" /></h3>
+                        <h3><fmt:message key="form" /> ${payment.id}</h3>
                         <div class="ser-t">
                             <b></b>
                             <span><i></i></span>
@@ -52,7 +52,7 @@
 
                         <c:forEach var="item" items="${userSubscriptions}" varStatus="status">
                             <tr class="cross">
-                                <td class="t-data">
+                                <td class="t-data col-md-2">
                                     <a href="/periodical/${item.subscriptionVariant.periodical.id}">
                                         <img src="${item.subscriptionVariant.periodical.imagePath}" data-imagezoom="true" class="img-thumbnail" alt="">
                                     </a>
@@ -68,19 +68,19 @@
                         </c:forEach>
                     </table>
                     <div class="input-group col-sm-3">
-                        <span class="input-group-addon bg-warning"><fmt:message key="total" />${payment.amount}</span>
+                        <span class="input-group-addon bg-warning"><fmt:message key="total" /> ${payment.amount}</span>
                     </div>
                     <br />
                     <div class="input-group col-sm-3">
                         <c:choose>
                             <c:when test="${not empty payment.payStatus and payment.payStatus eq true}">
                                 <div class="alert alert-success" role="alert">
-                                    <span class="input-group-addon bg-warning"><fmt:message key="status" /> <fmt:message key="status.true" /></span>
+                                    <span class="input-group-addon bg-warning"><strong><fmt:message key="status" /> <fmt:message key="status.true" /></strong></span>
                                 </div>
                             </c:when>
                             <c:when test="${not empty payment.payStatus and payment.payStatus eq false}">
                                 <div class="alert alert-danger" role="alert">
-                                    <span class="input-group-addon bg-warning"><fmt:message key="status" /> <fmt:message key="status.false" /></span>
+                                    <span class="input-group-addon bg-warning"><strong><fmt:message key="status" /> <fmt:message key="status.false" /></strong></span>
                                 </div>
                             </c:when>
                         </c:choose>

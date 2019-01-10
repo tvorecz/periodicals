@@ -5,7 +5,7 @@ import by.training.zorich.dal.sql_executor.ResultHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LastIdResultHandler implements ResultHandler<Integer> {
+public class ScalarResultHandler implements ResultHandler<Integer> {
 
     @Override
     public Integer handle(ResultSet resultSet) throws SQLException {

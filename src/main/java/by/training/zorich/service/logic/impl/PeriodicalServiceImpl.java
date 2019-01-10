@@ -4,19 +4,14 @@ import by.training.zorich.bean.*;
 import by.training.zorich.dal.dao.PeriodicalDAO;
 import by.training.zorich.dal.dao.PeriodicalThemeDAO;
 import by.training.zorich.dal.dao.PeriodicalTypeDAO;
-import by.training.zorich.dal.dao.SubscriptionVariantDAO;
+import by.training.zorich.dal.dao.SearchCriteria.impl.PeriodicalSearchCriteria;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.logic.PeriodicalService;
 import by.training.zorich.service.validator.Validator;
 import by.training.zorich.service.validator.impl.periodical_validator.PeriodicalValidator;
-import org.apache.commons.fileupload.FileItem;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 public class PeriodicalServiceImpl implements PeriodicalService {
@@ -62,7 +57,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
         try {
             periodical = periodicalDAO.getPeriodicalById(idPeriodical);
 
-            if(periodical != null) {
+            if (periodical != null) {
                 serviceResult.setResultOperation(true);
                 serviceResult.setResultObject(periodical);
             } else {
@@ -111,5 +106,52 @@ public class PeriodicalServiceImpl implements PeriodicalService {
         }
     }
 
+    @Override
+    public void search(String keySearch,
+                       Integer periodicalTypeId,
+                       Integer periodicalThemeId,
+                       Integer subscriptionTypeId,
+                       Integer amountOnPage,
+                       Integer page,
+                       ServiceResult serviceResult) throws ServiceException {
+        PeriodicalSearchCriteria periodicalSearchCriteria = new PeriodicalSearchCriteria();
 
+        periodicalSearchCriteria.setSearchKey(keySearch);
+        periodicalSearchCriteria.setPeriodicalTypeId(periodicalTypeId);
+        periodicalSearchCriteria.setPeriodicalThemeId(periodicalThemeId);
+        periodicalSearchCriteria.setSubscriptionTypeId(subscriptionTypeId);
+
+        if (page != null && amountOnPage != null) {
+            periodicalSearchCriteria.setBeginOfRange(amountOnPage * (page - 1) + 1);
+        }
+
+        periodicalSearchCriteria.setCountOfRecords(amountOnPage);
+
+        try {
+            List<Periodical> periodicals = periodicalDAO.searchPeriodicalsTransactionaly(periodicalSearchCriteria);
+            serviceResult.setResultOperation(true);
+            serviceResult.setResultObject(periodicals);
+        } catch (DAOException e) {
+            serviceResult.setResultObject(false);
+            throw new ServiceException("Searching is failed!", e);
+        }
+    }
+
+    @Override
+    public void getCountOfFoundPeriodicals(ServiceResult serviceResult) throws ServiceException {
+        try {
+            Integer countOfFoundPeriodicals = periodicalDAO.getCountOfFoundPeriodicalsTransactionaly();
+
+            if (countOfFoundPeriodicals == null) {
+                serviceResult.setResultOperation(false);
+            } else {
+                serviceResult.setResultOperation(true);
+                serviceResult.setResultObject(countOfFoundPeriodicals);
+            }
+
+        } catch (DAOException e) {
+            serviceResult.setResultObject(false);
+            throw new ServiceException("Getting count of found periodicals is failed!", e);
+        }
+    }
 }

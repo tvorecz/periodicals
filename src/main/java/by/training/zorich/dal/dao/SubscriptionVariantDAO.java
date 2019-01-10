@@ -18,5 +18,5 @@ public interface SubscriptionVariantDAO {
 
     SubscriptionVariant getSubscriptionVariantById(int idSubscriptionVariant) throws DAOException;
 
-    List<SubscriptionVariant> getSubscriptionVariantsByIds(List<Integer> subscriptionVariantsIds) throws DAOException;
+    List<SubscriptionVariant> getSubscriptionVariantsByIdsTransactionaly(List<Integer> subscriptionVariantsIds) throws DAOException;
 }

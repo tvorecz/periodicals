@@ -32,7 +32,7 @@ public class UserSubscriptionHandler implements ResultHandler<List<UserSubscript
             if(paymentMap.isEmpty() && !paymentMap.containsKey(currentPaymentId)) {
                 currentPayment = new Payment();
                 currentPayment.setId(currentPaymentId);
-                currentPayment.setAmount(resultSet.getInt(PaymentCharacteristic.AMOUNT.getName()));
+                currentPayment.setAmount(resultSet.getDouble(PaymentCharacteristic.AMOUNT.getName()));
                 currentPayment.setPayStatus(resultSet.getBoolean(PaymentCharacteristic.PAY_STATUS.getName()));
             } else {
                 currentPayment = paymentMap.get(currentPaymentId);

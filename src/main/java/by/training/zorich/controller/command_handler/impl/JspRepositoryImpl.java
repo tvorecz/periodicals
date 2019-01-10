@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class JspRepositoryImpl implements JspRepository {
     private final static String PERIODICAL = "/periodical/";
+    private final static String SEARCH = "/periodical/search";
     private final static String PAYMENT = "/subscriber/payment/";
     private Map<String, String> jspMap;
     private CommandRepository commandRepository;
@@ -44,6 +45,7 @@ public class JspRepositoryImpl implements JspRepository {
         jspMap.put("/periodical/", "/WEB-INF/jsp/periodical/card.jsp");
         jspMap.put("/subscriber/cart", "/WEB-INF/jsp/subscriber/cart.jsp");
         jspMap.put("/subscriber/payment/", "/WEB-INF/jsp/subscriber/payment.jsp");
+        jspMap.put("/periodical/search", "/WEB-INF/jsp/periodical/search.jsp");
 
     }
 
@@ -57,7 +59,7 @@ public class JspRepositoryImpl implements JspRepository {
 
         prepareRequestForPage(request, response, requestURI);
 
-        if(requestURI.contains(PERIODICAL)) {
+        if(requestURI.contains(PERIODICAL) & !requestURI.contains(SEARCH)) {
             requestURI = PERIODICAL;
         } else if(requestURI.contains(PAYMENT)) {
             requestURI = PAYMENT;
@@ -71,7 +73,9 @@ public class JspRepositoryImpl implements JspRepository {
                                                                                                           IOException {
         HandlerType handlerType = null;
 
-        if(uri.contains(PERIODICAL)) {
+        if(uri.contains(SEARCH)) {
+            handlerType = HandlerType.getActionParameterByName(SEARCH);
+        } else if(uri.contains(PERIODICAL)) {
             handlerType = HandlerType.getActionParameterByName(PERIODICAL);
         } else if (uri.contains(PAYMENT)){
             handlerType = HandlerType.getActionParameterByName(PAYMENT);

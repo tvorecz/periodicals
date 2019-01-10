@@ -35,6 +35,8 @@ public class MySqlPeriodicalDAO extends CommonDAO<Object> implements PeriodicalD
                                                                 "\n" +
                                                                 "\t\tWHERE periodicals.idPeriodical = %1$d";
 
+    private static final String QUERY_SELECT_FINDED_PERIODICALS_ITEMS = "SELECT FOUND_ROWS()";
+
     public MySqlPeriodicalDAO(DataSourceConnector connector,
                               TransactionManager transactionManager,
                               SQLExecutor sqlExecutor,
@@ -51,7 +53,7 @@ public class MySqlPeriodicalDAO extends CommonDAO<Object> implements PeriodicalD
 
     @Override
     public Integer getLastInsertedPeriodicalIdTransactionaly() throws DAOException {
-        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PEDIOCAL_ID, HandlerType.LAST_INSERTED_ITEM_ID, TransactionStatus.ON);
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PEDIOCAL_ID, HandlerType.SCALAR, TransactionStatus.ON);
     }
 
     @Override
@@ -67,8 +69,14 @@ public class MySqlPeriodicalDAO extends CommonDAO<Object> implements PeriodicalD
     }
 
     @Override
-    public List<Periodical> searchPeriodicals(PeriodicalSearchCriteria periodicalSearchCriteria) throws DAOException {
-        return null;
+    public List<Periodical> searchPeriodicalsTransactionaly(PeriodicalSearchCriteria periodicalSearchCriteria) throws DAOException {
+        String query = periodicalSearchCriteria.createQuery();
+        return (List<Periodical>) super.executeSelectFromDataSource(query, HandlerType.SEARCH_PERIODICAL ,TransactionStatus.ON);
+    }
+
+    @Override
+    public Integer getCountOfFoundPeriodicalsTransactionaly() throws DAOException {
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_FINDED_PERIODICALS_ITEMS, HandlerType.SCALAR, TransactionStatus.END);
     }
 
     @Override

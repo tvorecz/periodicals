@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SubscriptionTypeDAO {
     List<SubscriptionType> getAllSubscriptionTypes() throws DAOException;
+    SubscriptionType getSubscriptionTypeByIdTransactionaly(int id) throws DAOException;
 }

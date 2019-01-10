@@ -141,8 +141,8 @@
                                                     </c:when>
                                                 </c:choose>
 
-                                                <li><a style="${pageScope.disabledRu}" href="..${requestScope.get('path')}?command=changeLocale&locale=ru_RU"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="language.ru" /></a></li>
-                                                <li><a style="${pageScope.disabledEn}" href="..${requestScope.get('path')}?command=changeLocale&locale=en_EN"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="language.en" /></a>
+                                                <li><a style="${pageScope.disabledRu}" href="${requestScope.get('path')}?command=changeLocale&locale=ru_RU"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="language.ru" /></a></li>
+                                                <li><a style="${pageScope.disabledEn}" href="${requestScope.get('path')}?command=changeLocale&locale=en_EN"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="language.en" /></a>
                                                 </li>
 
                                             </ul>

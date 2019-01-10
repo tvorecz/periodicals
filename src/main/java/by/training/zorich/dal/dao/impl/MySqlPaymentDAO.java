@@ -10,6 +10,8 @@ import by.training.zorich.dal.sql_executor.HandlerType;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 
+import java.util.Locale;
+
 public class MySqlPaymentDAO extends CommonDAO<Object> implements PaymentDAO {
     private static final String QUERY_SELECT_LAST_PAYMENT_ID = "SELECT last_insert_id()";
     private static final String QUERY_CREATE_PAYMENT = "INSERT INTO payments (amount, payStatus) values(%1$f, %2$d)";
@@ -24,13 +26,13 @@ public class MySqlPaymentDAO extends CommonDAO<Object> implements PaymentDAO {
 
     @Override
     public void createPaymentTransactionaly(double totalCost) throws DAOException {
-        String query = String.format(QUERY_CREATE_PAYMENT, totalCost, 0);
+        String query = String.format(Locale.US, QUERY_CREATE_PAYMENT, totalCost, 0);
         super.executeUpdateDataSource(query, TransactionStatus.ON);
     }
 
     @Override
     public Integer getLastInsertedPaymentIdTransactionaly() throws DAOException {
-        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PAYMENT_ID, HandlerType.LAST_INSERTED_ITEM_ID, TransactionStatus.ON);
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PAYMENT_ID, HandlerType.SCALAR, TransactionStatus.ON);
     }
 
     @Override

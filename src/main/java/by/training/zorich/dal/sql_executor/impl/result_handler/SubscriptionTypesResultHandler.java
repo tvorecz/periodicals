@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionTypeResultHandler implements ResultHandler<List<SubscriptionType>> {
+public class SubscriptionTypesResultHandler implements ResultHandler<List<SubscriptionType>> {
     @Override
     public List<SubscriptionType> handle(ResultSet resultSet) throws SQLException {
         List<SubscriptionType> result = new ArrayList<>();

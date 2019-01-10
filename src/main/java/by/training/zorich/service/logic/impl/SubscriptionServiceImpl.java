@@ -54,7 +54,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             commonPayment.setId(idNewPayment);
             commonPayment.setPayStatus(false);
 
-            calculateActualDatesToUserSubscriptions(userSubscriptions);
+            calculateActualDatesForUserSubscriptions(userSubscriptions);
 
             if(userSubscriptions.size() == 1) {
                 subscriptionDAO.subscribeTransactionaly(userSubscriptions.get(0));
@@ -121,12 +121,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public void getSubscriptionVariantsByIds(List<Integer> subscriptionVariantsIds, ServiceResult serviceResult) throws
                                                                                                                  ServiceException {
         try {
-            List<SubscriptionVariant> subscriptionVariants = subscriptionVariantDAO.getSubscriptionVariantsByIds(subscriptionVariantsIds);
+            List<SubscriptionVariant> subscriptionVariants = subscriptionVariantDAO.getSubscriptionVariantsByIdsTransactionaly(subscriptionVariantsIds);
 
             if(subscriptionVariants == null) {
                 serviceResult.setResultOperation(false);
             } else {
                 serviceResult.setResultOperation(true);
+                calculateActualCostForSubscriptionVariants(subscriptionVariants);
+                calculateExpectedBeginsOfSubscription(subscriptionVariants);
                 serviceResult.setResultObject(subscriptionVariants);
             }
         } catch (DAOException e) {
@@ -145,12 +147,37 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
-    private void calculateActualDatesToUserSubscriptions(List<UserSubscription> userSubscriptions) {
-        for (UserSubscription userSubscription : userSubscriptions) {
-            LocalDate dateBegin = subscriptionLocalDateCalculator.calculateStartSubscriptions(userSubscription.getSubscriptionVariant().getSubscriptionType());
-            LocalDate dateEnd = subscriptionLocalDateCalculator.calculateEndSunscription(dateBegin, userSubscription.getSubscriptionVariant().getSubscriptionType());
+    private void calculateActualCostForSubscriptionVariants(List<SubscriptionVariant> subscriptionVariants) {
+        Iterator<SubscriptionVariant> subscriptionVariantIterator = subscriptionVariants.iterator();
+
+        while (subscriptionVariantIterator.hasNext()) {
+            SubscriptionVariant subscriptionVariant = subscriptionVariantIterator.next();
+            subscriptionVariant.calculateActualCost();
+        }
+    }
+
+    private void calculateActualDatesForUserSubscriptions(List<UserSubscription> userSubscriptions) throws DAOException {
+        Iterator<UserSubscription> userSubscriptionIterator = userSubscriptions.iterator();
+
+        while (userSubscriptionIterator.hasNext()) {
+            UserSubscription userSubscription = userSubscriptionIterator.next();
+            SubscriptionType subscriptionType = subscriptionTypeDAO.getSubscriptionTypeByIdTransactionaly(userSubscription.getSubscriptionVariant().getSubscriptionType().getId());
+
+            LocalDate dateBegin = subscriptionLocalDateCalculator.calculateStartSubscriptions(subscriptionType);
+            LocalDate dateEnd = subscriptionLocalDateCalculator.calculateEndSubscription(dateBegin, subscriptionType);
+
             userSubscription.setDateBegin(dateBegin);
             userSubscription.setDateEnd(dateEnd);
+        }
+    }
+
+    private void calculateExpectedBeginsOfSubscription(List<SubscriptionVariant> subscriptionVariants) {
+        Iterator<SubscriptionVariant> userSubscriptions = subscriptionVariants.iterator();
+
+        while (userSubscriptions.hasNext()) {
+            SubscriptionVariant subscriptionVariant = userSubscriptions.next();
+            LocalDate expectedBeginOfSubscription = subscriptionLocalDateCalculator.calculateStartSubscriptions(subscriptionVariant.getSubscriptionType());
+            subscriptionVariant.setExpectedBeginOfSubscription(expectedBeginOfSubscription);
         }
     }
 }

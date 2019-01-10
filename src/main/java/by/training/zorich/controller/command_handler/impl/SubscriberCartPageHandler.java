@@ -60,10 +60,10 @@ public class SubscriberCartPageHandler implements CommandHandler {
                     double totalCost = 0;
 
                     for (SubscriptionVariant subscriptionVariant : subscriptionVariants) {
-                        subscriptionVariant.calculateActualCost();
                         totalCost += subscriptionVariant.getActualCost();
-                        request.setAttribute("totalCost", totalCost);
                     }
+
+                    request.setAttribute("totalCost", totalCost);
 
                     if(serviceResult.isDone()) {
                         userAddresses = (List<UserAddress>) serviceResult.getResultObject();

@@ -15,7 +15,9 @@ public interface PeriodicalDAO {
 
     Periodical getPeriodicalById(int idPeriodical) throws DAOException;
 
-    List<Periodical> searchPeriodicals(PeriodicalSearchCriteria periodicalSearchCriteria) throws DAOException;
+    List<Periodical> searchPeriodicalsTransactionaly(PeriodicalSearchCriteria periodicalSearchCriteria) throws DAOException;
+
+    Integer getCountOfFoundPeriodicalsTransactionaly() throws DAOException;
 
     boolean validatePeriodicalByNameTransactionaly(String namePeriodical) throws DAOException;
 }

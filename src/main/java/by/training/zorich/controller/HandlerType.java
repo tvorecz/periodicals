@@ -11,6 +11,7 @@ public enum HandlerType {
     DELETE_FROM_CART("deleteCartItem"),
     URI_ADD_PERIODICAL("/admin/added"),
     SUBSCRIBE("subscribe"),
+    SEARCH("/periodical/search"),
     PREPROCESS_ADD("/admin/add"),
     PREPROCESS_EDIT("/admin/edit"),
     PREPROCESS_CARD("/periodical/"),
