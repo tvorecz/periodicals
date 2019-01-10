@@ -98,7 +98,7 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
 
                         serviceResult.clear();
 
-                        serviceFactory.getPeriodicalService().getAllPeriodicalTypes(serviceResult);
+                        serviceFactory.getPeriodicalService().getAllPeriodicalThemes(serviceResult);
 
                         if(serviceResult.isDone()) {
                             List<PeriodicalTheme> periodicalThemes = (List<PeriodicalTheme>) serviceResult.getResultObject();

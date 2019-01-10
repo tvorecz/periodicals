@@ -70,7 +70,7 @@ public class MainController extends HttpServlet {
         req.setAttribute("pathToImages", pathToImages);
 
         if(ServletFileUpload.isMultipartContent(req)) {
-//            req.setCharacterEncoding("UTF-8");
+            req.setCharacterEncoding("UTF-8");
             commandName = req.getRequestURI();
         } else {
             commandName = req.getParameter(HandlerType.COMMAND.getName());

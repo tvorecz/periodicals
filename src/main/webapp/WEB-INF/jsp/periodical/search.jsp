@@ -126,11 +126,11 @@
                         </div>
                     </div>
                     <div class="col-md-8 col-sm-8">
+                        <div class="row">
 
 
 
-                        <%--<div class="row">--%>
-                            <%--<c:forEach var="item" items="${periodicals}" varStatus="counter">--%>
+                            <c:forEach var="item" items="${periodicals}" varStatus="counter">
                                 <%--<c:if test="${((counter - 1) mod 3) eq 0}">--%>
                                     <%--<div class="clearfix"></div>--%>
                                     <%--</div>--%>
@@ -138,21 +138,22 @@
                                     <%--<br />--%>
                                     <%--<div class="row">--%>
                                 <%--</c:if>--%>
-                                    <%--<div class="col-md-4 women-grids wp1 animated wow slideInUp" data-wow-delay=".5s">--%>
-                                        <%--<a href="/periodical/${item.id}">--%>
-                                            <%--<div class="product-img">--%>
-                                                <%--<img src="${item.imagePath}" alt="" />--%>
-                                            <%--</div>--%>
-                                        <%--</a>--%>
-                                        <%--<h4>${item.name}</h4>--%>
-                                        <%--<h5>${item.type.name}</h5>--%>
-                                    <%--</div>--%>
-                            <%--</c:forEach>--%>
-                        <%--</div>--%>
-                        <%--<br />--%>
-                        <%--<br />--%>
+                                    <div class="col-md-4 women-grids wp1 animated wow slideInUp" data-wow-delay=".5s">
+                                        <a href="/periodical/${item.id}">
+                                            <div class="product-img">
+                                                <img src="${item.imagePath}" alt="" />
+                                            </div>
+                                        </a>
+                                        <h4>${item.name}</h4>
+                                        <h5>${item.type.name}</h5>
+                                    </div>
+                            </c:forEach>
 
 
+
+                        </div>
+                        <br />
+                        <br />
                         <ul class="pagination">
                             <c:if test="${currentPage eq 1}">
                                 <c:set var="disabledPrev" value="disabled" scope="page" />

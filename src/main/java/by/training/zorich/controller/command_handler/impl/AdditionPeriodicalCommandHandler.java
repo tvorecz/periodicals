@@ -36,7 +36,7 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
 
     public AdditionPeriodicalCommandHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
-        diskFileItemFactory = new DiskFileItemFactory(1048576, new File(TEMP_FILES));
+        diskFileItemFactory = new DiskFileItemFactory(5242880, new File(TEMP_FILES));
     }
 
     @Override
@@ -51,7 +51,8 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
         try {
             requestParsingResult = handleMultipartRequest(request);
         } catch (FileUploadException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
+            response.sendRedirect(ADD_PAGE_ERROR);
         }
 
         String fullImagePath = String.format(FULL_PATH_IMAGE_CATALOG, request.getAttribute("pathToImages"), File.separator, requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()));

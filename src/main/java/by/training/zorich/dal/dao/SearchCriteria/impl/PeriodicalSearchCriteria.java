@@ -85,7 +85,7 @@ public class PeriodicalSearchCriteria implements SearchCriteria {
             if(searchKey != null) {
 //                query.append(String.format(QUERY_PERIODICAL_CONTENT, searchKey, searchKey));
 
-                query.append("periodicals.namePeriodical LIKE '%");
+                query.append("(periodicals.namePeriodical LIKE '%");
                 query.append(searchKey);
                 query.append("%' OR periodicals.annotation LIKE '%");
                 query.append(searchKey);
@@ -94,8 +94,14 @@ public class PeriodicalSearchCriteria implements SearchCriteria {
                 hasFirstElement = true;
             }
 
-            hasFirstElement = appendIntegerToQuery(periodicalTypeId, query, hasFirstElement, QUERY_PERIODICAL_TYPE);
-            hasFirstElement = appendIntegerToQuery(periodicalThemeId, query, hasFirstElement, QUERY_PERIODICAL_THEME);
+            if(appendIntegerToQuery(periodicalTypeId, query, hasFirstElement, QUERY_PERIODICAL_TYPE)) {
+                hasFirstElement = true;
+            }
+
+            if( appendIntegerToQuery(periodicalThemeId, query, hasFirstElement, QUERY_PERIODICAL_THEME)) {
+                hasFirstElement = true;
+            }
+
             appendIntegerToQuery(subscriptionTypeId, query, hasFirstElement, QUERY_SUBSCRIPTION_TYPE);
         }
 
