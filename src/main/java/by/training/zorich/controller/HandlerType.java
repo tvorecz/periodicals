@@ -12,6 +12,7 @@ public enum HandlerType {
     URI_ADD_PERIODICAL("/admin/added"),
     SUBSCRIBE("subscribe"),
     SEARCH("/periodical/search"),
+    LOGOUT("/logout"),
     PREPROCESS_ADD("/admin/add"),
     PREPROCESS_EDIT("/admin/edit"),
     PREPROCESS_CARD("/periodical/"),

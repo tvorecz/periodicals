@@ -19,19 +19,19 @@
             </div>
             <div class="col-md-6 phone-w3l">
                 <ul>
-                    <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span></li>
-
                     <c:choose>
                         <c:when test="${empty sessionScope.currentUserId}">
-                            <li><a href="/login?target=${requestScope.get('path')}"><fmt:message key="user.login" /></a></li>
-                            <li><a href="/register"><fmt:message key="user.reg" /></a></li>
+                            <li><a href="/login?target=${requestScope.get('path')}" role="button" class="btn btn-primary"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <fmt:message key="user.login" /></a></li>
+                            <li><a href="/register" role="button" class="btn btn-info"><fmt:message key="user.reg" /></a></li>
                         </c:when>
                         <c:otherwise>
-                            <li><a href="/profile"><fmt:message key="user.profile" /> ${sessionScope.userLogin}</a></li>
+                            <c:if test="${sessionScope.userRole.name eq 'администратор'}">
+                                <li><a href="/admin/add" role="button" class="btn btn-warning"><fmt:message key="user.admin" /></a></li>
+                            </c:if>
+                            <li><a href="/subscriber" role="button" class="btn btn-success"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <fmt:message key="user.profile" /> ${sessionScope.userLogin}</a></li>
+                            <li><a href="/logout?target=${requestScope.get('path')}" role="button" class="btn btn-default"><fmt:message key="user.logout" /></a></li>
                         </c:otherwise>
                     </c:choose>
-
-
                 </ul>
             </div>
             <div class="clearfix"></div>
@@ -61,11 +61,11 @@
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
 
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.woman" /></a>
+                                                <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=13&subscriptionTypeId=&amountOnPage=9"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.woman" /></a>
                                                 </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.man" /></a>
+                                                <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=14&subscriptionTypeId=&amountOnPage=9"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.man" /></a>
                                                 </li>
-                                                <li><a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.children" /></a></li>
+                                                <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=8&subscriptionTypeId=&amountOnPage=9"> <i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.children" /></a></li>
 
                                             </ul>
 
@@ -73,26 +73,26 @@
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
 
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.month" /></a>
+                                                <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=&subscriptionTypeId=1&amountOnPage=9"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.month" /></a>
                                                 </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.quarter" /></a>
+                                                <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=&subscriptionTypeId=3&amountOnPage=9"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.quarter" /></a>
                                                 </li>
-                                                <li><a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.half_year" /></a></li>
+                                                <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=&subscriptionTypeId=2&amountOnPage=9"> <i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.half_year" /></a></li>
 
                                             </ul>
 
                                         </div>
-                                        <div class="col-sm-4">
-                                            <ul class="multi-column-dropdown">
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.full" /></a>
-                                                </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.favorable" /></a>
-                                                </li>
-                                                <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.departmental" /></a>
-                                                </li>
+                                        <%--<div class="col-sm-4">--%>
+                                            <%--<ul class="multi-column-dropdown">--%>
+                                                <%--<li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.full" /></a>--%>
+                                                <%--</li>--%>
+                                                <%--<li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.favorable" /></a>--%>
+                                                <%--</li>--%>
+                                                <%--<li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="periodicals.departmental" /></a>--%>
+                                                <%--</li>--%>
 
-                                            </ul>
-                                        </div>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </ul>
                             </li>
@@ -103,22 +103,23 @@
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
+                                                <li><a href="/subscriber/cart"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.cart" /></a>
+                                                </li>
                                                 <c:choose>
                                                     <c:when test="${empty sessionScope.currentUserId}">
                                                         <li><a href="/login?target=${requestScope.get('path')}"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.login" /></a></li>
                                                         <li><a href="/register"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.reg" /></a></li>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <li><a href="/profile"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.profile" /></a></li>
-                                                        <li><a href="/profile/subscriptions"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.subcribe" /></a></li>
+                                                        <c:if test="${sessionScope.userRole eq UserRole.ADMIN}">
+                                                            <li><a href="/admin/add"><fmt:message key="account.admin.add" /></a></li>
+                                                        </c:if>
+                                                        <li><a href="/subscriber"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.profile" /></a></li>
+                                                        <li><a href="/subscriber/subscriptions"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.subcribe" /></a></li>
+                                                        <li><a href="/logout?target=${requestScope.get('path')}"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.logout" /></a></li>
                                                     </c:otherwise>
                                                 </c:choose>
-
-                                                <li><a href="/cart"><i class="fa fa-angle-right" aria-hidden="true"></i><fmt:message key="account.cart" /></a>
-                                                </li>
-
                                             </ul>
-
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -159,8 +160,8 @@
                 </nav>
             </div>
             <div class="col-md-4 search-agileinfo">
-                <form action="#" method="post">
-                    <input type="search" name="Search" placeholder="<fmt:message key="into.search" />" required="">
+                <form action="/periodical/search" method="get">
+                    <input type="search" name="keySearch" placeholder="<fmt:message key="into.search" />" required="">
                     <button type="submit" class="btn btn-default search" aria-label="Left Align">
                         <i class="fa fa-search" aria-hidden="true"> </i>
                     </button>

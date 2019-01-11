@@ -136,8 +136,6 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
         return result;
     }
 
-
-
     private Periodical handleMapForPeriodical(Map<String, String> parameterMap) {
         PeriodicalType periodicalType = null;
         PeriodicalTheme periodicalTheme = null;
@@ -154,6 +152,7 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
         periodical.setImagePath(parameterMap.get(PeriodicalCharacteristic.IMAGE.getName()));
         periodical.setName(parameterMap.get(PeriodicalCharacteristic.NAME.getName()));
         periodical.setAnnotation(parameterMap.get(PeriodicalCharacteristic.ANNOTATION.getName()));
+        periodical.setPeriodicityInMonth(Integer.parseInt(parameterMap.get(PeriodicalCharacteristic.PERIODICITY.getName())));
 
         return periodical;
     }

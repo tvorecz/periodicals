@@ -37,6 +37,7 @@ public class CommandRepositoryImpl implements CommandRepository {
         actionRepository.put(HandlerType.PREPROCESS_PAYMENT, new PaymentPageHandler(serviceFactory));
         actionRepository.put(HandlerType.ADD_ADDRESS, new AdditionUserAddressCommandHandler(serviceFactory));
         actionRepository.put(HandlerType.SEARCH, new PeriodicalSearchCommandHandler(serviceFactory));
+        actionRepository.put(HandlerType.LOGOUT, new LogoutCommandHandler(serviceFactory));
     }
 
     @Override

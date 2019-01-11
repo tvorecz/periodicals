@@ -154,7 +154,7 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
         StringBuffer stringBuffer = new StringBuffer(SEARCH_LINK);
 
         if(keySearch != null) {
-            stringBuffer.append("keySearch=" + keySearch);
+            stringBuffer.append("keySearch=" + keySearch + "&");
         }
 
         if(periodicalTypeId != null) {
@@ -170,7 +170,7 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
         }
 
         if(amountOnPage != null) {
-            stringBuffer.append("amountOnPage" + amountOnPage + "&");
+            stringBuffer.append("amountOnPage=" + amountOnPage + "&");
         }
 
         String resultString = stringBuffer.toString();

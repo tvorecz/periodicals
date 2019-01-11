@@ -126,21 +126,23 @@
                         </div>
                     </div>
                     <div class="col-md-8 col-sm-8">
+
+                        <%--<c:set value="${count % 3}" var="count" scope="page" />--%>
                         <div class="row">
 
 
 
-                            <c:forEach var="item" items="${periodicals}" varStatus="counter">
-                                <%--<c:if test="${((counter - 1) mod 3) eq 0}">--%>
-                                    <%--<div class="clearfix"></div>--%>
-                                    <%--</div>--%>
-                                    <%--<br />--%>
-                                    <%--<br />--%>
-                                    <%--<div class="row">--%>
-                                <%--</c:if>--%>
+                            <c:forEach var="item" items="${periodicals}" varStatus="status">
+                                    <c:if test="${((status.count - 1) % 3) eq 0}">
+                                <div class="clearfix"></div>
+                        </div>
+                            <br />
+                            <br />
+                            <div class="row">
+                                    </c:if>
                                     <div class="col-md-4 women-grids wp1 animated wow slideInUp" data-wow-delay=".5s">
                                         <a href="/periodical/${item.id}">
-                                            <div class="product-img">
+                                            <div class="product-img img-responsive">
                                                 <img src="${item.imagePath}" alt="" />
                                             </div>
                                         </a>
@@ -148,39 +150,36 @@
                                         <h5>${item.type.name}</h5>
                                     </div>
                             </c:forEach>
-
-
-
                         </div>
                         <br />
                         <br />
                         <ul class="pagination">
-                            <c:if test="${currentPage eq 1}">
-                                <c:set var="disabledPrev" value="disabled" scope="page" />
+                            <c:if test="${currentPage ne 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${currentQueryLink}&page=${currentPage - 1}" ><fmt:message
+                                            key="previous" /></a>
+                                </li>
                             </c:if>
-                            <c:if test="${currentPage eq countPage}">
-                                <c:set var="disabledNext" value="disabled" scope="page" />
-                            </c:if>
-
-                            <li class="page-item ${disabledPrev}">
-                                <a class="page-link" href="${currentQueryLink}&page=${currentPage - 1}"><fmt:message
-                                        key="previous" /></a>
-                            </li>
-
 
                             <c:forEach var="item" items="${pageNumbers}" varStatus="status">
                                 <c:if test="${item eq currentPage}">
                                     <c:set var="activePage" value="active" scope="page" />
+                                </c:if>
+                                <c:if test="${item ne currentPage}">
+                                    <c:set var="activePage" value="" scope="page" />
                                 </c:if>
                                 <li class="page-item ${activePage}">
                                     <a class="page-link" href="${currentQueryLink}&page=${item}">${item}</a>
                                 </li>
                             </c:forEach>
 
-                            <li class="page-item ${disabledNext}">
-                                <a class="page-link" href="${currentQueryLink}&page=${currentPage + 1}"><fmt:message
-                                        key="next" /></a>
-                            </li>
+                            <c:if test="${currentPage ne countPage}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${currentQueryLink}&page=${currentPage + 1}"><fmt:message
+                                            key="next" /></a>
+                                </li>
+                            </c:if>
+
                         </ul>
                     </div>
                 </div>

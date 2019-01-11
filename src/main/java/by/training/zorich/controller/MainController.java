@@ -32,7 +32,6 @@ public class MainController extends HttpServlet {
             pathToImages = getServletContext().getRealPath("/images");
         } catch (CommandException e) {
             LOGGER.error(e);
-            throw new ServletException("Error during init servlet.",e);
         }
 
         jspRepository = JspRepositoryImpl.getInstance();
@@ -53,7 +52,7 @@ public class MainController extends HttpServlet {
                 try {
                     handler.handle(req, resp);
                 } catch (CommandException e) {
-                    e.printStackTrace();
+                    LOGGER.error(e);
                 }
             } else {
                 jspRepository.readdressToJsp(req, resp);

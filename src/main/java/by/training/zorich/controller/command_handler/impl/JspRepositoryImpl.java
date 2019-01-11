@@ -17,6 +17,7 @@ public class JspRepositoryImpl implements JspRepository {
     private final static String PERIODICAL = "/periodical/";
     private final static String SEARCH = "/periodical/search";
     private final static String PAYMENT = "/subscriber/payment/";
+    private final static String LOGOUT = "logout";
     private Map<String, String> jspMap;
     private CommandRepository commandRepository;
 
@@ -63,6 +64,8 @@ public class JspRepositoryImpl implements JspRepository {
             requestURI = PERIODICAL;
         } else if(requestURI.contains(PAYMENT)) {
             requestURI = PAYMENT;
+        } else if(requestURI.contains(LOGOUT)) {
+            return;
         }
 
         request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);

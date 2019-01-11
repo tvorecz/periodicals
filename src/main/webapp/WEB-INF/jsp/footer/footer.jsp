@@ -37,10 +37,10 @@
             <div class="col-md-3 footer-grids fgd3">
                 <h4><fmt:message key="periodical.periodicals" /></h4>
                 <ul>
-                    <li><a href="#"><fmt:message key="periodical.catalog" /></a></li>
-                    <li><a href="#"><fmt:message key="periodical.month" /></a></li>
-                    <li><a href="#"><fmt:message key="periodical.quarter" /></a></li>
-                    <li><a href="#"><fmt:message key="periodical.half_year" /></a></li>
+                    <li><a href="/periodical/search"><fmt:message key="periodical.catalog" /></a></li>
+                    <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=&subscriptionTypeId=1&amountOnPage=9"><fmt:message key="periodical.month" /></a></li>
+                    <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=&subscriptionTypeId=3&amountOnPage=9"><fmt:message key="periodical.quarter" /></a></li>
+                    <li><a href="/periodical/search?keySearch=&periodicalTypeId=&periodicalThemeId=&subscriptionTypeId=2&amountOnPage=9"><fmt:message key="periodical.half_year" /></a></li>
                 </ul>
             </div>
             <div class="col-md-3 footer-grids fgd4">
@@ -51,13 +51,20 @@
                             <li><a href="/login?target=${requestScope.get('path')}"><fmt:message key="account.login" /></a></li>
                             <li><a href="/register"><fmt:message key="account.register" /></a></li>
                         </c:when>
-                        <c:otherwise>
-                            <li><a href="/profile"><fmt:message key="account.profile" /></a></li>
-                            <li><a href="/profile/subscriptions"><fmt:message key="account.subscription" /></a></li>
-                        </c:otherwise>
+                        <c:when test="${sessionScope.userRole.name eq 'администратор'}">
+                            <li><a href="/admin/add"><fmt:message key="account.admin.add" /></a></li>
+                            <li><a href="/subscriber"><fmt:message key="account.profile" /></a></li>
+                            <li><a href="/subscriber/subscriptions"><fmt:message key="account.subscription" /></a></li>
+                            <li><a href="/logout?target=${requestScope.get('path')}"><fmt:message key="account.logout" /></a></li>
+                        </c:when>
+                        <c:when test="${sessionScope.userRole.name eq 'подписчик'}">
+                            <li><a href="/subscriber"><fmt:message key="account.profile" /></a></li>
+                            <li><a href="/subscriber/subscriptions"><fmt:message key="account.subscription" /></a></li>
+                            <li><a href="/logout?target=${requestScope.get('path')}"><fmt:message key="account.logout" /></a></li>
+                        </c:when>
                     </c:choose>
 
-                    <li><a href="/cart"><fmt:message key="account.cart" /></a></li>
+                    <li><a href="/subscriber/cart"><fmt:message key="account.cart" /></a></li>
                 </ul>
             </div>
             <div class="clearfix"></div>
