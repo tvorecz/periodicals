@@ -59,8 +59,7 @@
                                        placeholder="<fmt:message key="confirm" />">
                                 <div class="clearfix"></div>
                             </div>
-
-                            <input type="submit" value="<fmt:message key="submit" />">
+                            <input class="btn btn-success center-block" type="submit" value="<fmt:message key="submit" />">
                         </form>
                     </div>
                 </div>

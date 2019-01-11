@@ -106,7 +106,10 @@
                                     </c:forEach>
                                     <%--<option>${item.name}</option>--%>
                                 </select>
-                                <span class="input-group-btn"><button type="submit" class="btn btn-success"><fmt:message
+                                <c:if test="${(sessionScope.userRole.name ne 'подписчик' and sessionScope.userRole.name ne 'администратор') or empty userAddresses}">
+                                    <c:set var="disabledButton" value="disabled" scope="page" />
+                                </c:if>
+                                <span class="input-group-btn"><button type="submit" class="btn btn-success" ${pageScope.disabledButton}><fmt:message
                                         key="subscribe" /></button></span>
                             </div>
                         </form>

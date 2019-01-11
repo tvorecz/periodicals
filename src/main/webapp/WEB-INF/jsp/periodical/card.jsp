@@ -76,11 +76,11 @@
                                                     <option value="${item.id}">${item.subscriptionType.name} — ${item.actualCost} <fmt:message key="currency" /></option>
                                                 </c:forEach>
                                             </select>
-                                            <c:choose>
-                                                <c:when test="${sessionScope.userRole.name ne 'подписчик' and sessionScope.userRole.name ne 'администратор'}">
-                                                    <c:set var="disabledButton" value="disabled" scope="page" />
-                                                </c:when>
-                                            </c:choose>
+                                            <%--<c:choose>--%>
+                                                <%--<c:when test="${sessionScope.userRole.name ne 'подписчик' and sessionScope.userRole.name ne 'администратор'}">--%>
+                                                    <%--<c:set var="disabledButton" value="disabled" scope="page" />--%>
+                                                <%--</c:when>--%>
+                                            <%--</c:choose>--%>
                                             <span class="input-group-btn"><button type="submit" class="btn btn-secondary" ${pageScope.disabledButton}><i class="fa fa-cart-plus" aria-hidden="true"></i> <fmt:message key="add" /></button></span>
                                         </div>
                                     </form>

@@ -25,13 +25,18 @@
     </filter>
 
     <filter>
-        <filter-name>securitySubsciberFilter</filter-name>
+        <filter-name>securitySubscriberFilter</filter-name>
         <filter-class>by.training.zorich.controller.filter.SubsciberSecurityFilter</filter-class>
     </filter>
 
     <filter>
         <filter-name>localeFilter</filter-name>
         <filter-class>by.training.zorich.controller.filter.LocaleFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>loginAndRegisterPageFilter</filter-name>
+        <filter-class>by.training.zorich.controller.filter.LoginAndRegisterPageFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -50,8 +55,23 @@
     </filter-mapping>
 
     <filter-mapping>
-        <filter-name>securitySubsciberFilter</filter-name>
-        <url-pattern>/subscriber/*</url-pattern>
+        <filter-name>securitySubscriberFilter</filter-name>
+        <url-pattern>/subscriber/</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>securitySubscriberFilter</filter-name>
+        <url-pattern>/subscriber/payment/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>loginAndRegisterPageFilter</filter-name>
+        <url-pattern>/login</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>loginAndRegisterPageFilter</filter-name>
+        <url-pattern>/register</url-pattern>
     </filter-mapping>
 
     <listener>

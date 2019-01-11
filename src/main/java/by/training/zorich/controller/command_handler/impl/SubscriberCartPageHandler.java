@@ -55,7 +55,9 @@ public class SubscriberCartPageHandler implements CommandHandler {
 
                     serviceResult.clear();
 
-                    serviceFactory.getUserService().getAllUserAddresses(userId, serviceResult);
+                    if(userId != null) {
+                        serviceFactory.getUserService().getAllUserAddresses(userId, serviceResult);
+                    }
 
                     double totalCost = 0;
 
@@ -65,12 +67,11 @@ public class SubscriberCartPageHandler implements CommandHandler {
 
                     request.setAttribute("totalCost", totalCost);
 
-                    if(serviceResult.isDone()) {
+                    if(userId != null && serviceResult.isDone()) {
                         userAddresses = (List<UserAddress>) serviceResult.getResultObject();
-                        request.setAttribute("userAddresses", userAddresses);
-                    } else {
-
                     }
+
+                    request.setAttribute("userAddresses", userAddresses);
                 } else {
 
                 }
