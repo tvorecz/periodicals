@@ -60,15 +60,17 @@ public class JspRepositoryImpl implements JspRepository {
 
         prepareRequestForPage(request, response, requestURI);
 
-        if(requestURI.contains(PERIODICAL) & !requestURI.contains(SEARCH)) {
-            requestURI = PERIODICAL;
-        } else if(requestURI.contains(PAYMENT)) {
-            requestURI = PAYMENT;
-        } else if(requestURI.contains(LOGOUT)) {
-            return;
-        }
+        if(!response.isCommitted()) {
+            if(requestURI.contains(PERIODICAL) & !requestURI.contains(SEARCH)) {
+                requestURI = PERIODICAL;
+            } else if(requestURI.contains(PAYMENT)) {
+                requestURI = PAYMENT;
+            } else if(requestURI.contains(LOGOUT)) {
+                return;
+            }
 
-        request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);
+            request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);
+        }
     }
 
     private void prepareRequestForPage(HttpServletRequest request, HttpServletResponse response, String uri) throws

@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 
 <fmt:setLocale value="${sessionScope.currentLocale.name}" scope="session" />
 
@@ -29,14 +30,18 @@
                     <div class="form-w3agile">
                         <h3><fmt:message key="form" /></h3>
 
-                        <c:choose>
-                            <c:when test="${not empty param.message and param.message ne 'failure'}">
-                                <div class="alert alert-success" role="alert">
-                                    <strong><fmt:message key="form.message.finish" /></strong><br /><fmt:message
-                                        key="form.message.call" />
-                                </div>
-                            </c:when>
-                        </c:choose>
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${not empty param.message and param.message ne 'failure'}">--%>
+                                <%--<div class="alert alert-success" role="alert">--%>
+                                    <%--<strong><fmt:message key="form.message.finish" /></strong><br /><fmt:message--%>
+                                        <%--key="form.message.call" />--%>
+                                <%--</div>--%>
+                            <%--</c:when>--%>
+                        <%--</c:choose>--%>
+
+                        <ctg:message messageType="${param.message}">
+                            <fmt:message key="${messageForUser}" />
+                        </ctg:message>
 
                         <form action="/login/done" method="post">
                             <input type="hidden" name="command" value="login" />

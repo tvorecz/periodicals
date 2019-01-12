@@ -118,13 +118,23 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                                     countPage = countOfFoundPeriodicals / amountOnPage + 1;
                                 }
 
+                                if(currentPage > countPage) {
+                                    if(countPage != 0) {
+                                        response.sendRedirect(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, countPage));
+                                        return;
+                                    }
+                                } else if(currentPage < 1) {
+                                    response.sendRedirect(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, 1));
+                                    return;
+                                }
+
                                 Integer[] pageNumbers = createPageNumbersArray(countPage, currentPage);
 
                                 request.setAttribute("keySearch", keySearch);
                                 request.setAttribute("periodicals", periodicals);
                                 request.setAttribute("countPage", countPage);
                                 request.setAttribute("currentPage", currentPage);
-                                request.setAttribute("currentQueryLink", createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, currentPage));
+                                request.setAttribute("currentQueryLink", createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage));
                                 request.setAttribute("selectedPeriodicalTypeId", periodicalTypeId);
                                 request.setAttribute("selectedPeriodicalThemeId", periodicalThemeId);
                                 request.setAttribute("selectedSubscriptionTypeId", subscriptionTypeId);
@@ -133,6 +143,10 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                                 request.setAttribute("periodicalThemes", periodicalThemes);
                                 request.setAttribute("subscriptionTypes", subscriptionTypes);
                                 request.setAttribute("pageNumbers", pageNumbers);
+
+                                if(countPage == 0) {
+                                    request.setAttribute("message", "nothingFound");
+                                }
                             }
                         }
                     }
@@ -151,6 +165,34 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                                            Integer subscriptionTypeId,
                                            Integer amountOnPage,
                                            Integer page){
+        StringBuffer stringBuffer = new StringBuffer();
+
+        if(keySearch != null || periodicalThemeId != null || periodicalTypeId != null || subscriptionTypeId != null || amountOnPage != null) {
+            stringBuffer.append(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage));
+            stringBuffer.append("&");
+        }
+
+
+        if(page != null) {
+            stringBuffer.append("page=" + page);
+        }
+
+        String resultString = stringBuffer.toString();
+
+        char endChar = resultString.charAt(resultString.length() - 1);
+
+        if(endChar == '&') {
+            resultString = resultString.substring(0, resultString.length() - 1);
+        }
+
+        return resultString;
+    }
+
+    private String createCurrentSearchLink(String keySearch,
+                                           Integer periodicalTypeId,
+                                           Integer periodicalThemeId,
+                                           Integer subscriptionTypeId,
+                                           Integer amountOnPage){
         StringBuffer stringBuffer = new StringBuffer(SEARCH_LINK);
 
         if(keySearch != null) {

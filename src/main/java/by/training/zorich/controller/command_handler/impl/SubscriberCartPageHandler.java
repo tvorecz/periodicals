@@ -42,9 +42,9 @@ public class SubscriberCartPageHandler implements CommandHandler {
         List<UserAddress> userAddresses = null;
 
         try {
-            if(subscriptionVariantIds != null) {
-                ServiceResult serviceResult = new ServiceResult();
+            ServiceResult serviceResult = new ServiceResult();
 
+            if(subscriptionVariantIds != null) {
                 serviceFactory.getSubscriptionService().getSubscriptionVariantsByIds(subscriptionVariantIds, serviceResult);
 
 
@@ -53,12 +53,6 @@ public class SubscriberCartPageHandler implements CommandHandler {
 
                     request.setAttribute("subscriptionVariants", subscriptionVariants);
 
-                    serviceResult.clear();
-
-                    if(userId != null) {
-                        serviceFactory.getUserService().getAllUserAddresses(userId, serviceResult);
-                    }
-
                     double totalCost = 0;
 
                     for (SubscriptionVariant subscriptionVariant : subscriptionVariants) {
@@ -66,16 +60,20 @@ public class SubscriberCartPageHandler implements CommandHandler {
                     }
 
                     request.setAttribute("totalCost", totalCost);
-
-                    if(userId != null && serviceResult.isDone()) {
-                        userAddresses = (List<UserAddress>) serviceResult.getResultObject();
-                    }
-
-                    request.setAttribute("userAddresses", userAddresses);
-                } else {
-
                 }
             }
+
+            serviceResult.clear();
+
+            if(userId != null) {
+                serviceFactory.getUserService().getAllUserAddresses(userId, serviceResult);
+            }
+
+            if(userId != null && serviceResult.isDone()) {
+                userAddresses = (List<UserAddress>) serviceResult.getResultObject();
+            }
+
+            request.setAttribute("userAddresses", userAddresses);
         } catch (ServiceException e) {
             LOGGER.error(e);
             response.sendRedirect(JspPagePath.ERROR);

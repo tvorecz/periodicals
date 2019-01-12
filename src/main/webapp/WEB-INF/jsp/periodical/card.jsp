@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 
 <fmt:setLocale value="${sessionScope.currentLocale.name}" scope="session" />
 
@@ -33,23 +34,27 @@
                             <div class="col-md-6 single-top-right">
                                 <h3 class="item_name">${periodical.name}</h3>
 
-                                <c:choose>
-                                    <c:when test="${not empty param.message and param.message eq 'dbSuccess'}">
-                                        <div class="alert alert-success" role="alert">
-                                            <strong><fmt:message key="form.message.addToDB" /></strong><br />
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${not empty param.message and param.message eq 'cartSuccess'}">
-                                        <div class="alert alert-success" role="alert">
-                                            <strong><fmt:message key="form.message.addToCart" /></strong><br />
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${not empty param.message and param.message eq 'cartError'}">
-                                        <div class="alert alert-danger" role="alert">
-                                            <strong><fmt:message key="form.message.cartError" /></strong><br />
-                                        </div>
-                                    </c:when>
-                                </c:choose>
+                                <%--<c:choose>--%>
+                                    <%--<c:when test="${not empty param.message and param.message eq 'dbSuccess'}">--%>
+                                        <%--<div class="alert alert-success" role="alert">--%>
+                                            <%--<strong><fmt:message key="form.message.addToDB" /></strong><br />--%>
+                                        <%--</div>--%>
+                                    <%--</c:when>--%>
+                                    <%--<c:when test="${not empty param.message and param.message eq 'cartSuccess'}">--%>
+                                        <%--<div class="alert alert-success" role="alert">--%>
+                                            <%--<strong><fmt:message key="form.message.addToCart" /></strong><br />--%>
+                                        <%--</div>--%>
+                                    <%--</c:when>--%>
+                                    <%--<c:when test="${not empty param.message and param.message eq 'cartError'}">--%>
+                                        <%--<div class="alert alert-danger" role="alert">--%>
+                                            <%--<strong><fmt:message key="form.message.cartError" /></strong><br />--%>
+                                        <%--</div>--%>
+                                    <%--</c:when>--%>
+                                <%--</c:choose>--%>
+
+                                <ctg:message messageType="${param.message}">
+                                    <fmt:message key="${messageForUser}" />
+                                </ctg:message>
 
                                 <div class="single-rating">
                                     <ul>

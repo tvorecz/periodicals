@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 
 <fmt:setLocale value="${sessionScope.currentLocale.name}" scope="session" />
 
@@ -126,6 +127,18 @@
                         </div>
                     </div>
                     <div class="col-md-8 col-sm-8">
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${not empty requestScope.message and requestScope.message eq 'nothing'}">--%>
+                                <%--<div class="alert alert-info" role="alert">--%>
+                                    <%--<strong><fmt:message key="message.nothing" /></strong><br />--%>
+                                <%--</div>--%>
+                            <%--</c:when>--%>
+                        <%--</c:choose>--%>
+
+                        <ctg:message messageType="${requestScope.message}">
+                            <fmt:message key="${messageForUser}" />
+                        </ctg:message>
+
 
                         <%--<c:set value="${count % 3}" var="count" scope="page" />--%>
                         <div class="row">
@@ -173,7 +186,7 @@
                                 </li>
                             </c:forEach>
 
-                            <c:if test="${currentPage ne countPage}">
+                            <c:if test="${currentPage ne countPage and countPage ne 0}">
                                 <li class="page-item">
                                     <a class="page-link" href="${currentQueryLink}&page=${currentPage + 1}"><fmt:message
                                             key="next" /></a>

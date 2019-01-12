@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 
 <fmt:setLocale value="${sessionScope.currentLocale.name}" scope="session" />
 
@@ -32,23 +33,28 @@
                             <span><i></i></span>
                             <b class="line"></b>
                         </div>
-                        <c:choose>
-                            <c:when test="${not empty param.message and param.message eq 'subscribeError'}">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong><fmt:message key="form.message.subscribeError" /></strong><br />
-                                </div>
-                            </c:when>
-                            <c:when test="${not empty param.message and param.message eq 'addAddressSuccess'}">
-                                <div class="alert alert-success" role="alert">
-                                    <strong><fmt:message key="form.message.addAddressSuccess" /></strong><br />
-                                </div>
-                            </c:when>
-                            <c:when test="${not empty param.message and param.message eq 'addAddressError'}">
-                                <div class="alert alert-danger" role="alert">
-                                    <strong><fmt:message key="form.message.addAddressError" /></strong><br />
-                                </div>
-                            </c:when>
-                        </c:choose>
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${not empty param.message and param.message eq 'subscribeError'}">--%>
+                                <%--<div class="alert alert-danger" role="alert">--%>
+                                    <%--<strong><fmt:message key="form.message.subscribeError" /></strong><br />--%>
+                                <%--</div>--%>
+                            <%--</c:when>--%>
+                            <%--<c:when test="${not empty param.message and param.message eq 'addAddressSuccess'}">--%>
+                                <%--<div class="alert alert-success" role="alert">--%>
+                                    <%--<strong><fmt:message key="form.message.addAddressSuccess" /></strong><br />--%>
+                                <%--</div>--%>
+                            <%--</c:when>--%>
+                            <%--<c:when test="${not empty param.message and param.message eq 'addAddressError'}">--%>
+                                <%--<div class="alert alert-danger" role="alert">--%>
+                                    <%--<strong><fmt:message key="form.message.addAddressError" /></strong><br />--%>
+                                <%--</div>--%>
+                            <%--</c:when>--%>
+                        <%--</c:choose>--%>
+
+                        <ctg:message messageType="${param.message}">
+                            <fmt:message key="${messageForUser}" />
+                        </ctg:message>
+
                     </div>
                     <table class="table ">
                         <tr>
@@ -106,10 +112,10 @@
                                     </c:forEach>
                                     <%--<option>${item.name}</option>--%>
                                 </select>
-                                <c:if test="${(sessionScope.userRole.name ne 'подписчик' and sessionScope.userRole.name ne 'администратор') or empty userAddresses}">
-                                    <c:set var="disabledButton" value="disabled" scope="page" />
+                                <c:if test="${(sessionScope.userRole.name ne 'подписчик' and sessionScope.userRole.name ne 'администратор') or empty userAddresses or empty subscriptionVariants}">
+                                    <c:set var="disabledSubscribeButton" value="disabled" scope="page" />
                                 </c:if>
-                                <span class="input-group-btn"><button type="submit" class="btn btn-success" ${pageScope.disabledButton}><fmt:message
+                                <span class="input-group-btn"><button type="submit" class="btn btn-success" ${pageScope.disabledSubscribeButton}><fmt:message
                                         key="subscribe" /></button></span>
                             </div>
                         </form>
@@ -119,9 +125,12 @@
                         <form action="/subscriber/address/add" method="post">
                             <input type="hidden" name="command" value="addAddress" />
                             <div class="input-group">
+                                <c:if test="${(sessionScope.userRole.name ne 'подписчик' and sessionScope.userRole.name ne 'администратор')}">
+                                    <c:set var="disabledAddressButton" value="disabled" scope="page" />
+                                </c:if>
                                 <input name="newAddress" type="text" class="form-control"
                                        placeholder="<fmt:message key="add.pattern" />">
-                                <span class="input-group-btn"><button type="submit" class="btn btn-success"><fmt:message
+                                <span class="input-group-btn"><button type="submit" class="btn btn-success" ${pageScope.disabledAddressButton}><fmt:message
                                         key="add.address" /></button></span>
                             </div>
                         </form>
