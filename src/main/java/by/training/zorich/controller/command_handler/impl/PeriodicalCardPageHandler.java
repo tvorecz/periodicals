@@ -19,6 +19,7 @@ import java.util.List;
 
 public class PeriodicalCardPageHandler implements CommandHandler {
     private final static String PERIODICAL = "/periodical/";
+    private final static String ERROR_404 = "/error404";
     private final static Logger LOGGER = LogManager.getLogger(PeriodicalCardPageHandler.class);
     private ServiceFactory serviceFactory;
 
@@ -54,16 +55,16 @@ public class PeriodicalCardPageHandler implements CommandHandler {
                         request.setAttribute("subscriptionVariants", subscriptionVariants);
                         request.setAttribute("periodical", periodical);
                     } else {
-                        response.sendRedirect(JspPagePath.ERROR);
+                        response.sendRedirect(ERROR_404);
                     }
 
                 } else {
-                    response.sendRedirect(JspPagePath.ERROR);
+                    response.sendRedirect(ERROR_404);
                 }
 
             } catch (ServiceException e) {
                 LOGGER.error(e);
-                response.sendRedirect(JspPagePath.ERROR);
+                response.sendRedirect(ERROR_404);
             }
         }
     }

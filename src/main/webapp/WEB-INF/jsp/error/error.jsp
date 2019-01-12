@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: tvore
   Date: 03.12.2018
-  Time: 15:04
+  Time: 16:37
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
@@ -23,12 +23,12 @@
     <body>
         <c:import url="/WEB-INF/jsp/header/header.jsp" charEncoding="utf-8" />
 
-        <fmt:bundle basename="property.page" prefix="main.">
-            <div class="banner-agile" style="background: url(/images/banner1.jpg) no-repeat 0px 0px">
+        <fmt:bundle basename="property.page" prefix="error.">
+            <div class="banner-agile">
                 <div class="container">
-                    <h2><fmt:message key="form" /></h2>
-                    <h3><fmt:message key="here" /> <span><fmt:message key="call" /></span></h3>
-                    <a href="/periodical/search"><fmt:message key="catalog" /></a>
+                    <h2><fmt:message key="wrong" /></h2>
+                    <h3><fmt:message key="page" /> <span><fmt:message key="not" /></span></h3>
+                    <a href="/"><fmt:message key="return" /></a>
                 </div>
             </div>
         </fmt:bundle>

@@ -47,6 +47,7 @@ public class JspRepositoryImpl implements JspRepository {
         jspMap.put("/subscriber/cart", "/WEB-INF/jsp/subscriber/cart.jsp");
         jspMap.put("/subscriber/payment/", "/WEB-INF/jsp/subscriber/payment.jsp");
         jspMap.put("/periodical/search", "/WEB-INF/jsp/periodical/search.jsp");
+        jspMap.put("/error404", "/WEB-INF/jsp/error/error.jsp");
 
     }
 
