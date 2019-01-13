@@ -122,6 +122,8 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                                     if(countPage != 0) {
                                         response.sendRedirect(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, countPage));
                                         return;
+                                    } if(countPage == 0) {
+                                        currentPage = 1;
                                     }
                                 } else if(currentPage < 1) {
                                     response.sendRedirect(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, 1));

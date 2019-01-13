@@ -5,6 +5,8 @@ import by.training.zorich.controller.command_handler.CommandHandler;
 import by.training.zorich.controller.command_handler.CommandRepository;
 import by.training.zorich.controller.command_handler.JspRepository;
 import by.training.zorich.controller.command_handler.exception.CommandException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JspRepositoryImpl implements JspRepository {
+    private final static Logger LOGGER = LogManager.getLogger(JspRepositoryImpl.class);
     private final static String PERIODICAL = "/periodical/";
     private final static String SEARCH = "/periodical/search";
     private final static String PAYMENT = "/subscriber/payment/";
     private final static String LOGOUT = "logout";
+    private final static String ERROR_404 = "/error404";
     private Map<String, String> jspMap;
     private CommandRepository commandRepository;
 
@@ -70,7 +74,14 @@ public class JspRepositoryImpl implements JspRepository {
                 return;
             }
 
-            request.getRequestDispatcher(jspMap.get(requestURI)).forward(request, response);
+            String uri = jspMap.get(requestURI);
+
+            if(uri == null) {
+                response.sendRedirect(ERROR_404);
+            } else {
+                request.getRequestDispatcher(uri).forward(request, response);
+            }
+
         }
     }
 
@@ -94,7 +105,8 @@ public class JspRepositoryImpl implements JspRepository {
             try {
                 handler.handle(request, response);
             } catch (CommandException e) {
-                e.printStackTrace();
+                LOGGER.error(e);
+                response.sendRedirect(ERROR_404);
             }
         }
     }

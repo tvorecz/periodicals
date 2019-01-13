@@ -33,6 +33,8 @@ public class LogoutCommandHandler implements CommandHandler {
         httpSession.removeAttribute(SessionAttribute.CURRENT_USER_ID.getName());
         httpSession.removeAttribute(SessionAttribute.CURRENT_USER_NAME.getName());
         httpSession.removeAttribute(SessionAttribute.CURRENT_USER_ROLE.getName());
+        httpSession.removeAttribute(SessionAttribute.CURRENT_SIZE_CART_ITEM.getName());
+        httpSession.removeAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
 
         String returnPath = request.getParameter(TARGET_PATH_COMMAND);
 

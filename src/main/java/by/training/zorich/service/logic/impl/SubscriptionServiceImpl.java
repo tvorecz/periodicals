@@ -11,17 +11,20 @@ import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.logic.SubscriptionService;
 import by.training.zorich.service.util.SubscriptionLocalDateCalculator;
 import by.training.zorich.service.util.impl.SubscriptionLocalDateCalculatorImpl;
+import by.training.zorich.service.validator.Validator;
+import by.training.zorich.service.validator.impl.subscription_validator.PaymentBeloningToUserValidator;
 
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
 public class SubscriptionServiceImpl implements SubscriptionService {
-    private SubscriptionTypeDAO subscriptionTypeDAO;
-    private SubscriptionVariantDAO subscriptionVariantDAO;
-    private SubscriptionDAO subscriptionDAO;
-    private PaymentDAO paymentDAO;
-    private SubscriptionLocalDateCalculator subscriptionLocalDateCalculator;
+    private final SubscriptionTypeDAO subscriptionTypeDAO;
+    private final SubscriptionVariantDAO subscriptionVariantDAO;
+    private final SubscriptionDAO subscriptionDAO;
+    private final PaymentDAO paymentDAO;
+    private final SubscriptionLocalDateCalculator subscriptionLocalDateCalculator;
+    private final Validator<Payment> paymentValidator;
 
     public SubscriptionServiceImpl(DAOFactory daoFactory) {
         subscriptionTypeDAO = daoFactory.getSubscriptionTypeDAO();
@@ -29,6 +32,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionDAO = daoFactory.getSubscriptionDAO();
         paymentDAO = daoFactory.getPaymentDAO();
         subscriptionLocalDateCalculator = new SubscriptionLocalDateCalculatorImpl();
+        paymentValidator = new PaymentBeloningToUserValidator();
     }
 
     @Override
@@ -72,12 +76,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void getAllSubscriptionsForPayment(int idPayment, ServiceResult serviceResult) throws ServiceException {
+    public void getAllSubscriptionsForPayment(int idPayment, int idUser, ServiceResult serviceResult) throws ServiceException {
         try {
-            List<UserSubscription> userSubscriptions = subscriptionDAO.getAllSubscriptions(idPayment);
+            Payment payment = new Payment();
+            payment.setId(idPayment);
+            payment.setUserId(idUser);
 
-            serviceResult.setResultOperation(true);
-            serviceResult.setResultObject(userSubscriptions);
+            if(paymentValidator.validate(payment)) {
+                List<UserSubscription> userSubscriptions = subscriptionDAO.getAllSubscriptions(idPayment);
+
+                serviceResult.setResultOperation(true);
+                serviceResult.setResultObject(userSubscriptions);
+            } else {
+                serviceResult.setResultOperation(false);
+            }
         } catch (DAOException e) {
             serviceResult.setResultOperation(false);
             throw new ServiceException("Subscribing is failed!", e);

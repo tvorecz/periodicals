@@ -13,7 +13,7 @@ public interface SubscriptionService {
                                                                                                               ServiceException;
     void subscribe(List<UserSubscription> userSubscriptions, ServiceResult serviceResult) throws ServiceException;
 
-    void getAllSubscriptionsForPayment(int idPayment, ServiceResult serviceResult) throws ServiceException;
+    void getAllSubscriptionsForPayment(int idPayment, int idUser, ServiceResult serviceResult) throws ServiceException;
 
     void getAllSubscriptionVariantsForPeriodical(Periodical periodical, ServiceResult serviceResult) throws ServiceException;
 

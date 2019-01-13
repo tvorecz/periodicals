@@ -3,14 +3,14 @@ package by.training.zorich.service.validator.impl.user_validator;
 import by.training.zorich.bean.User;
 import by.training.zorich.dal.dao.UserDAO;
 import by.training.zorich.dal.exception.DAOException;
-import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
+import by.training.zorich.dal.factory.impl.MySqlDAOFactory;
 import by.training.zorich.service.exception.ServiceException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistratingUserValidator extends UserValidator {
-    private static final UserDAO USER_DAO = SQLiteDAOFactory.getInstance().getUserDAO();
+    private static final UserDAO USER_DAO = MySqlDAOFactory.getInstance().getUserDAO();
 
     private static final String EMAIL_PATTERN = "(([a-z\\.\\-0-9]{2,})(@)([a-z]{2,})(.))([a-z]{2,})";
     private Pattern emailPattern;

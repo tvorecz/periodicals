@@ -8,7 +8,7 @@ import by.training.zorich.dal.factory.DAOFactory;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 
-public class SQLiteDAOFactory implements DAOFactory {
+public class MySqlDAOFactory implements DAOFactory {
     private static UserDAO userDAOImpl;
     private static UserRoleDAO userRoleDAOImpl;
     private static UserAddressDAO userAddressDAOImpl;
@@ -20,14 +20,14 @@ public class SQLiteDAOFactory implements DAOFactory {
     private static SubscriptionVariantDAO subscriptionVariantDAOImpl;
     private static PaymentDAO paymentDAOImpl;
 
-    private SQLiteDAOFactory() {
+    private MySqlDAOFactory() {
     }
 
     private static class SQLiteDAOFactoryHelper {
-        private static final SQLiteDAOFactory FACTORY = new SQLiteDAOFactory();
+        private static final MySqlDAOFactory FACTORY = new MySqlDAOFactory();
     }
 
-    public static SQLiteDAOFactory getInstance() {
+    public static MySqlDAOFactory getInstance() {
         return SQLiteDAOFactoryHelper.FACTORY;
     }
 

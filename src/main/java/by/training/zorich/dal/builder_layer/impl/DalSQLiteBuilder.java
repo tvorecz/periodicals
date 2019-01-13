@@ -8,7 +8,7 @@ import by.training.zorich.dal.connector.impl.MySqlDBConnector;
 import by.training.zorich.dal.connector.impl.TransactionManagerImpl;
 import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
-import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
+import by.training.zorich.dal.factory.impl.MySqlDAOFactory;
 import by.training.zorich.dal.sql_executor.SQLExecutor;
 import by.training.zorich.dal.sql_executor.ResultHandlerRepository;
 import by.training.zorich.dal.sql_executor.impl.MySqlExecutor;
@@ -30,7 +30,7 @@ public class DalSQLiteBuilder implements DalBuilder {
         TransactionManager transactionManager = TransactionManagerImpl.getInstance();
         transactionManager.init(connector);
 
-        DAOFactory factory = SQLiteDAOFactory.getInstance();
+        DAOFactory factory = MySqlDAOFactory.getInstance();
         factory.init(connector, transactionManager, SQLExecutor, handlerRepository);
 
         return factory;

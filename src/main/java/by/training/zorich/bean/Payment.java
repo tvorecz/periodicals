@@ -8,6 +8,7 @@ public class Payment implements Serializable {
     private int id;
     private double amount;
     private boolean payStatus;
+    private int userId;
 
     public Payment() {
     }
@@ -36,6 +37,14 @@ public class Payment implements Serializable {
         this.payStatus = payStatus;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -53,7 +62,10 @@ public class Payment implements Serializable {
         if (Double.compare(payment.amount, amount) != 0) {
             return false;
         }
-        return payStatus == payment.payStatus;
+        if (payStatus != payment.payStatus) {
+            return false;
+        }
+        return userId == payment.userId;
     }
 
     @Override
@@ -64,6 +76,7 @@ public class Payment implements Serializable {
         temp = Double.doubleToLongBits(amount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (payStatus ? 1 : 0);
+        result = 31 * result + userId;
         return result;
     }
 
@@ -73,6 +86,7 @@ public class Payment implements Serializable {
                "id=" + id +
                ", amount=" + amount +
                ", payStatus=" + payStatus +
+               ", userId=" + userId +
                '}';
     }
 }

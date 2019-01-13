@@ -2,7 +2,7 @@
 
 <configuration>
     <properties>
-        <property name="fileName">logs/periodical_logs.log</property>
+        <property name="fileName">/logs/periodical_logs.log</property>
         <property name="basePattern">%d{HH:mm:ss, dd MMM yyyy} [%-5p] (%F:%L) — %m%n — \n %xEx{full}</property>
     </properties>
 

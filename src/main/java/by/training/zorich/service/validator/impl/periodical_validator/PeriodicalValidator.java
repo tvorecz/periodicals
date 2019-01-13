@@ -3,12 +3,12 @@ package by.training.zorich.service.validator.impl.periodical_validator;
 import by.training.zorich.bean.Periodical;
 import by.training.zorich.dal.dao.PeriodicalDAO;
 import by.training.zorich.dal.exception.DAOException;
-import by.training.zorich.dal.factory.impl.SQLiteDAOFactory;
+import by.training.zorich.dal.factory.impl.MySqlDAOFactory;
 import by.training.zorich.service.exception.ServiceException;
 import by.training.zorich.service.validator.Validator;
 
 public class PeriodicalValidator implements Validator<Periodical> {
-    private final static PeriodicalDAO PERIODICAL_DAO = SQLiteDAOFactory.getInstance().getPeriodicalDAO();
+    private final static PeriodicalDAO PERIODICAL_DAO = MySqlDAOFactory.getInstance().getPeriodicalDAO();
 
     @Override
     public boolean validate(Periodical objectForValidation) throws ServiceException {
@@ -25,7 +25,7 @@ public class PeriodicalValidator implements Validator<Periodical> {
     }
 
     private boolean validatePeriodicity(int periodicity) {
-        if (periodicity <= 31) {
+        if (periodicity <= 31 && periodicity >= 1) {
             return true;
         } else {
             return false;

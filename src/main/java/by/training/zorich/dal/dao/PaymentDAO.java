@@ -9,4 +9,6 @@ public interface PaymentDAO {
     Payment getPaymentById(int idPayment) throws DAOException;
 
     void createPaymentTransactionaly(double totalCost) throws DAOException;
+
+    Boolean checkPaymentBelongingToUser(int idPayment, int idUser) throws DAOException;
 }
