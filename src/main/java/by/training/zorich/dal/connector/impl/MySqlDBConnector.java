@@ -117,13 +117,12 @@ public class MySqlDBConnector implements DataSourceConnector {
                 throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.");
             }
         } catch (SQLException e) {
-            throw new DataSourceConnectorException("Error returning connection to free connection pool.");
-        } finally {
             try {
                 addNewConnectionToThePool();
-            } catch (SQLException e) {
-                throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.");
+            } catch (SQLException ex) {
+                throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.", ex);
             }
+            throw new DataSourceConnectorException("Error returning connection to free connection pool.", e);
         }
     }
 

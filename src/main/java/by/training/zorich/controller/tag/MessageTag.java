@@ -35,6 +35,12 @@ public class MessageTag extends BodyTagSupport {
 
         MESSAGE_MAP.put("success", "form.message.finish");
         ALERT_MAP.put("success", "alert-success");
+
+        MESSAGE_MAP.put("errorRegister", "message.error");
+        ALERT_MAP.put("errorRegister", "alert-danger");
+
+        MESSAGE_MAP.put("failureLogin", "form.message.errorLogin");
+        ALERT_MAP.put("failureLogin", "alert-danger");
     }
 
     public void setMessageType(String messageType) {

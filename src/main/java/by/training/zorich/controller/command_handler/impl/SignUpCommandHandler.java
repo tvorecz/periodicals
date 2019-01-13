@@ -22,6 +22,8 @@ import java.io.IOException;
 public class SignUpCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SignUpCommandHandler.class);
     private final static String LOGIN_PAGE = "/login?message=success";
+    private final static String REGISTER_PAGE_WITH_ERROR = "/register?message=errorRegister";
+    private final static String CONFIRM_PASSWORD_INPUT = "confirm";
     private ServiceFactory serviceFactory;
 
     public SignUpCommandHandler(ServiceFactory serviceFactory) {
@@ -35,15 +37,25 @@ public class SignUpCommandHandler implements CommandHandler {
                                                                                  CommandException {
         User user = handleRequest(request);
 
-        ServiceResult serviceResult = new ServiceResult();
+        if(user.getRealPassword() != null) {
+            ServiceResult serviceResult = new ServiceResult();
 
-        try {
-            serviceFactory.getUserService().register(user, serviceResult);
-            response.sendRedirect(LOGIN_PAGE);
+            try {
+
+                serviceFactory.getUserService().register(user, serviceResult);
+
+                if(serviceResult.isDone()) {
+                    response.sendRedirect(LOGIN_PAGE);
+                } else {
+                    response.sendRedirect(REGISTER_PAGE_WITH_ERROR);
+                }
 //            request.getRequestDispatcher(JspPagePath.REG_OK).forward(request, response);
-        } catch (ServiceException e) {
-            LOGGER.error(e);
-            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+            } catch (ServiceException e) {
+                LOGGER.error(e);
+                request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+            }
+        } else {
+            response.sendRedirect(REGISTER_PAGE_WITH_ERROR);
         }
     }
 
@@ -51,8 +63,12 @@ public class SignUpCommandHandler implements CommandHandler {
         User user = new User();
 
         user.setLogin(request.getParameter(UserCharacteristic.LOGIN.getName()));
-        user.setRealPassword(request.getParameter(UserCharacteristic.REAL_PASSWORD.getName()));
         user.setEmail(request.getParameter(UserCharacteristic.EMAIL.getName()));
+
+        user.setRealPassword(request.getParameter(UserCharacteristic.REAL_PASSWORD.getName()));
+        if(!user.getRealPassword().equals(request.getParameter(CONFIRM_PASSWORD_INPUT))) {
+            user.setRealPassword(null);
+        }
 
         HttpSession httpSession = request.getSession();
         UserLocale currentLocale = (UserLocale) httpSession.getAttribute(SessionAttribute.CURRENT_LOCALE.getName());

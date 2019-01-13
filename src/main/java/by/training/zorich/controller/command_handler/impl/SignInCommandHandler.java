@@ -25,6 +25,7 @@ import java.io.IOException;
 public class SignInCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SignInCommandHandler.class);
     private final static String MAIN_PAGE = "/";
+    private final static String FAILURE_LOGIN = "/login?message=failureLogin";
     private ServiceFactory serviceFactory;
 
     public SignInCommandHandler(ServiceFactory serviceFactory) {
@@ -44,7 +45,7 @@ public class SignInCommandHandler implements CommandHandler {
             serviceFactory.getUserService().authenticate(user, serviceResult);
         } catch (ServiceException e) {
             LOGGER.error(e);
-            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+            response.sendRedirect(FAILURE_LOGIN);
         }
 
         if(serviceResult.isDone()) {
@@ -54,18 +55,13 @@ public class SignInCommandHandler implements CommandHandler {
 
             String returnPath = request.getParameter(HandlerType.RETURN_PAGE.getName());
             if(returnPath == null) {
-//                request.getRequestDispatcher(MAIN_PAGE).forward(request, response);
                 response.sendRedirect(MAIN_PAGE);
             } else {
-//                request.getRequestDispatcher(returnPath).forward(request, response);
                 response.sendRedirect(returnPath);
             }
         } else {
-//            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
-            response.sendRedirect(JspPagePath.ERROR);
+            response.sendRedirect(FAILURE_LOGIN);
         }
-
-        return;
     }
 
     private User handleRequest(HttpServletRequest request) {

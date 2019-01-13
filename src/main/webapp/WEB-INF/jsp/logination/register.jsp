@@ -29,6 +29,9 @@
                 <div class="main-agileits">
                     <div class="form-w3agile">
                         <h3><fmt:message key="form" /></h3>
+                        <ctg:message messageType="${param.message}">
+                            <fmt:message key="${messageForUser}" />
+                        </ctg:message>
                         <form action="/register/done" method="post">
 
                             <input type="hidden" name="command" value="register" />
@@ -56,7 +59,7 @@
                             <div class="key">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
 
-                                <input type="password" name="Confirm Password" required=""
+                                <input type="password" name="confirm" required=""
                                        placeholder="<fmt:message key="confirm" />">
                                 <div class="clearfix"></div>
                             </div>
