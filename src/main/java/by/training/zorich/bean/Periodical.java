@@ -1,3 +1,9 @@
+/**
+ * Bean-class for storing information about periodical.
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.bean;
 
 import java.io.Serializable;

@@ -1,3 +1,11 @@
+/**
+ * CommonDAO includes common functions for selecting and updating data-base-information.
+ * It creates for using concrete DAO-classes.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.dao.impl;
 
 import by.training.zorich.dal.connector.DataSourceConnector;
@@ -17,10 +25,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class CommonDAO<T> {
-    private DataSourceConnector connector; //provide connection from pool
-    private TransactionManager transactionManager; //provide working with connection pool and transations
-    private SQLExecutor sqlExecutor; //execute query to data source and
-    private ResultHandlerRepository resultHandlerRepository; //provide handler for handle resultset
+    private final DataSourceConnector connector; //provide connection from pool
+    private final TransactionManager transactionManager; //provide working with connection pool and transations
+    private final SQLExecutor sqlExecutor; //execute query to data source and
+    private final ResultHandlerRepository resultHandlerRepository; //provide handler for handle resultset
 
     public CommonDAO(DataSourceConnector connector,
                      TransactionManager transactionManager,
@@ -44,8 +52,10 @@ public class CommonDAO<T> {
         return resultHandlerRepository;
     }
 
-    protected T executeSelectFromDataSource(String query, HandlerType handlerType, TransactionStatus transactionStatus) throws
-                                                                                                                DAOException {
+    protected T executeSelectFromDataSource(String query,
+                                            HandlerType handlerType,
+                                            TransactionStatus transactionStatus) throws
+                                                                                 DAOException {
         Connection connection = null;
 
         T result = null;
@@ -54,14 +64,17 @@ public class CommonDAO<T> {
             connection = getConnection(transactionStatus);
 
             result = (T) sqlExecutor.select(connection, query,
-                                          resultHandlerRepository.getResultHandler(
-                                                  handlerType));
+                                            resultHandlerRepository.getResultHandler(
+                                                    handlerType));
         } catch (DataSourceConnectorException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Getting connection is failed!", e);
         } catch (ExecutorException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Executing query is failed!", e);
         } catch (TransactionManagerException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Transaction is failed!", e);
         } finally {
             finalizeExecution(connection, transactionStatus);
         }
@@ -77,10 +90,13 @@ public class CommonDAO<T> {
             sqlExecutor.update(connection, query);
         } catch (DataSourceConnectorException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Getting connection is failed!", e);
         } catch (ExecutorException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Executing query is failed!", e);
         } catch (TransactionManagerException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Transaction is failed!", e);
         } finally {
             finalizeExecution(connection, transactionStatus);
         }
@@ -100,15 +116,18 @@ public class CommonDAO<T> {
         return result;
     }
 
-    protected void executeUpdateDataSource(PreparedStatement preparedStatement, TransactionStatus transactionStatus) throws DAOException {
+    protected void executeUpdateDataSource(PreparedStatement preparedStatement,
+                                           TransactionStatus transactionStatus) throws DAOException {
         try {
             sqlExecutor.update(preparedStatement);
         } catch (ExecutorException e) {
             finalizeExecutionEmergencly(preparedStatement, transactionStatus);
+            throw new DAOException("Executing query is failed!", e);
         }
     }
 
-    protected PreparedStatement getPreparedStatement(String queryPattern, TransactionStatus transactionStatus) throws DAOException {
+    protected PreparedStatement getPreparedStatement(String queryPattern, TransactionStatus transactionStatus) throws
+                                                                                                               DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -118,36 +137,44 @@ public class CommonDAO<T> {
             preparedStatement = connection.prepareStatement(queryPattern);
         } catch (SQLException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Creating prepared statement is failed!", e);
         } catch (DataSourceConnectorException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Getting connection is failed!", e);
         } catch (TransactionManagerException e) {
             finalizeExecutionEmergencly(connection, transactionStatus);
+            throw new DAOException("Transaction is failed!", e);
         }
 
         return preparedStatement;
     }
 
-    protected PreparedStatement getCachedPreparedStatement(String queryPattern, TransactionDAOOperationType transactionDAOOperationType, TransactionStatus transactionStatus) throws DAOException{
+    protected PreparedStatement getCachedPreparedStatement(String queryPattern,
+                                                           TransactionDAOOperationType transactionDAOOperationType,
+                                                           TransactionStatus transactionStatus) throws DAOException {
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = transactionManager.getCachedPreparedStatementForTransaction(queryPattern, transactionDAOOperationType);
+            preparedStatement = transactionManager.getCachedPreparedStatementForTransaction(queryPattern,
+                                                                                            transactionDAOOperationType);
         } catch (TransactionManagerException e) {
             finalizeExecutionEmergencly(preparedStatement, transactionStatus);
+            throw new DAOException("Transaction is failed!", e);
         }
 
         return preparedStatement;
     }
 
-    protected void finalizeExecution(PreparedStatement preparedStatement, TransactionStatus transactionStatus) throws DAOException {
+    protected void finalizeExecution(PreparedStatement preparedStatement, TransactionStatus transactionStatus) throws
+                                                                                                               DAOException {
         try {
-            if(transactionStatus == TransactionStatus.OFF) {
+            if (transactionStatus == TransactionStatus.OFF) {
                 Connection connection = preparedStatement.getConnection();
 
                 preparedStatement.close();
 
                 connector.giveBackConnection(connection);
-            } else if(transactionStatus == TransactionStatus.END || transactionStatus == TransactionStatus.END_CACHED_STATEMENT){
+            } else if (transactionStatus == TransactionStatus.END || transactionStatus == TransactionStatus.END_CACHED_STATEMENT) {
                 preparedStatement.close();
 
                 transactionManager.giveBackTransactionConnection();
@@ -163,8 +190,8 @@ public class CommonDAO<T> {
 
     private void finalizeExecution(Connection connection, TransactionStatus transactionStatus) throws DAOException {
         try {
-            if(connection != null) {
-                if(transactionStatus == TransactionStatus.OFF) {
+            if (connection != null) {
+                if (transactionStatus == TransactionStatus.OFF) {
                     connector.giveBackConnection(connection);
                 } else if (transactionStatus == TransactionStatus.END || transactionStatus == TransactionStatus.END_CACHED_STATEMENT) {
                     transactionManager.giveBackTransactionConnection();
@@ -177,10 +204,11 @@ public class CommonDAO<T> {
         }
     }
 
-    private void finalizeExecutionEmergencly(Connection connection, TransactionStatus transactionStatus) throws DAOException {
+    private void finalizeExecutionEmergencly(Connection connection, TransactionStatus transactionStatus) throws
+                                                                                                         DAOException {
         try {
-            if(connection != null) {
-                if(transactionStatus == TransactionStatus.OFF) {
+            if (connection != null) {
+                if (transactionStatus == TransactionStatus.OFF) {
                     connector.giveBackConnection(connection);
                 } else {
                     transactionManager.giveBackEmergenclyTransactionConnection();
@@ -193,9 +221,10 @@ public class CommonDAO<T> {
         }
     }
 
-    private void finalizeExecutionEmergencly(PreparedStatement preparedStatement, TransactionStatus transactionStatus) throws DAOException {
+    private void finalizeExecutionEmergencly(PreparedStatement preparedStatement,
+                                             TransactionStatus transactionStatus) throws DAOException {
         try {
-            if(transactionStatus == TransactionStatus.OFF) {
+            if (transactionStatus == TransactionStatus.OFF) {
                 Connection connection = preparedStatement.getConnection();
 
                 preparedStatement.close();

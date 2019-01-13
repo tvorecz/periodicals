@@ -1,3 +1,11 @@
+/**
+ * Class using singleton-pattern and store associations between url-paths and jsp-pages in WEB_INF folder.
+ * It control mapping between url-paths and jsp-pages during concrete situations.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.HandlerType;

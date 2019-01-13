@@ -1,3 +1,10 @@
+/**
+ * Connector creates connection poot for working with database.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.connector.impl;
 
 import by.training.zorich.dal.connector.DataSourceConnectorException;
@@ -26,7 +33,6 @@ public class MySqlDBConnector implements DataSourceConnector {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
         driverName = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_DRIVER.getName());
         uri = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_URL.getName());
-        //file = getClass().getResource(dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_FILE.getName())).getPath();
         file = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_FILE.getName());
         user = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_USER.getName());
         password = dbResourceManager.getResourceValue(MySqlDBNameParameter.DB_PASSWORD.getName());
@@ -110,17 +116,21 @@ public class MySqlDBConnector implements DataSourceConnector {
             }
 
             if (!busyConnections.remove(connection)) {
-                throw new DataSourceConnectorException("Error deleting from busy connection pool. One connection is missed.");
+                throw new DataSourceConnectorException(
+                        "Error deleting from busy connection pool. One connection is missed.");
             }
 
             if (!freeConnections.offer(connection)) {
-                throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.");
+                throw new DataSourceConnectorException(
+                        "Error returning connection to free connection pool. One connection is missed.");
             }
         } catch (SQLException e) {
             try {
                 addNewConnectionToThePool();
             } catch (SQLException ex) {
-                throw new DataSourceConnectorException("Error returning connection to free connection pool. One connection is missed.", ex);
+                throw new DataSourceConnectorException(
+                        "Error returning connection to free connection pool. One connection is missed.",
+                        ex);
             }
             throw new DataSourceConnectorException("Error returning connection to free connection pool.", e);
         }
@@ -141,8 +151,6 @@ public class MySqlDBConnector implements DataSourceConnector {
         buffer.append(uri);
         buffer.append(file);
         buffer.append(parameter);
-        //buffer.append(user);
-        //buffer.append(password);
         return buffer.toString();
     }
 
@@ -156,7 +164,7 @@ public class MySqlDBConnector implements DataSourceConnector {
         Connection connection = null;
 
         while ((connection = connections.poll()) != null) {
-            if(!connection.getAutoCommit()) {
+            if (!connection.getAutoCommit()) {
                 connection.commit();
             }
 

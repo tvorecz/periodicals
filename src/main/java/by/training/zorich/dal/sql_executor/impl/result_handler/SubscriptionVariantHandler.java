@@ -11,7 +11,7 @@ public class SubscriptionVariantHandler implements ResultHandler<SubscriptionVar
     public SubscriptionVariant handle(ResultSet resultSet) throws SQLException {
         SubscriptionVariant subscriptionVariant = null;
 
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             subscriptionVariant = new SubscriptionVariant();
             subscriptionVariant.setId(resultSet.getInt(SubscriptionVariantCharacteristic.ID.getName()));
             subscriptionVariant.setIndex(resultSet.getString(SubscriptionVariantCharacteristic.INDEX.getName()));

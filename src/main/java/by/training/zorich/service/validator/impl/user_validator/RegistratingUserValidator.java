@@ -1,3 +1,11 @@
+/**
+ * Validate user info during register.
+ * If login exists in database or email does not match with pattern it return false.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.validator.impl.user_validator;
 
 import by.training.zorich.bean.User;

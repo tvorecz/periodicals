@@ -1,3 +1,10 @@
+/**
+ * Provides access to ResultSerHandlers for creating bean-classes after executing sql-query.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.sql_executor.impl.result_handler;
 
 import by.training.zorich.dal.sql_executor.HandlerType;

@@ -1,3 +1,11 @@
+/**
+ * Using for working with statements and executing non-preparestatement-queries.
+ * Execute statement and closing statement and result-set.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.sql_executor.impl;
 
 import by.training.zorich.dal.exception.ExecutorException;

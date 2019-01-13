@@ -1,3 +1,10 @@
+/**
+ * Validate access to user payment.
+ * If this payment doesn't belong to this user than returns false.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
 package by.training.zorich.service.validator.impl.subscription_validator;
 
 import by.training.zorich.bean.Payment;

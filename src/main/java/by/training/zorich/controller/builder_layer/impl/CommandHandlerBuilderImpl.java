@@ -1,3 +1,10 @@
+/**
+ * Class for building and initialization all program layers by chain. Using in MainController.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.builder_layer.impl;
 
 import by.training.zorich.controller.builder_layer.CommandHandlerBuilder;
@@ -13,6 +20,9 @@ import by.training.zorich.service.exception.ServiceException;
 public class CommandHandlerBuilderImpl implements CommandHandlerBuilder {
 
 
+    /**
+     * Method starts chain of initialisation all program layers.
+     */
     @Override
     public CommandRepository build() throws CommandException {
         CommandRepository commandRepository = CommandRepositoryImpl.getInstance();

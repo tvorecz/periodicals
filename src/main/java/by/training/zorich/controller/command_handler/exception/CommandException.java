@@ -1,6 +1,6 @@
 package by.training.zorich.controller.command_handler.exception;
 
-public class CommandException extends Exception{
+public class CommandException extends Exception {
     private static final long serialVersionUID = -3127265711923199012L;
 
     public CommandException() {

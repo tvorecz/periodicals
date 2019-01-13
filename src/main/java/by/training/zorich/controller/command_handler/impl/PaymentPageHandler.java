@@ -1,3 +1,10 @@
+/**
+ * Handler for creating page with information about payment.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
@@ -22,7 +29,10 @@ public class PaymentPageHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(PaymentPageHandler.class);
     private final static String PAYMENT_PAGE = "/subscriber/payment/";
     private final static String ERROR_404 = "/error404";
-    private ServiceFactory serviceFactory;
+    private final static String EMPTY = "";
+    private final static String USER_SUBSCRIPTIONS = "userSubscriptions";
+    private final static String PAYMENT = "payment";
+    private final ServiceFactory serviceFactory;
 
     public PaymentPageHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -37,24 +47,26 @@ public class PaymentPageHandler implements CommandHandler {
         Integer userId = (int) httpSession.getAttribute(SessionAttribute.CURRENT_USER_ID.getName());
 
 
+        if (userId != null) {
+            String paymentId = request.getRequestURI().replace(PAYMENT_PAGE, EMPTY);
 
-        if(userId != null) {
-            String paymentId = request.getRequestURI().replace(PAYMENT_PAGE, "");
-
-            if(paymentId == null) {
+            if (paymentId == null) {
                 response.sendRedirect(ERROR_404);
             } else {
                 Integer idPayment = Integer.parseInt(paymentId);
 
                 try {
                     ServiceResult serviceResult = new ServiceResult();
-                    serviceFactory.getSubscriptionService().getAllSubscriptionsForPayment(idPayment, userId, serviceResult);
+                    serviceFactory.getSubscriptionService().getAllSubscriptionsForPayment(idPayment,
+                                                                                          userId,
+                                                                                          serviceResult);
 
-                    if(serviceResult.isDone()) {
-                        List<UserSubscription> userSubscriptions = (List<UserSubscription>) serviceResult.getResultObject();
+                    if (serviceResult.isDone()) {
+                        List<UserSubscription> userSubscriptions =
+                                (List<UserSubscription>) serviceResult.getResultObject();
 
-                        request.setAttribute("userSubscriptions", userSubscriptions);
-                        request.setAttribute("payment", userSubscriptions.get(0).getPayment());
+                        request.setAttribute(USER_SUBSCRIPTIONS, userSubscriptions);
+                        request.setAttribute(PAYMENT, userSubscriptions.get(0).getPayment());
                     } else {
                         response.sendRedirect(ERROR_404);
                     }

@@ -1,3 +1,10 @@
+/**
+ * Provides access to service-classes. Using pattern singleton.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.factory.impl;
 
 import by.training.zorich.dal.factory.DAOFactory;

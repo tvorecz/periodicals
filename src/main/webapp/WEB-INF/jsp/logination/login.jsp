@@ -43,7 +43,7 @@
                             <fmt:message key="${messageForUser}" />
                         </ctg:message>
 
-                        <form action="/login/done" method="post">
+                        <form name="loginForm" action="/login/done" method="post">
                             <input type="hidden" name="command" value="login" />
                             <c:choose>
                                 <c:when test="${not empty param.target and param.target ne '/login'}">
@@ -62,7 +62,7 @@
                                        placeholder="<fmt:message key="password"/>">
                                 <div class="clearfix"></div>
                             </div>
-                            <input type="submit" value="<fmt:message key="submit"/>">
+                            <input type="submit" onclick="LoginUser();" value="<fmt:message key="submit"/>">
                             <a href="/register" class="btn btn-primary forg-right" role="link"><fmt:message
                                     key="register" /></a>
                         </form>

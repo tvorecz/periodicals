@@ -1,3 +1,10 @@
+/**
+ * Class creating jsp-tag for creating message on result page.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.tag;
 
 import javax.servlet.ServletRequest;
@@ -18,6 +25,9 @@ public class MessageTag extends BodyTagSupport {
     public static void initMessageMap() {
         MESSAGE_MAP.put("nothingFound", "message.nothing");
         ALERT_MAP.put("nothingFound", "alert-info");
+
+        MESSAGE_MAP.put("dbError", "form.message.dbError");
+        ALERT_MAP.put("dbError", "alert-danger");
 
         MESSAGE_MAP.put("dbSuccess", "form.message.addToDB");
         ALERT_MAP.put("dbSuccess", "alert-success");
@@ -50,7 +60,7 @@ public class MessageTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            if(messageType != null && MESSAGE_MAP.containsKey(messageType)) {
+            if (messageType != null && MESSAGE_MAP.containsKey(messageType)) {
                 JspWriter out = pageContext.getOut();
                 out.write(formOpenOutputString());
 
@@ -71,7 +81,7 @@ public class MessageTag extends BodyTagSupport {
     @Override
     public int doAfterBody() throws JspException {
         try {
-            if(messageType != null && MESSAGE_MAP.containsKey(messageType)) {
+            if (messageType != null && MESSAGE_MAP.containsKey(messageType)) {
                 JspWriter out = pageContext.getOut();
                 out.write(formCloseOutputString());
             }

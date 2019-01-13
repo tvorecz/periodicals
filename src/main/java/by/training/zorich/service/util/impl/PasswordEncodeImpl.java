@@ -1,3 +1,10 @@
+/**
+ * Encode the password-string before adding information to data source/
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.util.impl;
 
 import by.training.zorich.service.util.PasswordEncoder;

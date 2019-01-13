@@ -1,3 +1,10 @@
+/**
+ * Handler for adding periodical to data source.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.*;
@@ -30,6 +37,8 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
     private final static String FULL_PATH_IMAGE_CATALOG = "%1$s%2$s%3$s";
     private final static String PATH_IMAGE_CATALOG_FOR_DB = "/images/%1$s";
     private final static String EMPTY_STRING = "";
+    private final static String UTF8 = "UTF-8";
+    private final static String PATH_IMAGE_ATTRIBUTE = "pathToImages";
 
     private ServiceFactory serviceFactory;
     private DiskFileItemFactory diskFileItemFactory;
@@ -55,46 +64,61 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
             response.sendRedirect(ADD_PAGE_ERROR);
         }
 
-        String fullImagePath = String.format(FULL_PATH_IMAGE_CATALOG, request.getAttribute("pathToImages"), File.separator, requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()));
-        String dbImagePath = String.format(PATH_IMAGE_CATALOG_FOR_DB, requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()));
-        requestParsingResult.getParameterMap().put(PeriodicalCharacteristic.IMAGE.getName(), dbImagePath);
+        if(requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()) != null && !requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()).equals(EMPTY_STRING)) {
+            String fullImagePath = String.format(FULL_PATH_IMAGE_CATALOG,
+                                                 request.getAttribute(PATH_IMAGE_ATTRIBUTE),
+                                                 File.separator,
+                                                 requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()));
+            String dbImagePath = String.format(PATH_IMAGE_CATALOG_FOR_DB,
+                                               requestParsingResult.getParameterMap().get(PeriodicalCharacteristic.IMAGE.getName()));
+            requestParsingResult.getParameterMap().put(PeriodicalCharacteristic.IMAGE.getName(), dbImagePath);
 
-        try {
-            periodical = handleMapForPeriodical(requestParsingResult.getParameterMap());
-            subscriptionVariants = handleMapForSubscriptionVariants(requestParsingResult.getParameterMap(), requestParsingResult.getSubscriptionTypesIds());
-        } catch (NumberFormatException e) {
-            LOGGER.error(e);
-            request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
-        }
+            try {
+                periodical = handleMapForPeriodical(requestParsingResult.getParameterMap());
+                subscriptionVariants = handleMapForSubscriptionVariants(requestParsingResult.getParameterMap(),
+                                                                        requestParsingResult.getSubscriptionTypesIds());
+            } catch (NumberFormatException e) {
+                LOGGER.error(e);
+                request.getRequestDispatcher(JspPagePath.ERROR).forward(request, response);
+            }
 
-        ServiceResult serviceResult = new ServiceResult();
+            if(subscriptionVariants == null || subscriptionVariants.size() == 0) {
+                deleteImageFile(fullImagePath);
+                response.sendRedirect(ADD_PAGE_ERROR);
+                return;
+            }
 
-        try {
-            saveImageFile(requestParsingResult.getFile(), fullImagePath);
+            ServiceResult serviceResult = new ServiceResult();
 
-            serviceFactory.getPeriodicalService().addNewPeriodical(periodical, serviceResult);
+            try {
+                saveImageFile(requestParsingResult.getFile(), fullImagePath);
 
-            if(serviceResult.isDone()) {
-                Integer newPeriodicalId = (Integer) serviceResult.getResultObject();
+                serviceFactory.getPeriodicalService().addNewPeriodical(periodical, serviceResult);
 
-                serviceResult.clear();
-                subscriptionVariants.get(0).getPeriodical().setId(newPeriodicalId);
+                if (serviceResult.isDone()) {
+                    Integer newPeriodicalId = (Integer) serviceResult.getResultObject();
 
-                serviceFactory.getSubscriptionService().addSubscriptionVariants(subscriptionVariants, serviceResult);
+                    serviceResult.clear();
+                    subscriptionVariants.get(0).getPeriodical().setId(newPeriodicalId);
 
-                if(serviceResult.isDone()) {
-                    response.sendRedirect(String.format(PERIODICAL_PAGE_SUCCESS, newPeriodicalId));
+                    serviceFactory.getSubscriptionService().addSubscriptionVariants(subscriptionVariants, serviceResult);
+
+                    if (serviceResult.isDone()) {
+                        response.sendRedirect(String.format(PERIODICAL_PAGE_SUCCESS, newPeriodicalId));
+                    } else {
+                        deleteImageFile(fullImagePath);
+                        response.sendRedirect(ADD_PAGE_ERROR);
+                    }
                 } else {
                     deleteImageFile(fullImagePath);
                     response.sendRedirect(ADD_PAGE_ERROR);
                 }
-            } else {
+            } catch (ServiceException e) {
+                LOGGER.error(e);
                 deleteImageFile(fullImagePath);
                 response.sendRedirect(ADD_PAGE_ERROR);
             }
-        } catch (ServiceException e) {
-            LOGGER.error(e);
-            deleteImageFile(fullImagePath);
+        } else {
             response.sendRedirect(ADD_PAGE_ERROR);
         }
     }
@@ -118,13 +142,13 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
         while (iterator.hasNext()) {
             FileItem fileItem = iterator.next();
 
-            if(fileItem.isFormField()) {
+            if (fileItem.isFormField()) {
 
-                parameterMap.put(fileItem.getFieldName(), fileItem.getString("UTF-8"));
+                parameterMap.put(fileItem.getFieldName(), fileItem.getString(UTF8));
 
-                if(fileItem.getFieldName().contains(SubscriptionVariantCharacteristic.ID.getName()))
-                {
-                    String id = fileItem.getFieldName().replace(SubscriptionVariantCharacteristic.ID.getName(), EMPTY_STRING);
+                if (fileItem.getFieldName().contains(SubscriptionVariantCharacteristic.ID.getName())) {
+                    String id = fileItem.getFieldName().replace(SubscriptionVariantCharacteristic.ID.getName(),
+                                                                EMPTY_STRING);
                     subscriptionTypesIds.add(Integer.parseInt(id));
                 }
             } else {
@@ -157,14 +181,17 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
         return periodical;
     }
 
-    private List<SubscriptionVariant> handleMapForSubscriptionVariants(Map<String, String> parameterMap, List<Integer> subscriptionTypesIds) {
+    private List<SubscriptionVariant> handleMapForSubscriptionVariants(Map<String, String> parameterMap,
+                                                                       List<Integer> subscriptionTypesIds) {
         List<SubscriptionVariant> subscriptionVariants = new ArrayList<>();
         Periodical periodical = new Periodical();
 
         for (Integer subscriptionTypesId : subscriptionTypesIds) {
             SubscriptionVariant subscriptionVariant = new SubscriptionVariant();
             subscriptionVariant.setIndex(parameterMap.get(SubscriptionVariantCharacteristic.INDEX.getName() + subscriptionTypesId));
-            subscriptionVariant.setCostForIssue(Double.parseDouble((parameterMap.get(SubscriptionVariantCharacteristic.COST.getName() + subscriptionTypesId)).replace(',','.')));
+            subscriptionVariant.setCostForIssue(Double.parseDouble((parameterMap.get(SubscriptionVariantCharacteristic.COST.getName() + subscriptionTypesId)).replace(
+                    ',',
+                    '.')));
 
             SubscriptionType subscriptionType = new SubscriptionType();
             subscriptionType.setId(subscriptionTypesId);
@@ -194,7 +221,7 @@ public class AdditionPeriodicalCommandHandler implements CommandHandler {
     }
 }
 
-class RequestParsingResult{
+class RequestParsingResult {
     private Map<String, String> parameterMap;
     private FileItem file;
     private List<Integer> subscriptionTypesIds;

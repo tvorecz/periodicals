@@ -32,7 +32,7 @@
                         <ctg:message messageType="${param.message}">
                             <fmt:message key="${messageForUser}" />
                         </ctg:message>
-                        <form action="/register/done" method="post">
+                        <form name="registerForm" action="/register/done" method="post">
 
                             <input type="hidden" name="command" value="register" />
 
@@ -63,7 +63,7 @@
                                        placeholder="<fmt:message key="confirm" />">
                                 <div class="clearfix"></div>
                             </div>
-                            <input class="btn btn-success center-block" type="submit" value="<fmt:message key="submit" />">
+                            <input class="btn btn-success center-block" onclick="RegisterUser();" type="submit" value="<fmt:message key="submit" />">
                         </form>
                     </div>
                 </div>

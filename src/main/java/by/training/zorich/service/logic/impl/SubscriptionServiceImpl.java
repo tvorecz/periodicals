@@ -13,6 +13,7 @@ import by.training.zorich.service.util.SubscriptionLocalDateCalculator;
 import by.training.zorich.service.util.impl.SubscriptionLocalDateCalculatorImpl;
 import by.training.zorich.service.validator.Validator;
 import by.training.zorich.service.validator.impl.subscription_validator.PaymentBeloningToUserValidator;
+import by.training.zorich.service.validator.impl.subscription_validator.SubscriptionVariantsValidator;
 
 import java.time.LocalDate;
 import java.util.Iterator;
@@ -25,6 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final PaymentDAO paymentDAO;
     private final SubscriptionLocalDateCalculator subscriptionLocalDateCalculator;
     private final Validator<Payment> paymentValidator;
+    private final Validator<SubscriptionVariant> subscriptionVariantValidator;
 
     public SubscriptionServiceImpl(DAOFactory daoFactory) {
         subscriptionTypeDAO = daoFactory.getSubscriptionTypeDAO();
@@ -33,13 +35,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         paymentDAO = daoFactory.getPaymentDAO();
         subscriptionLocalDateCalculator = new SubscriptionLocalDateCalculatorImpl();
         paymentValidator = new PaymentBeloningToUserValidator();
+        subscriptionVariantValidator = new SubscriptionVariantsValidator();
     }
 
     @Override
     public void addSubscriptionVariants(List<SubscriptionVariant> subscriptionVariants, ServiceResult serviceResult) throws ServiceException {
         try {
-            subscriptionVariantDAO.addSubscriptionVariantsTransactionaly(subscriptionVariants);
-            serviceResult.setResultOperation(true);
+            if(validateSubscriptionVariants(subscriptionVariants)) {
+                subscriptionVariantDAO.addSubscriptionVariantsTransactionaly(subscriptionVariants);
+                serviceResult.setResultOperation(true);
+            } else {
+                serviceResult.setResultOperation(false);
+            }
         } catch (DAOException e) {
             serviceResult.setResultOperation(false);
             throw new ServiceException("Adding subscription variants is failed!", e);
@@ -191,5 +198,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             LocalDate expectedBeginOfSubscription = subscriptionLocalDateCalculator.calculateStartSubscriptions(subscriptionVariant.getSubscriptionType());
             subscriptionVariant.setExpectedBeginOfSubscription(expectedBeginOfSubscription);
         }
+    }
+
+    private boolean validateSubscriptionVariants(List<SubscriptionVariant> subscriptionVariants) throws
+                                                                                                 ServiceException {
+        for (SubscriptionVariant subscriptionVariant : subscriptionVariants) {
+            if(!subscriptionVariantValidator.validate(subscriptionVariant)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

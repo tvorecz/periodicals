@@ -4,7 +4,7 @@ import by.training.zorich.controller.HandlerType;
 import by.training.zorich.service.factory.ServiceFactory;
 
 public interface CommandRepository {
-    public void init(ServiceFactory serviceFactory);
+    void init(ServiceFactory serviceFactory);
 
     CommandHandler getCommandHandler(HandlerType handlerType);
 }

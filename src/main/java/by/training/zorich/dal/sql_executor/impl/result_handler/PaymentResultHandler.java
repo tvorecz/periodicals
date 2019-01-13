@@ -13,7 +13,7 @@ public class PaymentResultHandler implements ResultHandler<Payment> {
     public Payment handle(ResultSet resultSet) throws SQLException {
         Payment payment = null;
 
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             payment = new Payment();
             payment.setId(resultSet.getInt(PaymentCharacteristic.ID.getName()));
             payment.setAmount(resultSet.getDouble(PaymentCharacteristic.AMOUNT.getName()));

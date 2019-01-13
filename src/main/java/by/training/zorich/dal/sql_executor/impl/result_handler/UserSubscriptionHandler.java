@@ -20,7 +20,7 @@ public class UserSubscriptionHandler implements ResultHandler<List<UserSubscript
         Map<Integer, Payment> paymentMap = new HashMap<>();
 
         while (resultSet.next()) {
-            UserSubscription userSubscription =  new UserSubscription();
+            UserSubscription userSubscription = new UserSubscription();
             userSubscription.setId(resultSet.getInt(UserSubscriptionCharacteristic.ID.getName()));
             userSubscription.setDateBegin(resultSet.getDate(UserSubscriptionCharacteristic.DATE_BEGIN.getName()).toLocalDate());
             userSubscription.setDateEnd(resultSet.getDate(UserSubscriptionCharacteristic.DATE_END.getName()).toLocalDate());
@@ -29,7 +29,7 @@ public class UserSubscriptionHandler implements ResultHandler<List<UserSubscript
 
             int currentPaymentId = resultSet.getInt(PaymentCharacteristic.ID.getName());
 
-            if(paymentMap.isEmpty() && !paymentMap.containsKey(currentPaymentId)) {
+            if (paymentMap.isEmpty() && !paymentMap.containsKey(currentPaymentId)) {
                 currentPayment = new Payment();
                 currentPayment.setId(currentPaymentId);
                 currentPayment.setAmount(resultSet.getDouble(PaymentCharacteristic.AMOUNT.getName()));

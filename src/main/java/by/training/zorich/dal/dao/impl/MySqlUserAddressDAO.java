@@ -17,7 +17,8 @@ public class MySqlUserAddressDAO extends CommonDAO<List<UserAddress>> implements
                                                     "%2$d)";
     private final static String QUERY_EDIT_ADDRESS = "UPDATE user_addresses SET address = '%1$s' WHERE idUser = %2$d";
     private final static String QUERY_DELETE_ADDRESS = "DELETE FROM user_addresses WHERE idAddress = %1$d";
-    private final static String QUERY_GET_ADDRESS_LIMIT = "SELECT * FROM user_addresses WHERE idUser = %1$d LIMIT %2$d, %3$d";
+    private final static String QUERY_GET_ADDRESS_LIMIT = "SELECT * FROM user_addresses WHERE idUser = %1$d LIMIT " +
+                                                          "%2$d, %3$d";
     private final static String QUERY_GET_ADDRESS = "SELECT * FROM user_addresses WHERE idUser = %1$d";
 
 

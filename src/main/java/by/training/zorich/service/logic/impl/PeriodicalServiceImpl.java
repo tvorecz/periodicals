@@ -32,6 +32,9 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public void addNewPeriodical(Periodical periodical, ServiceResult serviceResult) throws ServiceException {
+        periodical.setName(periodical.getName().replace("'", "''"));
+        periodical.setAnnotation(periodical.getAnnotation().replace("'", "''"));
+
         if (periodicalValidator.validate(periodical)) {
             try {
 

@@ -24,6 +24,8 @@ public class MySqlPeriodicalThemeDAO extends CommonDAO<Object> implements Period
 
     @Override
     public List<PeriodicalTheme> getAllPeriodicalThemes() throws DAOException {
-        return (List<PeriodicalTheme>) super.executeSelectFromDataSource(QUERY_SELECT_ALL_THEMES, HandlerType.ALL_PERIODICAL_THEMES, TransactionStatus.OFF);
+        return (List<PeriodicalTheme>) super.executeSelectFromDataSource(QUERY_SELECT_ALL_THEMES,
+                                                                         HandlerType.ALL_PERIODICAL_THEMES,
+                                                                         TransactionStatus.OFF);
     }
 }

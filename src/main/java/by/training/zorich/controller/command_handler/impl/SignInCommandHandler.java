@@ -1,3 +1,10 @@
+/**
+ * Handler for login user.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
@@ -26,7 +33,7 @@ public class SignInCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SignInCommandHandler.class);
     private final static String MAIN_PAGE = "/";
     private final static String FAILURE_LOGIN = "/login?message=failureLogin";
-    private ServiceFactory serviceFactory;
+    private final ServiceFactory serviceFactory;
 
     public SignInCommandHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -48,13 +55,13 @@ public class SignInCommandHandler implements CommandHandler {
             response.sendRedirect(FAILURE_LOGIN);
         }
 
-        if(serviceResult.isDone()) {
+        if (serviceResult.isDone()) {
             setSessionParameters(request, serviceResult);
 
             setCookie(response, serviceResult);
 
             String returnPath = request.getParameter(HandlerType.RETURN_PAGE.getName());
-            if(returnPath == null) {
+            if (returnPath == null) {
                 response.sendRedirect(MAIN_PAGE);
             } else {
                 response.sendRedirect(returnPath);

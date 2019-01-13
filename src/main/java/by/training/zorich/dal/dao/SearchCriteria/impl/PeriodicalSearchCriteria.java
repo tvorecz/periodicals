@@ -1,3 +1,11 @@
+/**
+ * PeriodicalSearchCriteria gather the info about periodical and form string-query for searching periodicals in
+ * database.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.dao.SearchCriteria.impl;
 
 import by.training.zorich.dal.dao.SearchCriteria.SearchCriteria;
@@ -64,7 +72,7 @@ public class PeriodicalSearchCriteria implements SearchCriteria {
     }
 
     public void setBeginOfRange(Integer beginOfRange) {
-        if(beginOfRange != null) {
+        if (beginOfRange != null) {
             this.beginOfRange = beginOfRange - 1;
         }
     }
@@ -77,12 +85,12 @@ public class PeriodicalSearchCriteria implements SearchCriteria {
     public String createQuery() {
         StringBuffer query = new StringBuffer(QUERY_BASE);
 
-        if(periodicalTypeId != null || periodicalThemeId != null || subscriptionTypeId != null || searchKey != null) {
+        if (periodicalTypeId != null || periodicalThemeId != null || subscriptionTypeId != null || searchKey != null) {
             query.append(QUERY_WHERE);
 
             boolean hasFirstElement = false;
 
-            if(searchKey != null) {
+            if (searchKey != null) {
 //                query.append(String.format(QUERY_PERIODICAL_CONTENT, searchKey, searchKey));
 
                 query.append("(periodicals.namePeriodical LIKE '%");
@@ -94,11 +102,11 @@ public class PeriodicalSearchCriteria implements SearchCriteria {
                 hasFirstElement = true;
             }
 
-            if(appendIntegerToQuery(periodicalTypeId, query, hasFirstElement, QUERY_PERIODICAL_TYPE)) {
+            if (appendIntegerToQuery(periodicalTypeId, query, hasFirstElement, QUERY_PERIODICAL_TYPE)) {
                 hasFirstElement = true;
             }
 
-            if( appendIntegerToQuery(periodicalThemeId, query, hasFirstElement, QUERY_PERIODICAL_THEME)) {
+            if (appendIntegerToQuery(periodicalThemeId, query, hasFirstElement, QUERY_PERIODICAL_THEME)) {
                 hasFirstElement = true;
             }
 
@@ -110,9 +118,12 @@ public class PeriodicalSearchCriteria implements SearchCriteria {
         return query.toString();
     }
 
-    private boolean appendIntegerToQuery(Integer integerForAppend, StringBuffer query, boolean hasFirstElement, String patternQuery) {
-        if(integerForAppend != null) {
-            if(hasFirstElement) {
+    private boolean appendIntegerToQuery(Integer integerForAppend,
+                                         StringBuffer query,
+                                         boolean hasFirstElement,
+                                         String patternQuery) {
+        if (integerForAppend != null) {
+            if (hasFirstElement) {
                 query.append(QUERY_AND);
             }
 

@@ -1,3 +1,11 @@
+/**
+ * Handler for adding user address to data source.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
@@ -36,14 +44,14 @@ public class AdditionUserAddressCommandHandler implements CommandHandler {
 
         Integer userId = (Integer) httpSession.getAttribute(SessionAttribute.CURRENT_USER_ID.getName());
 
-        if(userId == null) {
+        if (userId == null) {
             response.sendRedirect(CART_PAGE_ERROR);
         } else {
             UserAddress userAddress = new UserAddress();
 
             String address = request.getParameter("newAddress");
 
-            if(address == null) {
+            if (address == null) {
                 response.sendRedirect(CART_PAGE_ERROR);
             } else {
                 userAddress.setAddress(address);
@@ -54,7 +62,7 @@ public class AdditionUserAddressCommandHandler implements CommandHandler {
                 try {
                     serviceFactory.getUserService().addAddress(userAddress, serviceResult);
 
-                    if(serviceResult.isDone()) {
+                    if (serviceResult.isDone()) {
                         response.sendRedirect(CART_PAGE_SUCCESS);
                     } else {
                         response.sendRedirect(CART_PAGE_ERROR);

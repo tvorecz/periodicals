@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LoginAndRegisterPageFilter implements Filter {
-    private final static UserRole DEFAULT_USER_ROLE = UserRole.GUEST;
     private final static String ROOT = "/";
 
     @Override
@@ -27,7 +26,7 @@ public class LoginAndRegisterPageFilter implements Filter {
 
         UserRole currentUserRole = (UserRole) currentSession.getAttribute(SessionAttribute.CURRENT_USER_ROLE.getName());
 
-        if(UserRole.ADMIN.equals(currentUserRole) || UserRole.SUBSCRIBER.equals(currentUserRole)) {
+        if (UserRole.ADMIN.equals(currentUserRole) || UserRole.SUBSCRIBER.equals(currentUserRole)) {
             RequestDispatcher requestDispatcher = servletRequest.getRequestDispatcher(ROOT);
             requestDispatcher.forward(servletRequest, servletResponse);
         } else {

@@ -1,3 +1,10 @@
+/**
+ * Handler for adding item to cart.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.SessionAttribute;
@@ -30,9 +37,10 @@ public class AddingItemToCartCommandHandler implements CommandHandler {
                                                                                  CommandException {
         HttpSession httpSession = request.getSession();
 
-        List<Integer> cartItems = (List<Integer>) httpSession.getAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
+        List<Integer> cartItems =
+                (List<Integer>) httpSession.getAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
 
-        if(cartItems == null) {
+        if (cartItems == null) {
             cartItems = new ArrayList<>();
         }
 

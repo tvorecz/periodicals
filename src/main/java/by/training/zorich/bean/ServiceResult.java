@@ -1,3 +1,9 @@
+/**
+ * Bean-class for exchange information between controller and service layer.
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.bean;
 
 import java.io.Serializable;

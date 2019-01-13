@@ -1,3 +1,11 @@
+/**
+ * Class for building and initialization all program layers by chain. Using in CommandHandlerBuilderImpl.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ * @see ServiceLayerBuilderImpl#build()
+ */
+
 package by.training.zorich.dal.builder_layer.impl;
 
 import by.training.zorich.dal.builder_layer.DalBuilder;
@@ -16,6 +24,9 @@ import by.training.zorich.dal.sql_executor.impl.result_handler.ResultHandlerRepo
 
 public class DalSQLiteBuilder implements DalBuilder {
 
+    /**
+     * Method using for initialisation of dal layer in chain of builders.
+     */
     @Override
     public DAOFactory build() throws DAOException {
         DataSourceConnector connector = MySqlDBConnector.getInstance();

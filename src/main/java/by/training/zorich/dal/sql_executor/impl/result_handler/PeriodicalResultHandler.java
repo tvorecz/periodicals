@@ -12,7 +12,7 @@ public class PeriodicalResultHandler implements ResultHandler<Periodical> {
     public Periodical handle(ResultSet resultSet) throws SQLException {
         Periodical periodical = null;
 
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             periodical = new Periodical();
             periodical.setId(resultSet.getInt(PeriodicalCharacteristic.ID.getName()));
             periodical.setName(resultSet.getString(PeriodicalCharacteristic.NAME.getName()));

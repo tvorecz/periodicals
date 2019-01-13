@@ -1,3 +1,10 @@
+/**
+ * Handler for creating cart-page.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
@@ -21,7 +28,11 @@ import java.util.List;
 
 public class SubscriberCartPageHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SubscriberCartPageHandler.class);
-    private ServiceFactory serviceFactory;
+    private final static String SUBSCRIPTION_VARIANTS = "subscriptionVariants";
+    private final static String TOTAL_COST = "totalCost";
+    private final static String USER_ADDRESSES = "userAddresses";
+
+    private final ServiceFactory serviceFactory;
 
     public SubscriberCartPageHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -34,7 +45,8 @@ public class SubscriberCartPageHandler implements CommandHandler {
                                                                                  CommandException {
         HttpSession httpSession = request.getSession();
 
-        List<Integer> subscriptionVariantIds = (List<Integer>) httpSession.getAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
+        List<Integer> subscriptionVariantIds =
+                (List<Integer>) httpSession.getAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
         Integer userId = (Integer) httpSession.getAttribute(SessionAttribute.CURRENT_USER_ID.getName());
 
 
@@ -44,14 +56,15 @@ public class SubscriberCartPageHandler implements CommandHandler {
         try {
             ServiceResult serviceResult = new ServiceResult();
 
-            if(subscriptionVariantIds != null) {
-                serviceFactory.getSubscriptionService().getSubscriptionVariantsByIds(subscriptionVariantIds, serviceResult);
+            if (subscriptionVariantIds != null) {
+                serviceFactory.getSubscriptionService().getSubscriptionVariantsByIds(subscriptionVariantIds,
+                                                                                     serviceResult);
 
 
-                if(serviceResult.isDone()) {
+                if (serviceResult.isDone()) {
                     subscriptionVariants = (List<SubscriptionVariant>) serviceResult.getResultObject();
 
-                    request.setAttribute("subscriptionVariants", subscriptionVariants);
+                    request.setAttribute(SUBSCRIPTION_VARIANTS, subscriptionVariants);
 
                     double totalCost = 0;
 
@@ -59,21 +72,21 @@ public class SubscriberCartPageHandler implements CommandHandler {
                         totalCost += subscriptionVariant.getActualCost();
                     }
 
-                    request.setAttribute("totalCost", totalCost);
+                    request.setAttribute(TOTAL_COST, totalCost);
                 }
             }
 
             serviceResult.clear();
 
-            if(userId != null) {
+            if (userId != null) {
                 serviceFactory.getUserService().getAllUserAddresses(userId, serviceResult);
             }
 
-            if(userId != null && serviceResult.isDone()) {
+            if (userId != null && serviceResult.isDone()) {
                 userAddresses = (List<UserAddress>) serviceResult.getResultObject();
             }
 
-            request.setAttribute("userAddresses", userAddresses);
+            request.setAttribute(USER_ADDRESSES, userAddresses);
         } catch (ServiceException e) {
             LOGGER.error(e);
             response.sendRedirect(JspPagePath.ERROR);

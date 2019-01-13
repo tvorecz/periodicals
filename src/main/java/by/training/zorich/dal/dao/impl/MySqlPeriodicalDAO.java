@@ -14,8 +14,11 @@ import by.training.zorich.dal.sql_executor.SQLExecutor;
 import java.util.List;
 
 public class MySqlPeriodicalDAO extends CommonDAO<Object> implements PeriodicalDAO {
-    private final static String QUERY_VALIDATE_PERIODICAL_BY_NAME = "SELECT namePeriodical FROM periodicals WHERE namePeriodical = '%1$s'";
-    private final static String QUERY_INSERT_PERIODICAL = "INSERT INTO periodicals (idType, idTheme, namePeriodical, periodicityInMonth, annotation, imagePath) values(%1$d, %2$d, '%3$s', %4$d, '%5$s', '%6$s')";
+    private final static String QUERY_VALIDATE_PERIODICAL_BY_NAME = "SELECT namePeriodical FROM periodicals WHERE " +
+                                                                    "namePeriodical = '%1$s'";
+    private final static String QUERY_INSERT_PERIODICAL = "INSERT INTO periodicals (idType, idTheme, namePeriodical, " +
+                                                          "periodicityInMonth, annotation, imagePath) values(%1$d, " +
+                                                          "%2$d, '%3$s', %4$d, '%5$s', '%6$s')";
     private static final String QUERY_SELECT_LAST_PEDIOCAL_ID = "SELECT last_insert_id()";
     private static final String QUERY_SELECT_PERIODICAL_BY_ID = "SELECT \tperiodicals.idPeriodical,\n" +
                                                                 "\t\tperiodicals.namePeriodical,\n" +
@@ -46,21 +49,31 @@ public class MySqlPeriodicalDAO extends CommonDAO<Object> implements PeriodicalD
 
     @Override
     public void addPeriodicalTransactionaly(Periodical periodical) throws DAOException {
-        String query = String.format(QUERY_INSERT_PERIODICAL, periodical.getType().getId(), periodical.getTheme().getId(), periodical.getName(), periodical.getPeriodicityInMonth(), periodical.getAnnotation(), periodical.getImagePath());
+        String query = String.format(QUERY_INSERT_PERIODICAL,
+                                     periodical.getType().getId(),
+                                     periodical.getTheme().getId(),
+                                     periodical.getName(),
+                                     periodical.getPeriodicityInMonth(),
+                                     periodical.getAnnotation(),
+                                     periodical.getImagePath());
 
         super.executeUpdateDataSource(query, TransactionStatus.ON);
     }
 
     @Override
     public Integer getLastInsertedPeriodicalIdTransactionaly() throws DAOException {
-        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PEDIOCAL_ID, HandlerType.SCALAR, TransactionStatus.ON);
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PEDIOCAL_ID,
+                                                           HandlerType.SCALAR,
+                                                           TransactionStatus.ON);
     }
 
     @Override
     public Periodical getPeriodicalById(int idPeriodical) throws DAOException {
         String query = String.format(QUERY_SELECT_PERIODICAL_BY_ID, idPeriodical);
 
-        return (Periodical) super.executeSelectFromDataSource(query, HandlerType.PERIODICAL_BY_ID, TransactionStatus.OFF);
+        return (Periodical) super.executeSelectFromDataSource(query,
+                                                              HandlerType.PERIODICAL_BY_ID,
+                                                              TransactionStatus.OFF);
     }
 
     @Override
@@ -69,14 +82,19 @@ public class MySqlPeriodicalDAO extends CommonDAO<Object> implements PeriodicalD
     }
 
     @Override
-    public List<Periodical> searchPeriodicalsTransactionaly(PeriodicalSearchCriteria periodicalSearchCriteria) throws DAOException {
+    public List<Periodical> searchPeriodicalsTransactionaly(PeriodicalSearchCriteria periodicalSearchCriteria) throws
+                                                                                                               DAOException {
         String query = periodicalSearchCriteria.createQuery();
-        return (List<Periodical>) super.executeSelectFromDataSource(query, HandlerType.SEARCH_PERIODICAL ,TransactionStatus.ON);
+        return (List<Periodical>) super.executeSelectFromDataSource(query,
+                                                                    HandlerType.SEARCH_PERIODICAL,
+                                                                    TransactionStatus.ON);
     }
 
     @Override
     public Integer getCountOfFoundPeriodicalsTransactionaly() throws DAOException {
-        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_FINDED_PERIODICALS_ITEMS, HandlerType.SCALAR, TransactionStatus.END);
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_FINDED_PERIODICALS_ITEMS,
+                                                           HandlerType.SCALAR,
+                                                           TransactionStatus.END);
     }
 
     @Override

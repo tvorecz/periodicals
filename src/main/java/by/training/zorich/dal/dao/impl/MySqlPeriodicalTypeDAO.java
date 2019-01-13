@@ -12,7 +12,7 @@ import by.training.zorich.dal.sql_executor.SQLExecutor;
 
 import java.util.List;
 
-public class MySqlPeriodicalTypeDAO extends CommonDAO<Object> implements PeriodicalTypeDAO{
+public class MySqlPeriodicalTypeDAO extends CommonDAO<Object> implements PeriodicalTypeDAO {
     private final static String QUERY_SELECT_ALL_TYPES = "SELECT * FROM periodical_type";
 
     public MySqlPeriodicalTypeDAO(DataSourceConnector connector,
@@ -24,6 +24,8 @@ public class MySqlPeriodicalTypeDAO extends CommonDAO<Object> implements Periodi
 
     @Override
     public List<PeriodicalType> getAllPeriodicalTypes() throws DAOException {
-        return (List<PeriodicalType>) super.executeSelectFromDataSource(QUERY_SELECT_ALL_TYPES, HandlerType.ALL_PERIODICAL_TYPES, TransactionStatus.OFF);
+        return (List<PeriodicalType>) super.executeSelectFromDataSource(QUERY_SELECT_ALL_TYPES,
+                                                                        HandlerType.ALL_PERIODICAL_TYPES,
+                                                                        TransactionStatus.OFF);
     }
 }

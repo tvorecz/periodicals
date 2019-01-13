@@ -1,3 +1,10 @@
+/**
+ * Handler for creating adding periodical page.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.PeriodicalTheme;
@@ -21,7 +28,12 @@ import java.util.List;
 
 public class PeriodicalAdditionPageHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(PeriodicalAdditionPageHandler.class);
-    private ServiceFactory serviceFactory;
+
+    private final static String PERIODICAL_THEME_LIST = "periodicalThemeList";
+    private final static String PERIODICAL_TYPE_LIST = "periodicalTypeList";
+    private final static String SUBSCRIPTION_TYPE_LIST = "subscriptionTypeList";
+
+    private final ServiceFactory serviceFactory;
 
     public PeriodicalAdditionPageHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -69,8 +81,8 @@ public class PeriodicalAdditionPageHandler implements CommandHandler {
 
         subscriptionTypeList = (List<SubscriptionType>) serviceResult.getResultObject();
 
-        request.setAttribute("periodicalThemeList", periodicalThemeList);
-        request.setAttribute("periodicalTypeList", periodicalTypeList);
-        request.setAttribute("subscriptionTypeList", subscriptionTypeList);
+        request.setAttribute(PERIODICAL_THEME_LIST, periodicalThemeList);
+        request.setAttribute(PERIODICAL_TYPE_LIST, periodicalTypeList);
+        request.setAttribute(SUBSCRIPTION_TYPE_LIST, subscriptionTypeList);
     }
 }

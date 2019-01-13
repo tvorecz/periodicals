@@ -1,3 +1,12 @@
+/**
+ * Validate periodical info before adding in data source.
+ * If it periodicity less 0 or more than 31 returns false.
+ * If sush periodical name exists in data source or file type is not image than returns false
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.validator.impl.periodical_validator;
 
 import by.training.zorich.bean.Periodical;

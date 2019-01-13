@@ -4,5 +4,5 @@ import by.training.zorich.dal.exception.DAOException;
 import by.training.zorich.dal.factory.DAOFactory;
 
 public interface DalBuilder {
-    public DAOFactory build() throws DAOException;
+    DAOFactory build() throws DAOException;
 }

@@ -1,3 +1,9 @@
+/**
+ * Bean-class for storing information about registered user of system.
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.bean;
 
 import java.io.Serializable;
@@ -99,7 +105,10 @@ public class User implements Serializable {
         if (email != null ? !email.equals(user.email) : user.email != null) {
             return false;
         }
-        return role == user.role;
+        if (role != user.role) {
+            return false;
+        }
+        return currentLocale == user.currentLocale;
     }
 
     @Override
@@ -110,6 +119,7 @@ public class User implements Serializable {
         result = 31 * result + (codifiedPassword != null ? codifiedPassword.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (currentLocale != null ? currentLocale.hashCode() : 0);
         return result;
     }
 
@@ -118,8 +128,11 @@ public class User implements Serializable {
         return getClass().getName() + "{" +
                "id=" + id +
                ", login='" + login + '\'' +
+               ", realPassword='" + realPassword + '\'' +
+               ", codifiedPassword='" + codifiedPassword + '\'' +
                ", email='" + email + '\'' +
                ", role=" + role +
+               ", currentLocale=" + currentLocale +
                '}';
     }
 }

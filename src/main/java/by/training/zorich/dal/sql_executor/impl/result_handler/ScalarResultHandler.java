@@ -1,3 +1,11 @@
+/**
+ * Returns the number from result-set.
+ * Using for selecting last added element id and amount of added records.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.sql_executor.impl.result_handler;
 
 import by.training.zorich.dal.sql_executor.ResultHandler;
@@ -11,7 +19,7 @@ public class ScalarResultHandler implements ResultHandler<Integer> {
     public Integer handle(ResultSet resultSet) throws SQLException {
         Integer result = null;
 
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             result = resultSet.getInt(1);
         }
 

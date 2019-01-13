@@ -1,3 +1,11 @@
+/**
+ * Validate login.
+ * If it have less two symbols or something excepting alphabet, or symbols - and ., returns false.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.validator.impl.user_validator;
 
 import by.training.zorich.bean.User;
@@ -17,13 +25,13 @@ public class UserValidator implements Validator<User> {
 
     @Override
     public boolean validate(User objectForValidation) throws ServiceException {
-        return validateLoginForm(objectForValidation.getLogin());
+        return validateUserLogin(objectForValidation.getLogin());
     }
 
-    private boolean validateLoginForm(String login) {
+    private boolean validateUserLogin(String login) {
         Matcher matcher = loginPattern.matcher(login);
-        if(matcher.find()) {
-            if(matcher.group().equals(login)) {
+        if (matcher.find()) {
+            if (matcher.group().equals(login)) {
                 return true;
             }
         }

@@ -1,3 +1,10 @@
+/**
+ * Handler for creating subscriptions and adding it to data-source.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.*;
@@ -21,7 +28,10 @@ public class SubscriptionCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(SubscriptionCommandHandler.class);
     private final static String CART_ERROR = "/subscriber/cart?message=subscribeError";
     private final static String PAYMENT_PAGE = "/subscriber/payment/%1$d?message=success";
-    private ServiceFactory serviceFactory;
+    private final static String SUBSCRIPTION_VARIANTS = "subscriptionVariants";
+    private final static String TOTAL_COST = "totalCost";
+    private final static String SUBSCRIPTION_TYPES = "subscriptionTypes";
+    private final ServiceFactory serviceFactory;
 
     public SubscriptionCommandHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -38,7 +48,7 @@ public class SubscriptionCommandHandler implements CommandHandler {
             ServiceResult serviceResult = new ServiceResult();
             serviceFactory.getSubscriptionService().subscribe(userSubscriptionList, serviceResult);
 
-            if(serviceResult.isDone()) {
+            if (serviceResult.isDone()) {
                 Integer paymentId = (Integer) serviceResult.getResultObject();
 
                 HttpSession httpSession = request.getSession();
@@ -63,13 +73,13 @@ public class SubscriptionCommandHandler implements CommandHandler {
 
         int userId = (int) httpSession.getAttribute(SessionAttribute.CURRENT_USER_ID.getName());
 
-        String[] subscriptionVariantsIds =  request.getParameterValues("subscriptionVariants");
-        String[] subscriptionTypesIds =  request.getParameterValues("subscriptionTypes");
+        String[] subscriptionVariantsIds = request.getParameterValues(SUBSCRIPTION_VARIANTS);
+        String[] subscriptionTypesIds = request.getParameterValues(SUBSCRIPTION_TYPES);
 
         int addressId = Integer.parseInt(request.getParameter(UserAddressCharacteristic.ID.getName()));
 
         Payment payment = new Payment();
-        payment.setAmount(Double.parseDouble(request.getParameter("totalCost")));
+        payment.setAmount(Double.parseDouble(request.getParameter(TOTAL_COST)));
 
         for (int i = 0; i < subscriptionVariantsIds.length; i++) {
             UserSubscription userSubscription = new UserSubscription();

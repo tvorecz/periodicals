@@ -1,3 +1,10 @@
+/**
+ * Validate user address for contenting index, country, city, street and numbers block.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.validator.impl.user_validator;
 
 import by.training.zorich.bean.UserAddress;
@@ -19,7 +26,7 @@ public class UserAddressValidator implements Validator<UserAddress> {
     public boolean validate(UserAddress objectForValidation) throws ServiceException {
         Matcher matcher = loginPattern.matcher(objectForValidation.getAddress());
 
-        if(matcher.find() && matcher.group().equals(objectForValidation.getAddress())) {
+        if (matcher.find() && matcher.group().equals(objectForValidation.getAddress())) {
             return true;
         }
 

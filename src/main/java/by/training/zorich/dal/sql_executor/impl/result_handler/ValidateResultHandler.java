@@ -1,3 +1,10 @@
+/**
+ * Handler returning false if result-set is not empty. Using for validation.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.sql_executor.impl.result_handler;
 
 import by.training.zorich.dal.sql_executor.ResultHandler;

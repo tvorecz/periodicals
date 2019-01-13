@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 
 <fmt:setLocale value="${sessionScope.currentLocale.name}" scope="session" />
 
@@ -30,15 +31,18 @@
                         <h3><fmt:message key="form" /></h3>
                         <br />
 
-                        <c:choose>
-                            <c:when test="${not empty param.message and param.message eq 'dbError'}">
-                                <div class="alert alert-success" role="alert">
-                                    <strong><fmt:message key="form.message.dbError" /></strong><br />
-                                    <fmt:message key="form.message.dbErrorCall" />
-                                </div>
-                                <br />
-                            </c:when>
-                        </c:choose>
+                        <%--<c:choose>--%>
+                            <%--<c:when test="${not empty param.message and param.message eq 'dbError'}">--%>
+                                <%--<div class="alert alert-success" role="alert">--%>
+                                    <%--<strong><fmt:message key="form.message.dbError" /></strong><br />--%>
+                                <%--</div>--%>
+                                <%--<br />--%>
+                            <%--</c:when>--%>
+                        <%--</c:choose>--%>
+
+                        <ctg:message messageType="${param.message}">
+                            <fmt:message key="${messageForUser}" />
+                        </ctg:message>
 
                         <form action="/admin/added" method="post" enctype="multipart/form-data" acceptcharset="UTF-8" >
                             <div class="input-group input-group-lg">

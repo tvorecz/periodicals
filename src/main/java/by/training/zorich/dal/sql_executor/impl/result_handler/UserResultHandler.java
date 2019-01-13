@@ -13,7 +13,7 @@ public class UserResultHandler implements ResultHandler<User> {
 
     @Override
     public User handle(ResultSet resultSet) throws SQLException {
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             User foundUser = new User();
             foundUser.setId(resultSet.getInt(UserCharacteristic.ID.getName()));
             foundUser.setLogin(resultSet.getString(UserCharacteristic.LOGIN.getName()));

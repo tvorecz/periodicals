@@ -23,13 +23,15 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
     private final static String QUERY_PATTERN_INSERT_SUBSCRIPTION = "INSERT INTO user_subscriptions (idAddress, " +
                                                                     "idSubscriptionVariant, dateBegin, dateEnd, " +
                                                                     "idPayment) values(?, ?, ?, ?, ?)";
-    private final static String QUERY_SELECT_ALL_USER_SUBSCRIPTIONS = "SELECT \tuser_subscriptions.idUserSubscription,\n" +
+    private final static String QUERY_SELECT_ALL_USER_SUBSCRIPTIONS = "SELECT \tuser_subscriptions" +
+                                                                      ".idUserSubscription,\n" +
                                                                       "\t\tuser_subscriptions.dateBegin,\n" +
                                                                       "\t\tuser_subscriptions.dateEnd,\n" +
                                                                       "\t\tuser_addresses.idAddress,\n" +
                                                                       "\t\tuser_addresses.address,\n" +
                                                                       "\t\tuser_addresses.idUser,\n" +
-                                                                      "\t\tsubscription_variants.idSubscriptionVariant,\n" +
+                                                                      "\t\tsubscription_variants" +
+                                                                      ".idSubscriptionVariant,\n" +
                                                                       "\t\tsubscription_variants.indexSubscription,\n" +
                                                                       "\t\tsubscription_variants.costForIssue,\n" +
                                                                       "\t\tperiodicals.idPeriodical,\n" +
@@ -53,19 +55,25 @@ public class MySqlSubscriptionDAO extends CommonDAO<Object> implements Subscript
                                                                       "\t\t\t\t\tON user_addresses.idUser = %1$d\n" +
                                                                       "\t\t\t\t\tAND user_addresses.idAddress = " +
                                                                       "user_subscriptions.idAddress\n" +
-                                                                      "\t\t\tJOIN payments ON user_subscriptions.idPayment = " +
+                                                                      "\t\t\tJOIN payments ON user_subscriptions" +
+                                                                      ".idPayment = " +
                                                                       "payments.idPayment\n" +
-                                                                      "\t\t\tJOIN subscription_variants ON user_subscriptions" +
+                                                                      "\t\t\tJOIN subscription_variants ON " +
+                                                                      "user_subscriptions" +
                                                                       ".idSubscriptionVariant = subscription_variants" +
                                                                       ".idSubscriptionVariant\n" +
-                                                                      "\t\t\tJOIN subscription_types ON subscription_variants" +
+                                                                      "\t\t\tJOIN subscription_types ON " +
+                                                                      "subscription_variants" +
                                                                       ".idSubscriptionType = subscription_types" +
                                                                       ".idSubscriptionType\n" +
-                                                                      "\t\t\tJOIN periodicals ON subscription_variants" +
+                                                                      "\t\t\tJOIN periodicals ON " +
+                                                                      "subscription_variants" +
                                                                       ".idPeriodical = periodicals.idPeriodical\n" +
-                                                                      "\t\t\tJOIN periodical_type ON periodicals.idType = " +
+                                                                      "\t\t\tJOIN periodical_type ON periodicals" +
+                                                                      ".idType = " +
                                                                       "periodical_type.idType\n" +
-                                                                      "\t\t\tJOIN periodical_theme ON periodicals.idTheme = " +
+                                                                      "\t\t\tJOIN periodical_theme ON periodicals" +
+                                                                      ".idTheme = " +
                                                                       "periodical_theme.idTheme\n" +
                                                                       "\t\t\tLIMIT %2$d, %3$d";
 

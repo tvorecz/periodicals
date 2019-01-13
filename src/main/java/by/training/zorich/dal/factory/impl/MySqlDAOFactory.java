@@ -1,3 +1,10 @@
+/**
+ * Provides access to dao-classes. Using pattern singleton.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.factory.impl;
 
 import by.training.zorich.dal.connector.DataSourceConnector;
@@ -38,13 +45,31 @@ public class MySqlDAOFactory implements DAOFactory {
                      ResultHandlerRepository resultHandlerRepository) {
         userDAOImpl = new MySqlUserDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
         userRoleDAOImpl = new MySqlUserRoleDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-        userAddressDAOImpl = new MySqlUserAddressDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-        subscriptionDAOImpl = new MySqlSubscriptionDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-        periodicalThemeDAOImpl = new MySqlPeriodicalThemeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-        periodicalTypeDAOImpl = new MySqlPeriodicalTypeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-        subscriptionTypeDAOImpl = new MySqlSubscriptionTypeDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        userAddressDAOImpl = new MySqlUserAddressDAO(connector,
+                                                     transactionManager,
+                                                     sqlExecutor,
+                                                     resultHandlerRepository);
+        subscriptionDAOImpl = new MySqlSubscriptionDAO(connector,
+                                                       transactionManager,
+                                                       sqlExecutor,
+                                                       resultHandlerRepository);
+        periodicalThemeDAOImpl = new MySqlPeriodicalThemeDAO(connector,
+                                                             transactionManager,
+                                                             sqlExecutor,
+                                                             resultHandlerRepository);
+        periodicalTypeDAOImpl = new MySqlPeriodicalTypeDAO(connector,
+                                                           transactionManager,
+                                                           sqlExecutor,
+                                                           resultHandlerRepository);
+        subscriptionTypeDAOImpl = new MySqlSubscriptionTypeDAO(connector,
+                                                               transactionManager,
+                                                               sqlExecutor,
+                                                               resultHandlerRepository);
         periodicalDAOImpl = new MySqlPeriodicalDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
-        subscriptionVariantDAOImpl = new MySqlSubscriptionVariantDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
+        subscriptionVariantDAOImpl = new MySqlSubscriptionVariantDAO(connector,
+                                                                     transactionManager,
+                                                                     sqlExecutor,
+                                                                     resultHandlerRepository);
         paymentDAOImpl = new MySqlPaymentDAO(connector, transactionManager, sqlExecutor, resultHandlerRepository);
     }
 

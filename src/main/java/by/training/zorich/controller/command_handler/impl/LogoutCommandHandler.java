@@ -1,3 +1,10 @@
+/**
+ * Handler for logout user.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.SessionAttribute;
@@ -38,7 +45,7 @@ public class LogoutCommandHandler implements CommandHandler {
 
         String returnPath = request.getParameter(TARGET_PATH_COMMAND);
 
-        if(returnPath.contains(ADMIN_TARGET_PATH)) {
+        if (returnPath.contains(ADMIN_TARGET_PATH)) {
             response.sendRedirect(MAIN_PAGE);
         } else {
             response.sendRedirect(returnPath);

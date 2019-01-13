@@ -1,3 +1,10 @@
+/**
+ * Handler for register user.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
@@ -24,7 +31,7 @@ public class SignUpCommandHandler implements CommandHandler {
     private final static String LOGIN_PAGE = "/login?message=success";
     private final static String REGISTER_PAGE_WITH_ERROR = "/register?message=errorRegister";
     private final static String CONFIRM_PASSWORD_INPUT = "confirm";
-    private ServiceFactory serviceFactory;
+    private final ServiceFactory serviceFactory;
 
     public SignUpCommandHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;

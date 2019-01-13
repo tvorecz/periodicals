@@ -1,3 +1,10 @@
+/**
+ * MainController for receiving  requests and addressing it to right handler.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller;
 
 import by.training.zorich.controller.builder_layer.impl.CommandHandlerBuilderImpl;
@@ -19,6 +26,11 @@ import java.util.Enumeration;
 
 public class MainController extends HttpServlet {
     private final static Logger LOGGER = LogManager.getLogger(MainController.class);
+    private final static String IMAGES_PATH = "/images";
+    private final static String IMAGES_ATTRIBUTE = "pathToImages";
+    private final static String ERROR_404 = "/error404";
+    private final static String UTF8 = "UTF-8";
+
     private static final long serialVersionUID = 4381375727757464524L;
 
     private CommandRepository commandRepository;
@@ -29,7 +41,7 @@ public class MainController extends HttpServlet {
     public void init() throws ServletException {
         try {
             commandRepository = new CommandHandlerBuilderImpl().build();
-            pathToImages = getServletContext().getRealPath("/images");
+            pathToImages = getServletContext().getRealPath(IMAGES_PATH);
         } catch (CommandException e) {
             LOGGER.error(e);
         }
@@ -43,16 +55,17 @@ public class MainController extends HttpServlet {
 
         Enumeration<String> parameterNames = req.getParameterNames();
 
-        req.setAttribute("pathToImages", pathToImages);
+        req.setAttribute(IMAGES_ATTRIBUTE, pathToImages);
 
-        if(parameterNames.hasMoreElements()) {
+        if (parameterNames.hasMoreElements()) {
             String commandName = req.getParameter(HandlerType.COMMAND.getName());
-            if(commandName != null) {
+            if (commandName != null) {
                 handler = commandRepository.getCommandHandler(HandlerType.getActionParameterByName(commandName));
                 try {
                     handler.handle(req, resp);
                 } catch (CommandException e) {
                     LOGGER.error(e);
+                    resp.sendRedirect(ERROR_404);
                 }
             } else {
                 jspRepository.readdressToJsp(req, resp);
@@ -66,10 +79,10 @@ public class MainController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String commandName = null;
 
-        req.setAttribute("pathToImages", pathToImages);
+        req.setAttribute(IMAGES_ATTRIBUTE, pathToImages);
 
-        if(ServletFileUpload.isMultipartContent(req)) {
-            req.setCharacterEncoding("UTF-8");
+        if (ServletFileUpload.isMultipartContent(req)) {
+//            req.setCharacterEncoding(UTF8);
             commandName = req.getRequestURI();
         } else {
             commandName = req.getParameter(HandlerType.COMMAND.getName());
@@ -80,7 +93,8 @@ public class MainController extends HttpServlet {
         try {
             handler.handle(req, resp);
         } catch (CommandException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
+            resp.sendRedirect(ERROR_404);
         }
     }
 }

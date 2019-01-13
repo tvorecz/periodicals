@@ -1,3 +1,11 @@
+/**
+ * Calculate subscription dates for month, quarter and year subscription.
+ * Date of subscription begins in next possible subscription period.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.service.util.impl;
 
 import by.training.zorich.bean.SubscriptionType;
@@ -21,7 +29,9 @@ public class SubscriptionLocalDateCalculatorImpl implements SubscriptionLocalDat
                 return calculate(3);
 
             case MONTH:
-                LocalDate beginOfCurrentMonth = LocalDate.of(currentLocalDate.getYear(), currentLocalDate.getMonth(), 1);
+                LocalDate beginOfCurrentMonth = LocalDate.of(currentLocalDate.getYear(),
+                                                             currentLocalDate.getMonth(),
+                                                             1);
                 return beginOfCurrentMonth.plusMonths(1);
         }
 
@@ -47,7 +57,7 @@ public class SubscriptionLocalDateCalculatorImpl implements SubscriptionLocalDat
     private SubscriptionCase determineSubscriptionCase(SubscriptionType subscriptionType) {
         if (subscriptionType.getMonthAmount() == 1) {
             return SubscriptionCase.MONTH;
-        } else if(subscriptionType.getMonthAmount() == 3) {
+        } else if (subscriptionType.getMonthAmount() == 3) {
             return SubscriptionCase.QUARTER;
         } else {
             return SubscriptionCase.HALF_YEAR;
@@ -71,6 +81,6 @@ public class SubscriptionLocalDateCalculatorImpl implements SubscriptionLocalDat
     }
 }
 
-enum SubscriptionCase{
+enum SubscriptionCase {
     MONTH, QUARTER, HALF_YEAR
 }

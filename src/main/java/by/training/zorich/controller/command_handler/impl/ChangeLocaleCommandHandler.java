@@ -1,3 +1,11 @@
+/**
+ * Handler for changing user locale.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.ServiceResult;
@@ -43,9 +51,11 @@ public class ChangeLocaleCommandHandler implements CommandHandler {
 
         ServiceResult serviceResult = new ServiceResult();
 
-        if(currentUserId != null) {
+        if (currentUserId != null) {
             try {
-                serviceFactory.getUserService().changeLocale(currentUserId, UserLocale.getUserLocaleByName(newLocale), serviceResult);
+                serviceFactory.getUserService().changeLocale(currentUserId,
+                                                             UserLocale.getUserLocaleByName(newLocale),
+                                                             serviceResult);
             } catch (ServiceException e) {
                 LOGGER.error(e);
             }

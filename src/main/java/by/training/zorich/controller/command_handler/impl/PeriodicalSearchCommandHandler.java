@@ -1,3 +1,10 @@
+/**
+ * Handler for periodical search.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.*;
@@ -13,14 +20,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class PeriodicalSearchCommandHandler implements CommandHandler {
     private final static Logger LOGGER = LogManager.getLogger(PeriodicalSearchCommandHandler.class);
+    private final static String EMPTY = "";
+    private final static String EQUAL_SIGN = "=";
+    private final static String AND = "&";
     private final static String SEARCH_LINK = "/periodical/search?";
-    private ServiceFactory serviceFactory;
+    private final static String KEY_SEARCH = "keySearch";
+    private final static String PERIODICALS = "periodicals";
+    private final static String COUNT_PAGE = "countPage";
+    private final static String CURRENT_PAGE = "currentPage";
+    private final static String CURRENT_QUERY_LINK = "currentQueryLink";
+    private final static String SELECTED_PERIODICAL_TYPE_ID = "selectedPeriodicalTypeId";
+    private final static String SELECTED_PERIODICAL_THEME_ID = "selectedPeriodicalThemeId";
+    private final static String SELECTED_SUBSCRIPTION_TYPE_ID = "selectedSubscriptionTypeId";
+    private final static String SELECTED_AMOUNT_ON_PAGE = "selectedAmountOnPage";
+    private final static String PERIODICALS_TYPES = "periodicalTypes";
+    private final static String PERIODICAL_THEMES = "periodicalThemes";
+    private final static String SUBSCRIPTION_TYPES = "subscriptionTypes";
+    private final static String PAGE_NUMBERS = "pageNumbers";
+    private final static String MESSAGE = "message";
+    private final static String MESSAGE_NOTHING = "nothingFound";
+
+    private final static String PARAMETER_PERIODICAL_TYPE_ID = "periodicalTypeId";
+    private final static String PARAMETER_PERIODICAL_THEME_ID = "periodicalThemeId";
+    private final static String PARAMETER_SUBSCRIPTION_TYPE_ID = "subscriptionTypeId";
+    private final static String AMOUNT_ON_PAGE = "amountOnPage";
+    private final static String PAGE = "page";
+
+    private final ServiceFactory serviceFactory;
 
     public PeriodicalSearchCommandHandler(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
@@ -39,115 +69,145 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
         Integer amountOnPage = null;
         Integer currentPage = null;
 
-        if(request.getParameter("keySearch") != null && !request.getParameter("keySearch").equals("")) {
-            keySearch = request.getParameter("keySearch");
+        if (request.getParameter(KEY_SEARCH) != null && !request.getParameter(KEY_SEARCH).equals(EMPTY)) {
+            keySearch = request.getParameter(KEY_SEARCH);
         }
 
-        if(request.getParameter("periodicalTypeId") != null && !request.getParameter("periodicalTypeId").equals("")) {
-            periodicalTypeId = Integer.parseInt(request.getParameter("periodicalTypeId"));
+        if (request.getParameter(PARAMETER_PERIODICAL_TYPE_ID) != null && !request.getParameter(
+                PARAMETER_PERIODICAL_TYPE_ID).equals(
+                EMPTY)) {
+            periodicalTypeId = Integer.parseInt(request.getParameter(PARAMETER_PERIODICAL_TYPE_ID));
 
         }
 
-        if(request.getParameter("periodicalThemeId") != null && !request.getParameter("periodicalThemeId").equals("")) {
-            periodicalThemeId = Integer.parseInt(request.getParameter("periodicalThemeId"));
+        if (request.getParameter(PARAMETER_PERIODICAL_THEME_ID) != null && !request.getParameter(
+                PARAMETER_PERIODICAL_THEME_ID).equals(
+                EMPTY)) {
+            periodicalThemeId = Integer.parseInt(request.getParameter(PARAMETER_PERIODICAL_THEME_ID));
         }
 
-        if(request.getParameter("subscriptionTypeId") != null && !request.getParameter("subscriptionTypeId").equals("")) {
-            subscriptionTypeId = Integer.parseInt(request.getParameter("subscriptionTypeId"));
+        if (request.getParameter(PARAMETER_SUBSCRIPTION_TYPE_ID) != null && !request.getParameter(
+                PARAMETER_SUBSCRIPTION_TYPE_ID).equals(
+                EMPTY)) {
+            subscriptionTypeId = Integer.parseInt(request.getParameter(PARAMETER_SUBSCRIPTION_TYPE_ID));
         }
 
-        if(request.getParameter("amountOnPage") != null && !request.getParameter("amountOnPage").equals("")) {
-            amountOnPage = Integer.parseInt(request.getParameter("amountOnPage"));
+        if (request.getParameter(AMOUNT_ON_PAGE) != null && !request.getParameter(AMOUNT_ON_PAGE).equals(EMPTY)) {
+            amountOnPage = Integer.parseInt(request.getParameter(AMOUNT_ON_PAGE));
         }
 
-        if(request.getParameter("page") != null && !request.getParameter("page").equals("")) {
-            currentPage = Integer.parseInt(request.getParameter("page"));
+        if (request.getParameter(PAGE) != null && !request.getParameter(PAGE).equals(EMPTY)) {
+            currentPage = Integer.parseInt(request.getParameter(PAGE));
         }
 
-        if(amountOnPage == null) {
+        if (amountOnPage == null) {
             amountOnPage = 9;
-        } else if(amountOnPage != 6 && amountOnPage != 9 && amountOnPage != 12 && amountOnPage != 15) {
+        } else if (amountOnPage != 6 && amountOnPage != 9 && amountOnPage != 12 && amountOnPage != 15) {
             amountOnPage = 9;
         }
 
-        if(currentPage == null) {
+        if (currentPage == null || currentPage <= 0) {
             currentPage = 1;
         }
 
         ServiceResult serviceResult = new ServiceResult();
 
         try {
-            serviceFactory.getPeriodicalService().search(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, currentPage, serviceResult);
+            serviceFactory.getPeriodicalService().search(keySearch,
+                                                         periodicalTypeId,
+                                                         periodicalThemeId,
+                                                         subscriptionTypeId,
+                                                         amountOnPage,
+                                                         currentPage,
+                                                         serviceResult);
 
-            if(serviceResult.isDone()) {
+            if (serviceResult.isDone()) {
                 List<Periodical> periodicals = (List<Periodical>) serviceResult.getResultObject();
 
                 serviceResult.clear();
 
                 serviceFactory.getPeriodicalService().getCountOfFoundPeriodicals(serviceResult);
 
-                if(serviceResult.isDone()) {
+                if (serviceResult.isDone()) {
                     Integer countOfFoundPeriodicals = (Integer) serviceResult.getResultObject();
 
                     serviceResult.clear();
 
                     serviceFactory.getPeriodicalService().getAllPeriodicalTypes(serviceResult);
 
-                    if(serviceResult.isDone()) {
+                    if (serviceResult.isDone()) {
                         List<PeriodicalType> periodicalTypes = (List<PeriodicalType>) serviceResult.getResultObject();
 
                         serviceResult.clear();
 
                         serviceFactory.getPeriodicalService().getAllPeriodicalThemes(serviceResult);
 
-                        if(serviceResult.isDone()) {
-                            List<PeriodicalTheme> periodicalThemes = (List<PeriodicalTheme>) serviceResult.getResultObject();
+                        if (serviceResult.isDone()) {
+                            List<PeriodicalTheme> periodicalThemes =
+                                    (List<PeriodicalTheme>) serviceResult.getResultObject();
 
                             serviceResult.clear();
 
                             serviceFactory.getSubscriptionService().getAllSubscriptionTypes(serviceResult);
 
-                            if(serviceResult.isDone()) {
-                                List<SubscriptionType> subscriptionTypes = (List<SubscriptionType>) serviceResult.getResultObject();
+                            if (serviceResult.isDone()) {
+                                List<SubscriptionType> subscriptionTypes =
+                                        (List<SubscriptionType>) serviceResult.getResultObject();
 
                                 int countPage = 0;
 
-                                if(countOfFoundPeriodicals % amountOnPage == 0) {
+                                if (countOfFoundPeriodicals % amountOnPage == 0) {
                                     countPage = countOfFoundPeriodicals / amountOnPage;
                                 } else {
                                     countPage = countOfFoundPeriodicals / amountOnPage + 1;
                                 }
 
-                                if(currentPage > countPage) {
-                                    if(countPage != 0) {
-                                        response.sendRedirect(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, countPage));
+                                if (currentPage > countPage) {
+                                    if (countPage != 0) {
+                                        response.sendRedirect(createCurrentSearchLink(keySearch,
+                                                                                      periodicalTypeId,
+                                                                                      periodicalThemeId,
+                                                                                      subscriptionTypeId,
+                                                                                      amountOnPage,
+                                                                                      countPage));
                                         return;
-                                    } if(countPage == 0) {
+                                    }
+                                    if (countPage == 0) {
                                         currentPage = 1;
                                     }
-                                } else if(currentPage < 1) {
-                                    response.sendRedirect(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage, 1));
+                                } else if (currentPage < 1) {
+                                    response.sendRedirect(createCurrentSearchLink(keySearch,
+                                                                                  periodicalTypeId,
+                                                                                  periodicalThemeId,
+                                                                                  subscriptionTypeId,
+                                                                                  amountOnPage,
+                                                                                  1));
                                     return;
                                 }
 
                                 Integer[] pageNumbers = createPageNumbersArray(countPage, currentPage);
 
-                                request.setAttribute("keySearch", keySearch);
-                                request.setAttribute("periodicals", periodicals);
-                                request.setAttribute("countPage", countPage);
-                                request.setAttribute("currentPage", currentPage);
-                                request.setAttribute("currentQueryLink", createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage));
-                                request.setAttribute("selectedPeriodicalTypeId", periodicalTypeId);
-                                request.setAttribute("selectedPeriodicalThemeId", periodicalThemeId);
-                                request.setAttribute("selectedSubscriptionTypeId", subscriptionTypeId);
-                                request.setAttribute("selectedAmountOnPage", amountOnPage);
-                                request.setAttribute("periodicalTypes", periodicalTypes);
-                                request.setAttribute("periodicalThemes", periodicalThemes);
-                                request.setAttribute("subscriptionTypes", subscriptionTypes);
-                                request.setAttribute("pageNumbers", pageNumbers);
+                                request.setAttribute(KEY_SEARCH, keySearch);
+                                request.setAttribute(PERIODICALS, periodicals);
+                                request.setAttribute(COUNT_PAGE, countPage);
+                                request.setAttribute(CURRENT_PAGE, currentPage);
+                                request.setAttribute(CURRENT_QUERY_LINK,
+                                                     createCurrentSearchLink(keySearch,
+                                                                             periodicalTypeId,
+                                                                             periodicalThemeId,
+                                                                             subscriptionTypeId,
+                                                                             amountOnPage));
+                                request.setAttribute(SELECTED_PERIODICAL_TYPE_ID, periodicalTypeId);
+                                request.setAttribute(SELECTED_PERIODICAL_THEME_ID, periodicalThemeId);
+                                request.setAttribute(SELECTED_SUBSCRIPTION_TYPE_ID, subscriptionTypeId);
+                                request.setAttribute(SELECTED_AMOUNT_ON_PAGE, amountOnPage);
+                                request.setAttribute(PERIODICALS_TYPES, periodicalTypes);
+                                request.setAttribute(PERIODICAL_THEMES, periodicalThemes);
+                                request.setAttribute(SUBSCRIPTION_TYPES, subscriptionTypes);
+                                request.setAttribute(PAGE_NUMBERS, pageNumbers);
 
-                                if(countPage == 0) {
-                                    request.setAttribute("message", "nothingFound");
+                                if (countPage == 0) {
+                                    request.setAttribute(MESSAGE, MESSAGE_NOTHING);
                                 }
                             }
                         }
@@ -155,7 +215,8 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                 }
             }
         } catch (ServiceException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
+            response.sendRedirect(SEARCH_LINK);
         }
 
 
@@ -166,24 +227,28 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                                            Integer periodicalThemeId,
                                            Integer subscriptionTypeId,
                                            Integer amountOnPage,
-                                           Integer page){
+                                           Integer page) {
         StringBuffer stringBuffer = new StringBuffer();
 
-        if(keySearch != null || periodicalThemeId != null || periodicalTypeId != null || subscriptionTypeId != null || amountOnPage != null) {
-            stringBuffer.append(createCurrentSearchLink(keySearch, periodicalTypeId, periodicalThemeId, subscriptionTypeId, amountOnPage));
-            stringBuffer.append("&");
+        if (keySearch != null || periodicalThemeId != null || periodicalTypeId != null || subscriptionTypeId != null || amountOnPage != null) {
+            stringBuffer.append(createCurrentSearchLink(keySearch,
+                                                        periodicalTypeId,
+                                                        periodicalThemeId,
+                                                        subscriptionTypeId,
+                                                        amountOnPage));
+            stringBuffer.append(AND);
         }
 
 
-        if(page != null) {
-            stringBuffer.append("page=" + page);
+        if (page != null) {
+            stringBuffer.append(PAGE + EQUAL_SIGN + page);
         }
 
         String resultString = stringBuffer.toString();
 
         char endChar = resultString.charAt(resultString.length() - 1);
 
-        if(endChar == '&') {
+        if (endChar == '&') {
             resultString = resultString.substring(0, resultString.length() - 1);
         }
 
@@ -194,34 +259,34 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
                                            Integer periodicalTypeId,
                                            Integer periodicalThemeId,
                                            Integer subscriptionTypeId,
-                                           Integer amountOnPage){
+                                           Integer amountOnPage) {
         StringBuffer stringBuffer = new StringBuffer(SEARCH_LINK);
 
-        if(keySearch != null) {
-            stringBuffer.append("keySearch=" + keySearch + "&");
+        if (keySearch != null) {
+            stringBuffer.append(KEY_SEARCH + EQUAL_SIGN + keySearch + AND);
         }
 
-        if(periodicalTypeId != null) {
-            stringBuffer.append("periodicalTypeId=" + periodicalTypeId + "&");
+        if (periodicalTypeId != null) {
+            stringBuffer.append(PARAMETER_PERIODICAL_TYPE_ID + EQUAL_SIGN + periodicalTypeId + AND);
         }
 
-        if(periodicalThemeId != null) {
-            stringBuffer.append("periodicalThemeId=" + periodicalThemeId + "&");
+        if (periodicalThemeId != null) {
+            stringBuffer.append(PARAMETER_PERIODICAL_THEME_ID + EQUAL_SIGN + periodicalThemeId + AND);
         }
 
-        if(subscriptionTypeId != null) {
-            stringBuffer.append("subscriptionTypeId=" + subscriptionTypeId + "&");
+        if (subscriptionTypeId != null) {
+            stringBuffer.append(PARAMETER_SUBSCRIPTION_TYPE_ID + EQUAL_SIGN + subscriptionTypeId + AND);
         }
 
-        if(amountOnPage != null) {
-            stringBuffer.append("amountOnPage=" + amountOnPage + "&");
+        if (amountOnPage != null) {
+            stringBuffer.append(AMOUNT_ON_PAGE + EQUAL_SIGN + amountOnPage + AND);
         }
 
         String resultString = stringBuffer.toString();
 
         char endChar = resultString.charAt(resultString.length() - 1);
 
-        if(endChar == '&') {
+        if (endChar == '&') {
             resultString = resultString.substring(0, resultString.length() - 1);
         }
 
@@ -233,17 +298,17 @@ public class PeriodicalSearchCommandHandler implements CommandHandler {
 
         integerQueue.add(currentPage);
 
-        if(currentPage < (amountPage - 1)) {
+        if (currentPage < (amountPage - 1)) {
             integerQueue.addLast(currentPage + 1);
             integerQueue.addLast(currentPage + 2);
-        } else if(currentPage < (amountPage)) {
+        } else if (currentPage < (amountPage)) {
             integerQueue.addLast(currentPage + 1);
         }
 
-        if(currentPage > 2) {
+        if (currentPage > 2) {
             integerQueue.addFirst(currentPage - 1);
             integerQueue.addFirst(currentPage - 2);
-        } else if(currentPage > 1) {
+        } else if (currentPage > 1) {
             integerQueue.addFirst(currentPage - 1);
         }
 

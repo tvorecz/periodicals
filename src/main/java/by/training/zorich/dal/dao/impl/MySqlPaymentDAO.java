@@ -15,7 +15,8 @@ import java.util.Locale;
 public class MySqlPaymentDAO extends CommonDAO<Object> implements PaymentDAO {
     private static final String QUERY_SELECT_LAST_PAYMENT_ID = "SELECT last_insert_id()";
     private static final String QUERY_CREATE_PAYMENT = "INSERT INTO payments (amount, payStatus) values(%1$f, %2$d)";
-    private static final String QUERY_SELECT_PAYMENT_BY_ID = "SELECT idPayment, amount, payStatus FROM payments WHERE idPayment = %1$d";
+    private static final String QUERY_SELECT_PAYMENT_BY_ID = "SELECT idPayment, amount, payStatus FROM payments WHERE" +
+                                                             " idPayment = %1$d";
     private static final String QUERY_SELECT_PAYMENT_BY_USER_ID = "SELECT *\n" +
                                                                   "\t\tFROM payments\n" +
                                                                   "\t\t\tJOIN user_subscriptions ON payments" +
@@ -43,14 +44,18 @@ public class MySqlPaymentDAO extends CommonDAO<Object> implements PaymentDAO {
 
     @Override
     public Integer getLastInsertedPaymentIdTransactionaly() throws DAOException {
-        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PAYMENT_ID, HandlerType.SCALAR, TransactionStatus.ON);
+        return (Integer) super.executeSelectFromDataSource(QUERY_SELECT_LAST_PAYMENT_ID,
+                                                           HandlerType.SCALAR,
+                                                           TransactionStatus.ON);
     }
 
     @Override
     public Payment getPaymentById(int idPayment) throws DAOException {
         String query = String.format(QUERY_SELECT_PAYMENT_BY_ID, idPayment);
 
-        return (Payment) super.executeSelectFromDataSource(query, HandlerType.SELECT_PAYMENT_BY_ID, TransactionStatus.OFF);
+        return (Payment) super.executeSelectFromDataSource(query,
+                                                           HandlerType.SELECT_PAYMENT_BY_ID,
+                                                           TransactionStatus.OFF);
     }
 
     @Override

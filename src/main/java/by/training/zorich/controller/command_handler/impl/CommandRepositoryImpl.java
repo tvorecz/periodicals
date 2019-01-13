@@ -1,3 +1,10 @@
+/**
+ * Class using singleton-pattern and store associations between get & post commands and theirs handlers.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.command_handler.CommandHandler;
@@ -15,7 +22,7 @@ public class CommandRepositoryImpl implements CommandRepository {
         actionRepository = new HashMap<>();
     }
 
-    private static class CommandRepositoryHelper{
+    private static class CommandRepositoryHelper {
         private static final CommandRepositoryImpl COMMAND_REPOSITORY = new CommandRepositoryImpl();
     }
 
@@ -26,7 +33,8 @@ public class CommandRepositoryImpl implements CommandRepository {
     public void init(ServiceFactory serviceFactory) {
         actionRepository.put(HandlerType.LOGIN, new SignInCommandHandler(serviceFactory));
         actionRepository.put(HandlerType.REGISTER, new SignUpCommandHandler(serviceFactory));
-        actionRepository.put(HandlerType.LOCALE, new ChangeLocaleCommandHandler(serviceFactory, JspRepositoryImpl.getInstance()));
+        actionRepository.put(HandlerType.LOCALE,
+                             new ChangeLocaleCommandHandler(serviceFactory, JspRepositoryImpl.getInstance()));
         actionRepository.put(HandlerType.PREPROCESS_ADD, new PeriodicalAdditionPageHandler(serviceFactory));
         actionRepository.put(HandlerType.URI_ADD_PERIODICAL, new AdditionPeriodicalCommandHandler(serviceFactory));
         actionRepository.put(HandlerType.PREPROCESS_CARD, new PeriodicalCardPageHandler(serviceFactory));

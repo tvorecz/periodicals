@@ -24,7 +24,8 @@ public class TransactionData {
         return preparedStatementMap.get(transactionDAOOperationType);
     }
 
-    public void setPreparedStatement(TransactionDAOOperationType transactionDAOOperationType, PreparedStatement preparedStatement) {
+    public void setPreparedStatement(TransactionDAOOperationType transactionDAOOperationType,
+                                     PreparedStatement preparedStatement) {
         preparedStatementMap.put(transactionDAOOperationType, preparedStatement);
     }
 

@@ -29,10 +29,10 @@ public class SubsciberSecurityFilter implements Filter {
 
         UserRole currentUserRole = (UserRole) currentSession.getAttribute(SessionAttribute.CURRENT_USER_ROLE.getName());
 
-        if(UserRole.ADMIN.equals(currentUserRole) || UserRole.SUBSCRIBER.equals(currentUserRole)) {
+        if (UserRole.ADMIN.equals(currentUserRole) || UserRole.SUBSCRIBER.equals(currentUserRole)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            if(currentUserRole == null) {
+            if (currentUserRole == null) {
                 currentUserRole = DEFAULT_USER_ROLE;
                 currentSession.setAttribute(SessionAttribute.CURRENT_USER_ROLE.getName(), currentUserRole);
             }

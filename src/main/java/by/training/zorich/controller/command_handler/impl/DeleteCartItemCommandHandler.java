@@ -1,3 +1,11 @@
+/**
+ * Handler for deleting item from cart.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.controller.SessionAttribute;
@@ -14,6 +22,7 @@ import java.util.List;
 
 public class DeleteCartItemCommandHandler implements CommandHandler {
     private final static String CART_PAGE = "/subscriber/cart";
+    private final static String ID_SUBSCRIPTION_VARIANT = "idSubscriptionVariant";
     private ServiceFactory serviceFactory;
 
     public DeleteCartItemCommandHandler(ServiceFactory serviceFactory) {
@@ -27,15 +36,16 @@ public class DeleteCartItemCommandHandler implements CommandHandler {
                                                                                  CommandException {
         HttpSession httpSession = request.getSession();
 
-        List<Integer> subscriprionVariantsIds = (List<Integer>) httpSession.getAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
+        List<Integer> subscriprionVariantsIds =
+                (List<Integer>) httpSession.getAttribute(SessionAttribute.CURRENT_CART_ITEM.getName());
 
-        Integer idForDelete = Integer.parseInt(request.getParameter("idSubscriptionVariant"));
+        Integer idForDelete = Integer.parseInt(request.getParameter(ID_SUBSCRIPTION_VARIANT));
 
-        if(subscriprionVariantsIds != null) {
+        if (subscriprionVariantsIds != null) {
             int indexForRemove = 0;
 
             for (Integer subscriprionVariantsId : subscriprionVariantsIds) {
-                if(idForDelete.equals(subscriprionVariantsId)) {
+                if (idForDelete.equals(subscriprionVariantsId)) {
                     break;
                 } else {
                     indexForRemove++;
@@ -46,8 +56,9 @@ public class DeleteCartItemCommandHandler implements CommandHandler {
 
             httpSession.setAttribute(SessionAttribute.CURRENT_CART_ITEM.getName(), subscriprionVariantsIds);
 
-            if(subscriprionVariantsIds.size() > 0) {
-                httpSession.setAttribute(SessionAttribute.CURRENT_SIZE_CART_ITEM.getName(), subscriprionVariantsIds.size());
+            if (subscriprionVariantsIds.size() > 0) {
+                httpSession.setAttribute(SessionAttribute.CURRENT_SIZE_CART_ITEM.getName(),
+                                         subscriprionVariantsIds.size());
             } else {
                 httpSession.removeAttribute(SessionAttribute.CURRENT_SIZE_CART_ITEM.getName());
             }

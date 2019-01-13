@@ -1,3 +1,10 @@
+/**
+ * Handler for creating periodical card page.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.controller.command_handler.impl;
 
 import by.training.zorich.bean.Periodical;
@@ -20,6 +27,8 @@ import java.util.List;
 public class PeriodicalCardPageHandler implements CommandHandler {
     private final static String PERIODICAL = "/periodical/";
     private final static String ERROR_404 = "/error404";
+    private final static String SUBSCRIPTION_VARIANTS_ATTRIBUTE = "subscriptionVariants";
+    private final static String PERIODICAL_ATTRIBUTE = "periodical";
     private final static Logger LOGGER = LogManager.getLogger(PeriodicalCardPageHandler.class);
     private ServiceFactory serviceFactory;
 
@@ -35,7 +44,7 @@ public class PeriodicalCardPageHandler implements CommandHandler {
 
         String periodicalId = request.getRequestURI().replace(PERIODICAL, "");
 
-        if(periodicalId == null) {
+        if (periodicalId == null) {
             response.sendRedirect(JspPagePath.ERROR);
         } else {
             Integer idPeriodical = Integer.parseInt(periodicalId);
@@ -43,17 +52,19 @@ public class PeriodicalCardPageHandler implements CommandHandler {
             try {
                 serviceFactory.getPeriodicalService().getPeriodicalById(idPeriodical, serviceResult);
 
-                if(serviceResult.isDone()) {
+                if (serviceResult.isDone()) {
                     Periodical periodical = (Periodical) serviceResult.getResultObject();
                     serviceResult.clear();
 
-                    serviceFactory.getSubscriptionService().getAllSubscriptionVariantsForPeriodical(periodical, serviceResult);
+                    serviceFactory.getSubscriptionService().getAllSubscriptionVariantsForPeriodical(periodical,
+                                                                                                    serviceResult);
 
                     if (serviceResult.isDone()) {
-                        List<SubscriptionVariant> subscriptionVariants = (List<SubscriptionVariant>) serviceResult.getResultObject();
+                        List<SubscriptionVariant> subscriptionVariants =
+                                (List<SubscriptionVariant>) serviceResult.getResultObject();
 
-                        request.setAttribute("subscriptionVariants", subscriptionVariants);
-                        request.setAttribute("periodical", periodical);
+                        request.setAttribute(SUBSCRIPTION_VARIANTS_ATTRIBUTE, subscriptionVariants);
+                        request.setAttribute(PERIODICAL_ATTRIBUTE, periodical);
                     } else {
                         response.sendRedirect(ERROR_404);
                     }

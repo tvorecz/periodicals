@@ -33,7 +33,7 @@ public class LocaleFilter implements Filter {
         if (currentLocale == null) {
             Cookie cookie = CookieHandler.extractCookie(httpServletRequest, CookieName.CURRENT_LOCALE.getName());
 
-            if(cookie == null) {
+            if (cookie == null) {
                 currentSession.setAttribute(SessionAttribute.CURRENT_LOCALE.getName(), defaultLocale);
                 Cookie newCookie = new Cookie(CookieName.CURRENT_LOCALE.getName(), defaultLocale.getName());
 
@@ -41,7 +41,8 @@ public class LocaleFilter implements Filter {
 
                 httpServletResponse.addCookie(newCookie);
             } else {
-                currentSession.setAttribute(SessionAttribute.CURRENT_LOCALE.getName(), UserLocale.getUserLocaleByName(cookie.getValue()));
+                currentSession.setAttribute(SessionAttribute.CURRENT_LOCALE.getName(),
+                                            UserLocale.getUserLocaleByName(cookie.getValue()));
             }
         }
 

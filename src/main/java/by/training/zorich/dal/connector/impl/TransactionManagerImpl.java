@@ -1,3 +1,13 @@
+/**
+ * TransactionManager is adapter for MySqlDBConnector.
+ * Give transaction option.
+ * In this case connection saved in ThreadLocal variable before transaction finished.
+ * Than connection give back to pool.
+ *
+ * @autor Dzmitry Zorich
+ * @version 1.1
+ */
+
 package by.training.zorich.dal.connector.impl;
 
 import by.training.zorich.dal.connector.DataSourceConnector;
@@ -35,12 +45,12 @@ public class TransactionManagerImpl implements TransactionManager {
         Connection connection = null;
 
         try {
-            if(TRANSACTION_DATA_THREAD_LOCAL.get() == null){
+            if (TRANSACTION_DATA_THREAD_LOCAL.get() == null) {
                 connection = dataSourceConnector.getConnection();
 
                 connection.setAutoCommit(false);
 
-                TransactionData transactionData =  new TransactionData();
+                TransactionData transactionData = new TransactionData();
                 transactionData.setConnection(connection);
 
                 TRANSACTION_DATA_THREAD_LOCAL.set(transactionData);
@@ -57,17 +67,18 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public PreparedStatement getCachedPreparedStatementForTransaction(String queryPattern, TransactionDAOOperationType transactionDAOOperationType) throws
-                                                                                                                                              TransactionManagerException {
+    public PreparedStatement getCachedPreparedStatementForTransaction(String queryPattern,
+                                                                      TransactionDAOOperationType transactionDAOOperationType) throws
+                                                                                                                               TransactionManagerException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         TransactionData transactionData = TRANSACTION_DATA_THREAD_LOCAL.get();
 
-        if(transactionData != null) {
+        if (transactionData != null) {
             try {
                 preparedStatement = transactionData.getActualPreparedStatement(transactionDAOOperationType);
 
-                if(preparedStatement == null) {
+                if (preparedStatement == null) {
                     connection = transactionData.getConnection();
                     preparedStatement = connection.prepareStatement(queryPattern);
                     transactionData.setPreparedStatement(transactionDAOOperationType, preparedStatement);
@@ -83,10 +94,10 @@ public class TransactionManagerImpl implements TransactionManager {
     public void giveBackTransactionConnection() throws TransactionManagerException {
         try {
             TransactionData transactionData = TRANSACTION_DATA_THREAD_LOCAL.get();
-            if(transactionData != null) {
+            if (transactionData != null) {
                 Connection connection = transactionData.getConnection();
 
-                if(connection != null) {
+                if (connection != null) {
                     connection.commit();
                     connection.setAutoCommit(true);
 
@@ -109,10 +120,10 @@ public class TransactionManagerImpl implements TransactionManager {
         try {
             TransactionData transactionData = TRANSACTION_DATA_THREAD_LOCAL.get();
 
-            if(transactionData != null) {
+            if (transactionData != null) {
                 Connection connection = transactionData.getConnection();
 
-                if(connection != null) {
+                if (connection != null) {
                     connection.rollback();
                     connection.setAutoCommit(true);
 
@@ -132,7 +143,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private void closePreparedStatements() throws SQLException {
         TransactionData transactionData = TRANSACTION_DATA_THREAD_LOCAL.get();
 
-        if(transactionData != null) {
+        if (transactionData != null) {
             List<PreparedStatement> preparedStatements = transactionData.getAllPreparedStatements();
 
             for (PreparedStatement preparedStatement : preparedStatements) {

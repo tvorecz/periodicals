@@ -1,6 +1,6 @@
 package by.training.zorich.dal.connector;
 
-public class TransactionManagerException extends Exception{
+public class TransactionManagerException extends Exception {
     private static final long serialVersionUID = -5511879390767010050L;
 
     public TransactionManagerException() {

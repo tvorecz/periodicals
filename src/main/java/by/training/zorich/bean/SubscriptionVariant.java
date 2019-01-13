@@ -75,7 +75,7 @@ public class SubscriptionVariant implements Serializable {
 
     public void calculateActualCost() {
         actualCost = periodical.getPeriodicityInMonth() * subscriptionType.getMonthAmount() * costForIssue;
-        actualCost = Math.rint(actualCost * 100.0)/ 100.0;
+        actualCost = Math.rint(actualCost * 100.0) / 100.0;
     }
 
     @Override
@@ -101,8 +101,16 @@ public class SubscriptionVariant implements Serializable {
         if (periodical != null ? !periodical.equals(that.periodical) : that.periodical != null) {
             return false;
         }
-        return subscriptionType != null ? subscriptionType.equals(that.subscriptionType) :
-                that.subscriptionType == null;
+        if (subscriptionType != null ? !subscriptionType.equals(that.subscriptionType) :
+                that.subscriptionType != null) {
+            return false;
+        }
+        if (actualCost != null ? !actualCost.equals(that.actualCost) : that.actualCost != null) {
+            return false;
+        }
+        return expectedBeginOfSubscription != null ?
+                expectedBeginOfSubscription.equals(that.expectedBeginOfSubscription) :
+                that.expectedBeginOfSubscription == null;
     }
 
     @Override
@@ -115,6 +123,8 @@ public class SubscriptionVariant implements Serializable {
         result = 31 * result + (subscriptionType != null ? subscriptionType.hashCode() : 0);
         temp = Double.doubleToLongBits(costForIssue);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (actualCost != null ? actualCost.hashCode() : 0);
+        result = 31 * result + (expectedBeginOfSubscription != null ? expectedBeginOfSubscription.hashCode() : 0);
         return result;
     }
 
@@ -126,6 +136,8 @@ public class SubscriptionVariant implements Serializable {
                ", periodical=" + periodical +
                ", subscriptionType=" + subscriptionType +
                ", costForIssue=" + costForIssue +
+               ", actualCost=" + actualCost +
+               ", expectedBeginOfSubscription=" + expectedBeginOfSubscription +
                '}';
     }
 }
